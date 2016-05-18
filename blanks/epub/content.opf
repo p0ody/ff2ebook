@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:title>%title%</dc:title>
+        <dc:description>%summary%</dc:description>
+        <dc:publisher>www.ff2ebook.com</dc:publisher>
+        <dc:language>en</dc:language>
+        <dc:identifier id="BookId" opf:scheme="UUID">%uuid%</dc:identifier>
+        <dc:creator opf:file-as="%author%" opf:role="aut">%author%</dc:creator>
+    </metadata>
+    <manifest>
+		<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+		<item id="stylesheet" href="Styles/style.css" media-type="text/css"/>
+        <item id="title" href="Content/title.xhtml" media-type="application/xhtml+xml" />
+%chapManifest%
+    </manifest>
+    <spine toc="ncx">
+        <itemref idref="title" />
+%chapSpine%
+    </spine>
+    <guide>
+        <reference href="Content/title.xhtml" title="Title Page" type="title-page"/>
+    </guide>
+</package>

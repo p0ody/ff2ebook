@@ -1,0 +1,286 @@
+/* Color palette
+    Dark gray:      #191919;
+    Medium gray:    #282828;
+    Light gray:     #505050;
+    Orange:         #FFA600;
+*/
+
+
+
+body
+{
+    background-color: #282828;
+}
+
+
+.container-fluid
+{
+    text-align: center;
+    width: 100%;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.menu-button
+{
+    font-size: 20px;
+    text-align: right;
+    color: white;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.menu-button:hover
+{
+    color: #FFA600;
+}
+
+.dropdown-menu-option
+ {
+    width: 200px;
+    background-color: #505050;
+    font-size: 20px;
+    color: white;
+ }
+
+.dropdown-menu-option li a
+{
+    background-image: none;
+    color: white;
+}
+
+
+.dropdown-menu-option > li > a:hover, .dropdown-menu-option > li > a:focus
+{
+    background-color: #FFA600;
+    background-image: none;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    color: white;
+}
+
+.menu-option
+{
+    margin-top: 6px;
+    text-align: center;
+}
+
+.menu-option li+li
+{
+    border-left: 1px solid #FFA600;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+.menu-option a
+{
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.menu-option a:hover
+{
+    color: #FFA600;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.dark-gray
+{
+    background-color: #191919;
+    color: #191919;
+}
+
+.text-highlight
+{
+    color: #FFA600;
+}
+
+.text-right
+{
+    padding-right: 0px;
+
+}
+
+.header
+{
+    color: white;
+    font-size: 30px;
+}
+
+.collapse-bg
+{
+    background-color: #505050;
+    border: 2px solid #191919;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    margin-top: 15px;
+}
+
+.collapse-header
+{
+    background-color: #191919;
+    color: #FFA600;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 35px;
+    padding-top: 6px;
+}
+
+.collapse-content
+{
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: none;
+}
+
+.text-zone-bg
+{
+    background-color: #505050;
+    border: 2px solid #191919;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    margin-top: 15px;
+}
+
+.text-zone-header
+{
+    background-color: #191919;
+    color: #FFA600;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 35px;
+    padding-top: 6px;
+}
+
+.text-zone-content
+{
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.float-right
+{
+    float: right;
+}
+
+.infos
+{
+    color: white;
+
+}
+
+.convert-options select
+{
+    max-width: 200px;
+}
+
+#kindle-email
+{
+    max-width: 200px;
+}
+
+.text-warning
+{
+    color: #FFFC00;
+}
+
+.text-critical
+{
+    color: #FF0000;
+}
+
+.text-ok
+{
+    color: #0dff00;
+}
+
+#status-area
+{
+    color: #505050;
+    font-size: 25px;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+#status-area a
+{
+    color: white;
+    text-decoration: none;
+    opacity: 1;
+}
+
+
+.bg-red { background-color: red; }
+
+
+.convert-progress
+{
+    height: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.convert-progress .progress
+{
+    background-color: #282828;
+    height: 5px;
+}
+
+.convert-progress .progress-bar
+{
+    background-color: #FFA600;
+}
+
+#output
+{
+    max-height: 400px;
+    overflow: auto;
+}
+
+.news
+{
+    color: white;
+    text-align: left;
+
+}
+
+.top-spacing
+{
+    padding-top: 50px;
+
+}
+
+.table tr:hover td, .table tr:hover td a
+{
+    background-color: #505050;
+    color: #FFA600;
+
+}
+
+.table a
+{
+    color: white;
+    text-decoration: none;
+}
+
+.table tr:hover th, .table tr th
+{
+    background-color: #505050;
+    color: white;
+
+}
+
+.table > thead > tr:first-child
+{
+    border: none;
+}

@@ -1,0 +1,44 @@
+.fic-title
+{
+    font: bold 1.7em Calibri;
+    text-align: center;
+}
+
+.fic-author
+{
+    font: 1.4em Calibri;
+    text-align: center;
+}
+
+.bold
+{
+    font-weight: bold;
+}
+
+body
+{
+    text-align: left;
+    font: 1em Calibri;
+    line-height: 1.05em;
+}
+.footer
+{
+    width: 100%;
+    height: 60px;
+    font: 1em Calibri;
+    text-align: center;
+}
+
+.chap-text
+{
+    text-align: left;
+    font: 1em Calibri;
+    line-height: 1.05em;
+}
+
+.chap-title
+{
+    font: bold 1.2em Calibri;
+    text-align: left;
+    line-height: 1.25em;
+}
