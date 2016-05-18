@@ -1,5 +1,5 @@
 <?php
-require_once("../include/sql.login.php");
+require_once __DIR__."/../conf/sql.login.php";
 
 class dbHandler
 {
@@ -16,7 +16,7 @@ class dbHandler
         $this->host = SQL_HOST;
         $this->user = SQL_USER;
         $this->passwd = SQL_PASSWD;
-        $this->db = SQL_PASSWD;
+        $this->db = SQL_DB;
         $this->error = Array();
     }
 
