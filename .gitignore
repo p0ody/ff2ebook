@@ -2,4 +2,4 @@ sql/
 output/
 archive/
 scripts/
-library/
+.idea/
