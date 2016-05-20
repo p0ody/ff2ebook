@@ -22,7 +22,7 @@ try
 
     $query = $pdo->prepare("SELECT * FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search or `author` LIKE :search;");
     $query->execute(Array("search" => $sqlSearch));
-
+    // @TODO Make things pretty on mobile...
     $return["result"] = "<table class=\"table table-hover table-responsive\">";
     $return["result"] .= "<thead><tr><th>Web Source</th><th>Title - Author</th><th>Updated Date</th><th>Download</th></tr></thead>";
     $return["result"] .= "<tbody>";

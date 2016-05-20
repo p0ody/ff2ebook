@@ -11,6 +11,8 @@ class Utils
                 return "<a href=\"http://www.fanfiction.net\" target=\"_blank\">Fanfiction.net</a>";
             case "fpnet":
                 return "<a href=\"http://www.fictionpress.com\" target=\"_blank\">Fictionpress.com</a>";
+            case "hpff":
+                return "<a href=\"http://www.harrypotterfanfiction.com\" target=\"_blank\">HarryPotterFanFiction.com</a>";
 
             default:
                 return $site;

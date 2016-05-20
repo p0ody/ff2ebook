@@ -108,7 +108,7 @@ class HPFF extends BaseHandler
         }
 
     }
-    
+
     private function popAuthor($source)
     {
         if (strlen($source) === 0)
