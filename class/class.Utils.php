@@ -32,4 +32,10 @@ class Utils
 
         }
     }
+
+    public static function cleanText($text)
+    {
+        $replace = Array("&nbsp;","<div>", "</div>");
+        return str_replace($replace, "", $text);
+    }
 }

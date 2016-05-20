@@ -1,6 +1,6 @@
 <?php
-require_once("class.Chapter.php");
-require_once("class.ErrorHandler.php");
+require_once __DIR__."/class.Chapter.php";
+require_once __DIR__."/class.ErrorHandler.php";
 
 abstract class BaseHandler
 {

@@ -1,17 +1,20 @@
 <?php
-include_once("class.ff.net.php");
-include_once("class.ErrorHandler.php");
+require_once __DIR__."/class.ff.net.php";
+require_once __DIR__."/class.hpff.php";
+require_once __DIR__."/class.ErrorHandler.php";
 
 
 abstract class FanFictionSite
 {
     const ERROR     = -1;
     const FFnet     = 0;
+    const HPFF      = 1;
 }
 
 
 class FanFiction
 {
+    /** @var ErrorHandler $error */
     private $url, $ficSite, $handler, $error, $source;
 
     public function __construct($url, $errorHandler)
@@ -26,6 +29,11 @@ class FanFiction
             case FanFictionSite::FFnet:
                 $this->handler = new FFnet($this->getURL(), $this->error);
                 $this->source = "ffnet";
+                break;
+
+            case FanFictionSite::HPFF:
+                $this->handler = new HPFF($this->getURL(), $this->error);
+                $this->source = "hpff";
                 break;
 
             case FanFictionSite::ERROR:
@@ -49,6 +57,9 @@ class FanFiction
 
         if (strpos($this->url, "fanfiction.net") !== false)
             return FanFictionSite::FFnet;
+
+        if (strpos($this->url, "harrypotterfanfiction.com") !== false)
+            return FanFictionSite::HPFF;
 
 
         return FanFictionSite::ERROR;
