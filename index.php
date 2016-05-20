@@ -34,7 +34,7 @@
             <div class="col-xs-12 news col-md-offset-3 col-md-6">
                 News:
                 <ul>
-                    <li>Added basic archive stuff.</li>
+                    <li>2016-05-19: Added support for harrypotterfanfiction.com</li>
                 </ul>
             </div>
 
@@ -103,7 +103,7 @@
                         <ul>
                             <li>fanfiction<span class="text-highlight">.</span>net</li>
                             <li><span class="text-highlight">TODO:</span> patronuscharm<span class="text-highlight">.</span>net (Maybe ?)</li>
-                            <li><span class="text-highlight">TODO:</span>harrypotterfanfiction<span class="text-highlight">.</span>com</li>
+                            <li>harrypotterfanfiction<span class="text-highlight">.</span>com (Use URL finishing with <span class="text-highlight bold italic">/viewstory.php?psid=######</span></li>
                             <li><span class="text-highlight">TODO:</span>ficwad<span class="text-highlight">.</span>com</li>
                         </ul>
                     </div>
