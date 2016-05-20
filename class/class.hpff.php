@@ -108,7 +108,7 @@ class HPFF extends BaseHandler
         }
 
     }
-    //@TODO add link to author in cover page
+    
     private function popAuthor($source)
     {
         if (strlen($source) === 0)
