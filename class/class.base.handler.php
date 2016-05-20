@@ -21,6 +21,7 @@ abstract class BaseHandler
     private $outputDir;
     private $filename;
     private $fandom;
+    private $authorProfile;
 
 
     /** @return Chapter */
@@ -57,6 +58,7 @@ abstract class BaseHandler
     public function getOutputDir()              { return $this->outputDir; }
     public function getFilename()               { return $this->filename; }
     public function getFandom()                 { return $this->fandom; }
+    public function getAuthorProfile()          { return $this->authorProfile; }
 
     // Setters
     public function setFicId($id)               { $this->ficId = $id; }
@@ -72,6 +74,15 @@ abstract class BaseHandler
     public function setOutputDir($dir)          { $this->outputDir = $dir; }
     public function setFileName($name)          { $this->filename = $name; }
     public function setFandom($fandom)          { $this->fandom = $fandom; }
+    public function setAuthorProfile($profile)  { $this->authorProfile = $profile; }
 
+    public function getRealURL()
+    {
+        if (strpos($this->url, "fanfiction.net") !== false)
+            return "https://www.fanfiction.net/s/". $this->getFicId();
+
+        if (strpos($this->url, "harrypotterfanfiction.com") !== false)
+            return "http://www.harrypotterfanfiction.com/viewstory.php?psid=". $this->getFicId();
+    }
 
 }

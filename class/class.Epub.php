@@ -84,7 +84,7 @@ class Epub
         $title = "";
         $author = "";
         $summary = "";
-        if (preg_match("#<div class=\"fic-title\">(.+?)</div>.*?<div class=\"fic-author\">.*?By: (.+?)</div>.*?Summary:</span> (.+?)<br />#si", $infos, $match) === 1) {
+        if (preg_match("#<div class=\"fic-title\"><a.+?>(.+?)</a></div>.*?<div class=\"fic-author\">.*?By: <a.+?>(.+?)</a></div>.*?Summary:</span> (.+?)<br />#si", $infos, $match) === 1) {
             $title = $match[1];
             $author = $match[2];
             $summary = $match[3];

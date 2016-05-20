@@ -114,8 +114,11 @@ class HPFF extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<a href=\"viewuser\.php\?showuid=[0-9]+?\">(.+?)</a>#si", $source, $matches) === 1)
-            return $matches[1];
+        if (preg_match("#<a href=\"viewuser\.php\?showuid=([0-9]+?)\">(.+?)</a>#si", $source, $matches) === 1)
+        {
+            $this->setAuthorProfile("http://www.harrypotterfanfiction.com/viewuser.php?showuid=". $matches[1]);
+            return $matches[2];
+        }
         else
         {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find author.");

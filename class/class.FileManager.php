@@ -62,8 +62,8 @@ class FileManager
 
 
         $replacedBy = Array(
-            $fic->getTitle(),
-            $fic->getAuthor(),
+            "<a href=\"". $fic->getRealURL() ."\">". $fic->getTitle() ."</a>",
+            "<a href=\"". $fic->getAuthorProfile() ."\">". $fic->getAuthor() ."</a>",
             !$fic->getFandom() ? "" : "<span class=\"bold\">Fandom:</span> ". $fic->getFandom() ."<br />",
             !$fic->getSummary() ? "" : "<span class=\"bold\">Summary:</span> ". $fic->getSummary() ."<br />",
             !$fic->getFicType() ? "" : "<span class=\"bold\">Fic type:</span> ". $fic->getFicType() ."<br />",
