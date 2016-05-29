@@ -1,8 +1,17 @@
 <?php
+require_once __DIR__."/class/class.Pagination.php";
+require_once __DIR__."/class/class.Search.php";
 
 $search = false;
 if (isset($_GET["search"]))
     $search = $_GET["search"];
+
+$page = 1;
+if (isset($_GET["page"]))
+    $page = $_GET["page"];
+
+if ($page < 1)
+    $page = 1;
 
 
 function hasSearch($search) { return $search !== false; }
@@ -47,6 +56,24 @@ function hasSearch($search) { return $search !== false; }
                 <div class="text-zone-bg text-left <?php echo hasSearch($search) ? "" : "hidden"; ?>" id="search-result-bg">
                     <div class="text-zone-header">Seach results:</div>
                     <div class="text-zone-content" id="search-result">
+                        <?php
+                        $searchObject;
+                        if (hasSearch($search))
+                        {
+                            $searchObject = new Search($search);
+                            echo $searchObject->getFormaattedResults();
+                        }
+
+                        ?>
+                    </div>
+                    <div class="center">
+                    <?php
+                    if (hasSearch($search))
+                    {
+                        echo new Pagination("archive.php?". (hasSearch($search) ? "search=". $search ."&" : "") ."page=", $page, $searchObject->getResultsCount(), 50);
+                    }
+
+                    ?>
                     </div>
                 </div>
             </div>
