@@ -16,6 +16,8 @@ if ($page < 1)
 
 function hasSearch($search) { return $search !== false; }
 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -54,27 +56,9 @@ function hasSearch($search) { return $search !== false; }
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="text-zone-bg text-left <?php echo hasSearch($search) ? "" : "hidden"; ?>" id="search-result-bg">
-                    <div class="text-zone-header">Seach results:</div>
-                    <div class="text-zone-content" id="search-result">
-                        <?php
-                        $searchObject;
-                        if (hasSearch($search))
-                        {
-                            $searchObject = new Search($search);
-                            echo $searchObject->getFormaattedResults();
-                        }
-
-                        ?>
-                    </div>
-                    <div class="center">
-                    <?php
-                    if (hasSearch($search))
-                    {
-                        echo new Pagination("archive.php?". (hasSearch($search) ? "search=". $search ."&" : "") ."page=", $page, $searchObject->getResultsCount(), 50);
-                    }
-
-                    ?>
-                    </div>
+                    <div class="text-zone-header">Seach results: <span class="results-count"></span></div>
+                    <div class="text-zone-content" id="search-result"></div>
+                    <div class="pagi"></div>
                 </div>
             </div>
         </div>
