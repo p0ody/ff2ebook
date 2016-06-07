@@ -207,6 +207,7 @@ function ajax_convert()
         setPct(100);
         changeState(STATE_READY);
         downloadReady(_ficData["site"], _ficData["id"]);
+        return;
     }
 
     $.ajax
