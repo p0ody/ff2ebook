@@ -57,8 +57,8 @@ function hasSearch($search) { return $search !== false; }
             <div class="col-md-6 col-md-offset-3">
                 <div class="text-zone-bg text-left <?php echo hasSearch($search) ? "" : "hidden"; ?>" id="search-result-bg">
                     <div class="text-zone-header">Seach results: <span class="results-count"></span></div>
-                    <div class="text-zone-content" id="search-result"></div>
-                    <div class="pagi"></div>
+                    <div class="text-zone-content center" id="search-result"><img src="images/loader.gif"></div>
+                    <div class="pagi center visible-lg-block"></div>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@ require_once __DIR__."/../class/class.Search.php";
 require_once __DIR__."/../class/class.ErrorHandler.php";
 require_once __DIR__."/../class/class.Pagination.php";
 
-define("MAX_RESULTS_PER_PAGE", 50);
+define("MAX_RESULTS_PER_PAGE", 1);
 
 header('Content-type: application/json');
 

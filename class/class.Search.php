@@ -69,7 +69,7 @@ class Search
         }
         catch(PDOException $e)
         {
-            //die($e->getMessage());
+            die($e->getMessage());
             return false;
         }
     }

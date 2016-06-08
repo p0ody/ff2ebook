@@ -169,7 +169,7 @@ function ajax_createFile()
         });
 
         if (_ficData["site"] === "undefined" || _ficData["id"] === "undefined")
-            return;
+            changeState(STATE_ERROR);
 
 
         addPct(PCT_FILE_CREATION);
@@ -218,18 +218,14 @@ function ajax_convert()
             filetype: $("#filetype").val()
         },
         dataType: "json"
-    }).done(function(data)
+    }).done(function (data)
     {
         var errors = checkForError(data);
-
-        $.each(errors, function(index, error)
-        {
+        $.each(errors, function (index, error) {
             newError(error.code, error.message)
         });
-
         setPct(100);
         changeState(STATE_READY);
         downloadReady(_ficData["site"], _ficData["id"]);
-
     });
 }

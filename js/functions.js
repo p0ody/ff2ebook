@@ -3,6 +3,7 @@ function changeState(newState)
     switch(newState)
     {
         case STATE_READY:
+            _state = newState;
             disableForm(false);
             //resetOutput();
             _ajaxFicInfosTry = 0;
@@ -11,6 +12,7 @@ function changeState(newState)
             break;
 
         case STATE_INFOS:
+            _state = newState;
             setPct(PCT_MIN);
             resetOutput();
             disableForm(true);
@@ -20,6 +22,7 @@ function changeState(newState)
             break;
 
         case STATE_CHAPTERS:
+            _state = newState;
             disableForm(true);
             statusOutput("<span class='text-ok'>Collecting chapters data...</span>");
             setStatusText("Collecting chapters data...");
@@ -35,18 +38,21 @@ function changeState(newState)
             break;
 
         case STATE_ERROR:
+            _state = newState;
             //newError(ERROR_CRITICAL, "An error has occured, please try again.")
             changeState(STATE_READY);
             throw new Error("An error has occured and the script has been stopped.");
             break;
 
         case STATE_FILE_CREATION:
+            _state = newState;
             disableForm(true);
             statusOutput("<span class='text-ok'>Creating archive file....</span>");
             ajax_createFile();
             break;
 
         case STATE_CONVERSION:
+            _state = newState;
             disableForm(true);
             statusOutput("<span class='text-ok'>Converting to desired file format...</span>");
             ajax_convert();
@@ -56,7 +62,6 @@ function changeState(newState)
             changeState(STATE_READY);
             break;
     }
-    _state = newState;
 }
 
 
