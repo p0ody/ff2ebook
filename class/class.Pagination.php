@@ -1,6 +1,6 @@
 <?php
 
-define("PAGINATION_MAX_PAGE_SHOWING", 9); //Must be an odd number
+define("PAGINATION_MAX_PAGE_SHOWING", 11); //Must be an odd number
 
 class Pagination
 {
