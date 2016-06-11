@@ -17,6 +17,8 @@ $(document).ready(
 
         if (getURLVars()["search"] != undefined && getURLVars()["search"].length > 0)
             ajax_sendSearch();
+
+        //$(document).on("click", "tr", createPopover);
     }
 );
 
@@ -50,6 +52,8 @@ function ajax_sendSearch()
         $(".pagi").html(data.pagination);
         $(".results-count").html(data.count + " found");
 
+        $(".table-mobile > tbody > tr").each(createPopover);
+
     });
 
 }
@@ -61,3 +65,43 @@ function getURLVars() {
     });
     return vars;
 }
+
+function createPopover()
+{
+    var source = $(this).data("source");
+    var sourceURL = $(this).data("source-url");
+    var ficURL = $(this).data("fic-url");
+    var title = $(this).data("title");
+    var author = $(this).data("author");
+    var updated = $(this).data("updated");
+    var epub = $(this).data("download-epub");
+    var mobi = $(this).data("download-mobi");
+
+    var content =
+        "Title: <a href=\""+ ficURL +"\">"+ title +"</a><br />"+
+        "Author: "+ author +"<br />"+
+        "Source: <a href=\""+ sourceURL +"\">"+ source +"</a><br />"+
+        "Last Updated: "+ updated +"<br />"+
+        "<a href=\""+ epub +"\">Download EPUB</a>  <a href=\""+ mobi +"\">Download MOBI</a>";
+
+    $(this).popover(
+        {
+            content: content,
+            title: title,
+            html: true,
+            placement: "bottom",
+            trigger: "focus"
+        }
+    );
+}
+
+/*
+ $return .= "<tr role=\"button\" tabindex=\"0\" data-source=\"". Utils::webSourceReadable($row["site"]) ."\"
+ data-source-url=\"". Utils::webSourceURL($row["site"]) ."\"
+ data-fic-url=\"". Utils::getWebURL($row["id"], $row["site"]) ."\"
+ data-updated=\"". date("Y-m-d", intval($row["updated"])) ."\"
+ data-download-epub=\"". $epub ."\"
+ data-download-mobi=\"". $mobi ."\"
+ data-title=\"". $row["title"] ."\"
+ data-author=\"". $row["author"] ."\">
+ */

@@ -34,6 +34,7 @@
             <div class="col-xs-12 news col-md-offset-3 col-md-6">
                 News:
                 <ul>
+                    <li>If you are experiencing issues, you can still use <a href="./old">old version</a></li>
                     <li>2016-05-19: Added support for harrypotterfanfiction.com</li>
                 </ul>
             </div>

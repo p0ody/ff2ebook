@@ -260,11 +260,11 @@ body
 
 }
 
+
 .table tr:hover td, .table tr:hover td a
 {
     background-color: #505050;
     color: #FFA600;
-
 }
 
 .table a
@@ -277,7 +277,6 @@ body
 {
     background-color: #505050;
     color: white;
-
 }
 
 .table > thead > tr:first-child
@@ -299,3 +298,60 @@ body
 {
     text-align: center;
 }
+
+.align-left
+{
+    text-align: left;
+}
+
+.pagination > li.active > a
+{
+    background-color: #FFA600;
+    border-color: #7d7d7d;
+    color: #191919;
+}
+
+.pagination > li.active > a:hover,
+.pagination > li > a:hover
+{
+    background-color: #FFA600;
+    border-color: #FFA600;
+    color: black;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.pagination > li > a
+{
+    border-color: #7d7d7d;
+    background-color: white;
+    color: black;
+}
+
+.fic-tooltip
+{
+    background-color: white;
+    text-align: left;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+}
+
+tr:focus
+{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.popover-title
+{
+    color: black;
+    font-size: 16px;
+}
+.popover-content, .popover-content > a
+{
+    color: black;
+    font-size: 14px;
+}
+

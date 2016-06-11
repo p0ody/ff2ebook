@@ -1,0 +1,8 @@
+Options +MultiViews
+Options +FollowSymLinks
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^archive/([^/]*)/([^/]*)$ /archive.php?search=$1&page=$2 [NC,L]

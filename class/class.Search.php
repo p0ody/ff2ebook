@@ -27,18 +27,58 @@ class Search
 
     public function getFormaattedResults()
     {
-        $return = "<table class=\"table table-hover table-responsive\">";
+        // Desktop table
+        $return = "<table class=\"table table-hover table-condensed align-left hidden-xs hidden-sm hidden-md\">";
         $return .= "<thead><tr><th>Web Source</th><th>Title - Author</th><th>Updated Date</th><th>Download</th></tr></thead>";
         $return .= "<tbody>";
 
         /*if ($this->getResults() === null)
             return false;*/
-
+        $i = 1;
         foreach($this->getResults() as $id => $row)
         {
+            $id = "collapse-line". $i;
             $epub = "download.php?source=". $row["site"] ."&id=". $row["id"] ."&filetype=epub";
             $mobi = "download.php?source=". $row["site"] ."&id=". $row["id"] ."&filetype=mobi";
-            $return .= "<tr><td>". Utils::webSourceReadable($row["site"]) ."</td><td><a href=\"". Utils::getWebURL($row["id"], $row["site"])  ."\">". $row["title"] ." - ". $row["author"] ."</a></td><td>". date("Y-m-d", intval($row["updated"])) ."</td><td><a href=\"". $epub ."\">EPUB</a> <a href=\"". $mobi ."\">MOBI</a></td></tr>";
+            $return .= "<tr>
+                            <td class=\"hidden-xs\">". Utils::webSourceReadableURL($row["site"]) ."</td>
+                            <td ><a href=\"". Utils::getWebURL($row["id"], $row["site"])  ."\" >". $row["title"] ." - ". $row["author"] ."</a></td>
+                            <td class=\"hidden-xs\">". date("Y-m-d", intval($row["updated"])) ."</td>
+                            <td class=\"hidden-xs\"><a href=\"". $epub ."\">EPUB</a> <a href=\"". $mobi ."\">MOBI</a></td>
+                        </tr>";
+
+            $i++;
+        }
+
+        $return .= "</tbody>";
+        $return .= "</table>";
+
+        // Mobile table
+        $return .= "<table class=\"table table-mobile table-hover table-condensed align-left hidden-lg\">";
+        $return .= "<thead><tr><th>Title</th></tr></thead>";
+        $return .= "<tbody>";
+
+        /*if ($this->getResults() === null)
+            return false;*/
+        $i = 1;
+        foreach($this->getResults() as $id => $row)
+        {
+            $id = "collapse-line". $i;
+            $epub = "download.php?source=". $row["site"] ."&id=". $row["id"] ."&filetype=epub";
+            $mobi = "download.php?source=". $row["site"] ."&id=". $row["id"] ."&filetype=mobi";
+            $return .= "<tr role=\"button\" tabindex=\"0\" data-source=\"". Utils::webSourceReadable($row["site"]) ."\"
+                            data-source-url=\"". Utils::webSourceURL($row["site"]) ."\"
+                            data-fic-url=\"". Utils::getWebURL($row["id"], $row["site"]) ."\"
+                            data-updated=\"". date("Y-m-d", intval($row["updated"])) ."\"
+                            data-download-epub=\"". $epub ."\"
+                            data-download-mobi=\"". $mobi ."\"
+                            data-title=\"". $row["title"] ."\"
+                            data-author=\"". $row["author"] ."\">
+
+                            <td>". $row["title"] ."</a></td>
+                        </tr>";
+
+            $i++;
         }
 
         $return .= "</tbody>";
@@ -69,7 +109,6 @@ class Search
         }
         catch(PDOException $e)
         {
-            die($e->getMessage());
             return false;
         }
     }

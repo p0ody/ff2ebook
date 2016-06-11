@@ -10,6 +10,8 @@ class Pagination
         $this->resultTotal = $resultTotal;
         $this->resultPerPage = $resultPerPage;
 
+        $currentPage = $nn = preg_replace('#[^0-9+]#', '', $currentPage);
+
         $pageCount = $this->getPageCount();
         if ($pageCount < 1)
             $pageCount = 1;
@@ -21,7 +23,7 @@ class Pagination
         }
 
 
-        $return = "<nav><ul class=\"pagination pagination-sm\">";
+        $return = "<nav><ul class=\"pagination pagination-sm hidden-xs hidden-sm hidden-md\">";
 
         if ($currentPage != 1)
         {
@@ -47,6 +49,25 @@ class Pagination
         {
             $return .= "<li><a href=\"" . $pageURL . ($currentPage + 1) . "\" aria-label=\"Next\">></a></li>"; // Next
             $return .= "<li><a href=\"" . $pageURL . $pageCount . "\" aria-label=\"Last\">>></a></li>"; // Last
+        }
+
+        $return .= "</ul></nav>";
+
+        // For mobile
+        $return .= "<nav><ul class=\"pagination pagination-lg hidden-lg\">";
+
+        if ($currentPage > 1)
+        {
+            $return .= "<li><a href=\"" . $pageURL . 1 . "\" aria-label=\"First\"><<</a></li>";
+            $return .= "<li><a href=\"" . $pageURL . ($currentPage - 1) . "\" aria-label=\"Previous\"><</a></li>";
+        }
+
+        $return .= "<li><a href=\"#\">". $currentPage ."</a></li>";
+
+        if ($currentPage < $pageCount)
+        {
+            $return .= "<li><a href=\"" . $pageURL . ($currentPage + 1) . "\" aria-label=\"Next\">></a></li>";
+            $return .= "<li><a href=\"" . $pageURL . $pageCount . "\" aria-label=\"Previous\">>></a></li>";
         }
 
         $return .= "</ul></nav>";
