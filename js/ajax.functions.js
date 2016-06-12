@@ -66,7 +66,7 @@ function ajax_getFicInfos()
     if (_ajaxFicInfosTry > AJAX_MAX_TRY)
         newError(ERROR_CRITICAL, "Failed to get Fic Infos, please try again later.");
     else if (_ajaxFicInfosTry > 1)
-        newError(ERROR_WARNING, "Failed to get Fic Infos, attempting again.");
+        newError(ERROR_WARNING, "Failed to get Fic Infos (Attempt "+ _ajaxFicInfosTry +"/"+ AJAX_MAX_TRY +"), attempting again.");
 
     $.ajax
     ({
@@ -108,14 +108,15 @@ function ajax_getFicInfos()
 function ajax_getChapter(num)
 {
 
-    if (_ajaxChapterTry[num] === "undefined")
+    if (_ajaxChapterTry[num] === undefined)
         _ajaxChapterTry[num] = 0;
 
     _ajaxChapterTry[num] = _ajaxChapterTry[num] + 1;
+
     if (_ajaxChapterTry[num] > AJAX_MAX_TRY)
-        newError(ERROR_CRITICAL, "Failed to get chapter #"+ i +", please try again later.");
-    else if (_ajaxChapterTry[i] > 1)
-        newError(ERROR_WARNING, "Failed to get chapter #"+ i +", attempting again.");
+        newError(ERROR_CRITICAL, "Failed to get chapter #"+ num +", please try again later.");
+    else if (_ajaxChapterTry[num] > 1)
+        newError(ERROR_WARNING, "Failed to get chapter #"+ num +" (Attempt "+ _ajaxChapterTry[num] +"/"+ AJAX_MAX_TRY +"), attempting again.");
 
     $.ajax
     ({

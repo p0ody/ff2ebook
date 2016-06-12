@@ -66,4 +66,9 @@ function printError(code, message)
 {
     $("#output").append("<div class=\""+ getErrorColorClass(code) +"\">"+  getErrorType(code) +": "+ message +"</div>");
 
+    if (code === ERROR_WARNING)
+        $("#warning-icon").show();
+
+    if (code === ERROR_CRITICAL)
+        $("#critical-icon").show();
 }

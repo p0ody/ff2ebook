@@ -355,3 +355,8 @@ tr:focus
     font-size: 14px;
 }
 
+.news a, .news a:hover, .mews a:visited
+ {
+     color: #FFA600;
+     text-decoration: underline;
+ }

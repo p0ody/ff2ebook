@@ -33,8 +33,10 @@
         <div class="row">
             <div class="col-xs-12 news col-md-offset-3 col-md-6">
                 News:
-                <ul>
+                <ul class="news">
                     <li>If you are experiencing issues, you can still use <a href="./old">old version</a></li>
+                    <li><a href="archive/old/ff_to_ebook_archive_2016-06-03.zip">Old archive available for download.</a></li>
+                    <li>2016-06-12: The site is experiencing alot of error while fetching chapter (ERR_EMPTY_RESPONSE) and i have no idea why, looking into it.</li>
                     <li>2016-05-19: Added support for harrypotterfanfiction.com</li>
                 </ul>
             </div>
@@ -116,7 +118,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="collapse-bg text-left" data-collapse-hidden="true">
-                    <div class="collapse-header">Output:<span class="float-right">(Click to toggle)</span></div>
+                    <div class="collapse-header">Output: <span id="warning-icon" class="glyphicon glyphicon-warning-sign text-warning" style="display: none"></span> <span id="critical-icon" class="glyphicon glyphicon-remove-circle text-critical"  style="display: none"></span><span class="float-right">(Click to toggle)</span></div>
                     <div class="collapse-content" id="output"></div>
                 </div>
             </div>

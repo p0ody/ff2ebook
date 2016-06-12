@@ -1,4 +1,6 @@
 <?php
+header('Content-type: application/json');
+
 require_once("../sqlSession.php");
 require_once("../class/class.FanFiction.php");
 require_once("../class/class.ErrorHandler.php");
@@ -6,7 +8,6 @@ require_once("../class/class.FileManager.php");
 require_once("../class/class.Chapter.php");
 
 session_start();
-header('Content-type: application/json');
 
 
 $error = new ErrorHandler();
