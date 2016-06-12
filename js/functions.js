@@ -8,7 +8,7 @@ function changeState(newState)
             //resetOutput();
             _ajaxFicInfosTry = 0;
             _ajaxChapterTry = [];
-            setStatusText("Ready!")
+            setStatusText("Ready!");
             break;
 
         case STATE_INFOS:
