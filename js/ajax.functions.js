@@ -118,38 +118,43 @@ function ajax_getChapter(num)
     else if (_ajaxChapterTry[num] > 1)
         newError(ERROR_WARNING, "Failed to get chapter #"+ num +" (Attempt "+ _ajaxChapterTry[num] +"/"+ AJAX_MAX_TRY +"), attempting again.");
 
-    $.ajax
-    ({
-        url: "ajaxPHP/ajax.getChapter.php",
-        method: "POST",
-        data: { chapNum: num },
-        dataType: "json"
-    }).done(function(data)
+    _ajaxQueue.push(function()
     {
-        var errors = checkForError(data);
+        $.ajax
+        ({
+            url: "ajaxPHP/ajax.getChapter.php",
+            method: "POST",
+            data: {chapNum: num},
+            dataType: "json"
+        }).done(function (data) {
+            var errors = checkForError(data);
 
-        $.each(errors, function(index, error)
+            $.each(errors, function (index, error) {
+                newError(error.code, error.message)
+            });
+
+            statusOutput("<span class='text-ok'>Received chapter #" + data.chapNum + " data.</span>");
+
+            if (typeof _ficData.chapReady === "undefined")
+                _ficData.chapReady = [];
+
+            _ficData.chapReady.push(data.chapNum);
+
+            setStatusText("Chapters: " + _ficData.chapReady.length + "/" + _ficData.chapCount);
+            addPct(PCT_CHAPTERS / parseFloat(_ficData.chapCount));
+
+            if (_ficData.chapReady.length === parseInt(_ficData.chapCount))
+                nextState();
+
+        }).fail(function ()
         {
-            newError(error.code, error.message)
+            ajax_getChapter(num);
+        }).always(function()
+        {
+            substractCurrentCalls();
         });
-
-        statusOutput("<span class='text-ok'>Received chapter #"+ data.chapNum +" data.</span>");
-
-        if (typeof _ficData.chapReady === "undefined")
-            _ficData.chapReady = [];
-
-        _ficData.chapReady.push(data.chapNum);
-
-        setStatusText("Chapters: "+ _ficData.chapReady.length +"/"+ _ficData.chapCount);
-        addPct(PCT_CHAPTERS / parseFloat(_ficData.chapCount));
-
-        if (_ficData.chapReady.length === parseInt(_ficData.chapCount))
-            nextState();
-
-    }).fail(function()
-    {
-        ajax_getChapter(num);
     });
+
 }
 
 function ajax_createFile()
@@ -229,4 +234,33 @@ function ajax_convert()
         changeState(STATE_READY);
         downloadReady(_ficData["site"], _ficData["id"]);
     });
+}
+
+function ajaxQueueHandler()
+{
+    if (_ajaxQueue.length > 0)
+        setTimeout(ajaxQueueHandler, 2000);
+
+    if (_ajaxQueue.length > 0 && _ajaxCurrentCalls < AJAX_MAX_CALLS)
+    {
+        var newCalls = _ajaxQueue.splice(0, AJAX_MAX_CALLS - _ajaxCurrentCalls);
+
+        $.each(newCalls, function(index, value)
+        {
+            value();
+            addCurentCalls();
+        });
+    }
+}
+
+function substractCurrentCalls()
+{
+    if (_ajaxCurrentCalls > 0)
+        _ajaxCurrentCalls--;
+
+}
+
+function addCurentCalls()
+{
+    _ajaxCurrentCalls++;
 }

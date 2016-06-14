@@ -10,6 +10,7 @@ var STATE_FILE_CREATION = 3;
 var STATE_CONVERSION    = 4;
 var STATE_MAX_STATE     = 5;
 var AJAX_MAX_TRY        = 3;
+var AJAX_MAX_CALLS      = 10;
 var PCT_FIC_INFOS       = 20;
 var PCT_CHAPTERS        = 65;
 var PCT_FILE_CREATION   = 5;
@@ -21,6 +22,8 @@ var _ficData = null;
 var _state = STATE_READY;
 var _ajaxFicInfosTry = 0;
 var _ajaxChapterTry = [];
+var _ajaxCurrentCalls = 0;
+var _ajaxQueue = [];
 
 $(document).ready(
     function() {

@@ -34,6 +34,7 @@ function changeState(newState)
             {
                 ajax_getChapter(i);
             }
+            ajaxQueueHandler();
 
             break;
 
