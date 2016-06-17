@@ -239,7 +239,7 @@ function ajax_convert()
 function ajaxQueueHandler()
 {
     if (_ajaxQueue.length > 0)
-        setTimeout(ajaxQueueHandler, 2000);
+        setTimeout(ajaxQueueHandler, AJAX_CALLS_DELAY_MS);
 
     if (_ajaxQueue.length > 0 && _ajaxCurrentCalls < AJAX_MAX_CALLS)
     {
