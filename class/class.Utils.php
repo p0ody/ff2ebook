@@ -74,6 +74,7 @@ class Utils
     public static function cleanText($text)
     {
         $replace = Array("&nbsp;","<div>", "</div>");
+        $text = html_entity_decode($text);
         return str_replace($replace, "", $text);
     }
 }
