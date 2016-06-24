@@ -1,7 +1,14 @@
 <?php
+require_once(__DIR__."/../conf/config.php");
 require_once("class.base.handler.php");
 require_once("class.dbHandler.php");
 require_once("class.DownloadFile.php");
+
+if (PORTABLE_MODE)
+{
+    require_once(__DIR__."/../sqlSession.php");
+    session_start();
+}
 
 class Download
 {
@@ -18,29 +25,38 @@ class Download
     {
         try
         {
-            $db = new dbHandler();
-            $pdo = $db->connect();
-
-            $query = $pdo->prepare(SQL_SELECT_FIC);
-            $query->execute(Array("id" => $this->id, "site" => $this->source));
-
-            if ($query->rowCount() === 1)
+            if (PORTABLE_MODE)
             {
-                $result = $query->fetch();
-
-                $this->title = $result["title"];
-                $this->author = $result["author"];
-                $this->updated = $result["updated"];
+                $this->title = $_SESSION[$this->source . "_" . $this->id . "_title"];
+                $this->author = $_SESSION[$this->source . "_" . $this->id . "_author"];
+                $this->updated = $_SESSION[$this->source . "_" . $this->id . "_updated"];
             }
             else
-                throw new PDOException("Could not find fic in database.");
+            {
+                $db = new dbHandler();
+                $pdo = $db->connect();
 
-            $filename = $this->source ."_". $this->id ."_". $this->updated;
+                $query = $pdo->prepare(SQL_SELECT_FIC);
+                $query->execute(Array("id" => $this->id, "site" => $this->source));
 
-            if (!file_exists("archive/$filename.epub"))
-                return false;
+                if ($query->rowCount() === 1)
+                {
+                    $result = $query->fetch();
 
-            return new DownloadFile($filename .".epub", $this->title, $this->author);;
+                    $this->title = $result["title"];
+                    $this->author = $result["author"];
+                    $this->updated = $result["updated"];
+                }
+                else
+                    throw new PDOException("Could not find fic in database.");
+            }
+
+                $filename = $this->source ."_". $this->id ."_". $this->updated;
+
+                if (!file_exists("archive/$filename.epub"))
+                    return false;
+
+                return new DownloadFile($filename .".epub", $this->title, $this->author);
         }
         catch(PDOException $e)
         {

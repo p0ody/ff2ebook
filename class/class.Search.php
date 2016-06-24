@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__."/../conf/config.php";
 require_once __DIR__."/class.dbHandler.php";
 require_once __DIR__."/class.Utils.php";
 
@@ -89,6 +90,12 @@ class Search
 
     private function search($searchFor, $currentPage, $limit)
     {
+        if (PORTABLE_MODE) {
+            $this->totalCount = 0;
+            $this->results = Array();
+            return true;
+        }
+
         try
         {
             $db = new dbHandler();

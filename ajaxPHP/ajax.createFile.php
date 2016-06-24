@@ -1,4 +1,5 @@
 <?php
+require_once("../conf/config.php");
 require_once("../sqlSession.php");
 require_once("../class/class.ErrorHandler.php");
 require_once("../class/class.ZipManager.php");
@@ -39,32 +40,44 @@ $fm->deleteFolderWithFile("../output/". $ficH->getOutputDir());
 
 try
 {
-    $dbH = new dbHandler();
-    $pdo = $dbH->connect();
-
-    $query1 = $pdo->prepare(SQL_SELECT_FIC);
-    $query1->execute(Array(
-        "id"    => $ficH->getFicId(),
-        "site"  => $fic->getSource()
-    ));
-
-    if ($query1->rowCount() === 1)
+    if (PORTABLE_MODE)
     {
-        $result = $query1->fetch();
-
-        if ($ficH->getUpdatedDate() < $result["updated"])
-            $fm->deleteFile("../archive/". $result["filename"]);
+        $_SESSION[$fic->getSource() . "_" . $ficH->getFicId() . "_site"]= $fic->getSource();
+        $_SESSION[$fic->getSource() . "_" . $ficH->getFicId() . "_id"]= $ficH->getFicId();
+        $_SESSION[$fic->getSource() . "_" . $ficH->getFicId() . "_title"]= $ficH->getTitle();
+        $_SESSION[$fic->getSource() . "_" . $ficH->getFicId() . "_author"]= $ficH->getAuthor();
+        $_SESSION[$fic->getSource() . "_" . $ficH->getFicId() . "_updated"]= $ficH->getUpdatedDate();
+        $_SESSION[$fic->getSource() . "_" . $ficH->getFicId() . "_filename"]=$fic->getSource() ."_". $ficH->getFicId() ."_". $ficH->getUpdatedDate() .".epub";
     }
+    else
+    {
+        $dbH = new dbHandler();
+        $pdo = $dbH->connect();
 
-    $query2 = $pdo->prepare("REPLACE INTO `fic_archive` (`site`, `id`, `title`, `author`, `updated`, `filename`) VALUES (:site, :id, :title, :author, :updated, :filename);");
-    $query2->execute(Array(
-        "site"      => $fic->getSource(),
-        "id"        => $ficH->getFicId(),
-        "title"     => $ficH->getTitle(),
-        "author"    => $ficH->getAuthor(),
-        "updated"   => $ficH->getUpdatedDate(),
-        "filename"  => $fic->getSource() ."_". $ficH->getFicId() ."_". $ficH->getUpdatedDate() .".epub"
-    ));
+        $query1 = $pdo->prepare(SQL_SELECT_FIC);
+        $query1->execute(Array(
+            "id"    => $ficH->getFicId(),
+            "site"  => $fic->getSource()
+        ));
+
+        if ($query1->rowCount() === 1)
+        {
+            $result = $query1->fetch();
+
+            if ($ficH->getUpdatedDate() < $result["updated"])
+                $fm->deleteFile("../archive/". $result["filename"]);
+        }
+
+        $query2 = $pdo->prepare("REPLACE INTO `fic_archive` (`site`, `id`, `title`, `author`, `updated`, `filename`) VALUES (:site, :id, :title, :author, :updated, :filename);");
+        $query2->execute(Array(
+            "site"      => $fic->getSource(),
+            "id"        => $ficH->getFicId(),
+            "title"     => $ficH->getTitle(),
+            "author"    => $ficH->getAuthor(),
+            "updated"   => $ficH->getUpdatedDate(),
+            "filename"  => $fic->getSource() ."_". $ficH->getFicId() ."_". $ficH->getUpdatedDate() .".epub"
+        ));
+    }
 }
 catch (PDOException $e)
 {
