@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__."/../conf/config.php";
 require_once __DIR__."/../class/class.Search.php";
 require_once __DIR__."/../class/class.ErrorHandler.php";
 require_once __DIR__."/../class/class.Pagination.php";
@@ -29,5 +30,16 @@ $return = Array(
     "pagination" => (string)$pagination,
     "error" => $error->getAllAsJSONReady()
 );
+
+if (PORTABLE_MODE)
+{
+    $error->addNew(ErrorCode::ERROR_WARNING, "No search available - This server runs in portable mode");
+
+    $return = Array(
+        "count" => $search->getTotalCount(),
+        "pagination" => (string)$pagination,
+        "error" => $error->getAllAsJSONReady()
+    );
+}
 
 echo json_encode($return);

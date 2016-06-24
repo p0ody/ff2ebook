@@ -1,3 +1,4 @@
+<?php require_once __DIR__."/conf/config.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,9 +77,11 @@
                                 <option value="arial">Arial</option>
                             </select>-->
 
-                            <div class="checkbox">
-                                <label><input id="force-update" type="checkbox">Force update</label>
-                            </div>
+                            <?php if (! PORTABLE_MODE): ?>
+                                <div class="checkbox">
+                                    <label><input id="force-update" type="checkbox">Force update</label>
+                                </div>
+                            <?php endif; ?>
 
                             <div class="checkbox">
                                 <label><input id="auto-dl" type="checkbox" checked="checked">Automatic Download</label>

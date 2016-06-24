@@ -4,6 +4,7 @@ require_once("../class/class.FanFiction.php");
 require_once("../class/class.ErrorHandler.php");
 require_once("../class/class.FileManager.php");
 require_once("../class/class.dbHandler.php");
+require_once("../conf/config.php");
 
 session_start();
 header('Content-type: application/json');
@@ -22,35 +23,33 @@ $fic = new FanFiction($_POST["url"], $error);
 $return = Array();
 $exist = false;
 
-if (!isset($_POST["force"]) || $_POST["force"] === "false")
+if (! PORTABLE_MODE)
 {
-    try
-    {
-        $dbH = new dbHandler();
-        $pdo = $dbH->connect();
+    if (!isset($_POST["force"]) || $_POST["force"] === "false") {
+        try {
+            $dbH = new dbHandler();
+            $pdo = $dbH->connect();
 
-        $query = $pdo->prepare(SQL_SELECT_FIC);
-        $query->execute(Array(
-            "id" => $fic->ficHandler()->getFicId(),
-            "site" => $fic->getSource()
-        ));
+            $query = $pdo->prepare(SQL_SELECT_FIC);
+            $query->execute(Array(
+                "id" => $fic->ficHandler()->getFicId(),
+                "site" => $fic->getSource()
+            ));
 
-        if ($query->rowCount() === 1) // If this fic is already in archive and up to date
-        {
-            $result = $query->fetch();
+            if ($query->rowCount() === 1) // If this fic is already in archive and up to date
+            {
+                $result = $query->fetch();
 
-            if ($fic->ficHandler()->getUpdatedDate() <= $result["updated"] && is_file("../archive/" . $result["filename"])) {
-                $exist = true;
-                $return["exist"] = true;
+                if ($fic->ficHandler()->getUpdatedDate() <= $result["updated"] && is_file("../archive/" . $result["filename"])) {
+                    $exist = true;
+                    $return["exist"] = true;
+                }
             }
+        } catch (PDOException $e) {
+            $error->addNew(ErrorCode::ERROR_WARNING, $dbH->userFriendlyError($e->getCode()));
         }
     }
-    catch (PDOException $e)
-    {
-        $error->addNew(ErrorCode::ERROR_WARNING, $dbH->userFriendlyError($e->getCode()));
-    }
 }
-
 
 $return["id"] = $fic->ficHandler()->getFicId();
 $return["site"] = $fic->getSource();

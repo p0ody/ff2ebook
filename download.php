@@ -1,5 +1,6 @@
 <?php
 ob_start();
+require_once("conf/config.php");
 require_once("class/class.dbHandler.php");
 require_once("class/class.Download.php");
 
@@ -69,5 +70,9 @@ header("Content-Length: " . filesize("archive/". $fileInfos->getFilename()));
 header('Content-Disposition: attachment; filename="'. $fileInfos->getTitle() .' - '. $fileInfos->getAuthor() .'.'. $filetype .'"');
 header("Content-Transfer-Encoding: binary");
 readfile("archive/". $fileInfos->getFilename());
+
+if (PORTABLE_MODE) {
+    unlink("archive/" . $fileInfos->getFilename());
+}
 
 ob_end_flush();
