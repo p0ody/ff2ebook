@@ -32,6 +32,7 @@ class Session
     public function close()
     {
         $this->dbH->disconnect();
+        return true;
     }
 
     public function read($id)
@@ -52,7 +53,7 @@ class Session
             return false;
 
         }
-
+        return true;
     }
 
     public function write($id, $data)
@@ -67,6 +68,7 @@ class Session
             return false;
         }
 
+        return true;
     }
 
     public function destroy($id)
@@ -80,6 +82,7 @@ class Session
         {
             return false;
         }
+        return true;
     }
 
     public function clean($max)
@@ -94,5 +97,6 @@ class Session
         {
             return false;
         }
+        return true;
     }
 }

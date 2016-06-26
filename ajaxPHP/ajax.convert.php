@@ -7,7 +7,7 @@ require_once("../class/class.FileManager.php");
 require_once("../class/class.Download.php");
 
 session_start();
-header('Content-type: application/json');
+//header('Content-type: application/json');
 
 
 $error = new ErrorHandler();

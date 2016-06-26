@@ -73,19 +73,19 @@ class Download
 
             $filename = $this->source ."_". $this->id ."_". $this->updated;
 
-            if (@file_exists("archive/$filename.mobi"))
+            if (@file_exists(__DIR__ ."/../archive/$filename.mobi"))
                 return new DownloadFile($filename .".mobi", $this->title, $this->author);
 
 
-            if (!@file_exists("archive/$filename.epub"))
+            if (!@file_exists(__DIR__ ."/../archive/$filename.epub"))
                 return false;
 
-            exec("\"./converter/kindlegen\" \"./archive/$filename.epub\" -locale en 2>&1", $returnArray, $return);
+            exec(__DIR__ ."\"/../converter/kindlegen\" ". __DIR__ ."\"/../archive/$filename.epub\" -locale en 2>&1", $returnArray, $return);
 
             if ($return !== 1)
                 return false;
 
-            if (!@file_exists("archive/$filename.mobi"))
+            if (!@file_exists(__DIR__ ."/../archive/$filename.mobi"))
                 return false;
 
 

@@ -15,8 +15,6 @@ if (!isset($_POST["url"]))
     $error->addNew(ErrorCode::ERROR_CRITICAL, "No URL entered.");
 
 
-//$fic = new FanFiction("https://www.fanfiction.net/s/5069455/1/Follow-the-Phoenix", $error);
-//$fic = new FanFiction("https://www.fanfiction.net/s/6706530", $error); // One shot
 $fic = new FanFiction($_POST["url"], $error);
 
 $return = Array();

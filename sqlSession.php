@@ -1,5 +1,5 @@
 <?php
-require_once("../class/class.sessionHandler.php");
+require_once __DIR__ ."/class/class.sessionHandler.php";
 
 $session = new Session();
 
