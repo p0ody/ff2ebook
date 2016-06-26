@@ -104,7 +104,7 @@ class Search
             $sqlSearch = "%". str_replace(" ", "%", $searchFor) ."%";
 
             $offset = ($currentPage == 1 ? "0" : ($currentPage*$limit) - $limit);
-            $query = $pdo->prepare("SELECT * FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search or `author` LIKE :search LIMIT ". $offset .", ". $limit .";");
+            $query = $pdo->prepare("SELECT * FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search or `author` LIKE :search ORDER BY `title` LIMIT ". $offset .", ". $limit .";");
             $query->execute(Array("search" => $sqlSearch));
             $this->results = $query->fetchAll();
 
