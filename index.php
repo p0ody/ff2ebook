@@ -32,13 +32,9 @@
 
         <div class="row">
             <div class="col-xs-12 news col-md-offset-3 col-md-6">
-                News:
                 <ul class="news">
                     <li>If you are experiencing issues, you can still use <a href="./old">old version</a></li>
                     <li><a href="http://www.previewmywebsitenow.com/app/browse.php?u=http%3A%2F%2Fff2ebook.com%2Farchive%2Fold%2Fff_to_ebook_archive_2016-06-03.zip&b=4">Old archive available for download.</a></li>
-                    <li>2016-06-23: Currently moving host, GoDaddy did limit the number of request in quick succession, which blocked after like 40 AJAX calls, causing the errors.</li>
-                    <li>2016-06-12: The site is experiencing alot of error while fetching chapter (ERR_EMPTY_RESPONSE) and i have no idea why, looking into it.</li>
-                    <li>2016-05-19: Added support for harrypotterfanfiction.com</li>
                 </ul>
             </div>
 
@@ -91,6 +87,7 @@
                                 <option value="pdf" disabled>PDF</option>
                             </select>
                             <label for="kindle-email">eMail:</label><input type="email" id="kindle-email" class="form-control" placeholder="Send via eMail (Optional)" />
+                            <br />Add ebook-sender@ff2ebook.com to your spam filter or Kindle Approved Personal Document E-mail List
                         </div>
                     </div>
                 </div>
