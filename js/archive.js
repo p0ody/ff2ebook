@@ -94,14 +94,3 @@ function createPopover()
         }
     );
 }
-
-/*
- $return .= "<tr role=\"button\" tabindex=\"0\" data-source=\"". Utils::webSourceReadable($row["site"]) ."\"
- data-source-url=\"". Utils::webSourceURL($row["site"]) ."\"
- data-fic-url=\"". Utils::getWebURL($row["id"], $row["site"]) ."\"
- data-updated=\"". date("Y-m-d", intval($row["updated"])) ."\"
- data-download-epub=\"". $epub ."\"
- data-download-mobi=\"". $mobi ."\"
- data-title=\"". $row["title"] ."\"
- data-author=\"". $row["author"] ."\">
- */
