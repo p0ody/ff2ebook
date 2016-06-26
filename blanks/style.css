@@ -21,6 +21,7 @@ body
     font: 1em Calibri;
     line-height: 1.05em;
 }
+
 .footer
 {
     width: 100%;
@@ -41,4 +42,9 @@ body
     font: bold 1.2em Calibri;
     text-align: left;
     line-height: 1.25em;
+}
+
+a, a:visited
+{
+    color: inherit;
 }
