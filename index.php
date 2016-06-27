@@ -102,9 +102,10 @@
                     <div class="collapse-content">
                         Convert from your favorite sites<span class="text-highlight">:</span>
                         <ul>
-                            <li>fanfiction<span class="text-highlight">.</span>net</li>
+                            <li>FanFiction<span class="text-highlight">.</span>net</li>
+                            <li>FictionPress<span class="text-highlight">.</span>com</li>
                             <li><span class="text-highlight">TODO:</span> patronuscharm<span class="text-highlight">.</span>net (Maybe ?)</li>
-                            <li>harrypotterfanfiction<span class="text-highlight">.</span>com (Use URL finishing with <span class="text-highlight bold italic">/viewstory.php?psid=######</span></li>
+                            <li>HarryPotterFanFiction<span class="text-highlight">.</span>com (Use URL finishing with <span class="text-highlight bold italic">/viewstory.php?psid=######</span></li>
                             <li><span class="text-highlight">TODO:</span>ficwad<span class="text-highlight">.</span>com</li>
                         </ul>
                     </div>
