@@ -22,6 +22,7 @@ class FFnet extends BaseHandler
         $this->setPairing($this->popPairing($infosSource));
         $this->setChapCount($this->popChapterCount($infosSource));
         $this->setFandom($this->popFandom($infosSource));
+        $this->setCompleted($this->popCompleted($infosSource));
     }
 
 
@@ -230,6 +231,18 @@ class FFnet extends BaseHandler
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find pairing (No pairing?).");
             return false;
         }
+    }
+
+    private function popCompleted($source)
+    {
+        if (strlen($source) === 0)
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
+
+        if (strpos($source, "- Status: Complete -") !== false)
+            return true;
+
+
+        return false;
     }
 }
 

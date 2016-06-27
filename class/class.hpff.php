@@ -11,21 +11,22 @@ class HPFF extends BaseHandler
 
     function populate()
     {
-        $this->setFicId($this->popFicId()); // OK
+        $this->setFicId($this->popFicId());
 
-        $infosSource = $this->getPageSource(); // OK
+        $infosSource = $this->getPageSource();
         $this->getChaptersIDs($infosSource);
-        $this->setTitle($this->popTitle($infosSource)); // ok
+        $this->setTitle($this->popTitle($infosSource));
 
-        $this->setAuthor($this->popAuthor($infosSource)); // ok
-        $this->setFicType($this->popFicType($infosSource)); // OK
-        $this->setSummary($this->popSummary($infosSource)); // ok
-        $this->setPublishedDate($this->popPublished($infosSource)); // ok
-        $this->setUpdatedDate($this->popUpdated($infosSource)); // ok
-        $this->setWordsCount($this->popWordsCount($infosSource)); //ok
-        $this->setPairing($this->popPairing($infosSource)); // ok
-        $this->setChapCount($this->popChapterCount($infosSource)); // ok
-        $this->setFandom($this->popFandom($infosSource)); // ok
+        $this->setAuthor($this->popAuthor($infosSource));
+        $this->setFicType($this->popFicType($infosSource));
+        $this->setSummary($this->popSummary($infosSource));
+        $this->setPublishedDate($this->popPublished($infosSource));
+        $this->setUpdatedDate($this->popUpdated($infosSource));
+        $this->setWordsCount($this->popWordsCount($infosSource));
+        $this->setPairing($this->popPairing($infosSource));
+        $this->setChapCount($this->popChapterCount($infosSource));
+        $this->setFandom($this->popFandom($infosSource));
+        $this->setCompleted(false);
     }
 
 
