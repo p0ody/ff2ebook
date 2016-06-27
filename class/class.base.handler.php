@@ -86,6 +86,9 @@ abstract class BaseHandler
 
         if (strpos($this->url, "harrypotterfanfiction.com") !== false)
             return "http://www.harrypotterfanfiction.com/viewstory.php?psid=". $this->getFicId();
+
+        if (strpos($this->url, "fictionpress.com") !== false)
+            return "https://www.fictionpress.com/s/". $this->getFicId();
     }
 
 }

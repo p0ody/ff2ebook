@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__."/class.ff.net.php";
 require_once __DIR__."/class.hpff.php";
+require_once __DIR__."/class.fpcom.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
 
@@ -9,6 +10,7 @@ abstract class FanFictionSite
     const ERROR     = -1;
     const FFnet     = 0;
     const HPFF      = 1;
+    const FPCOM     = 2;
 }
 
 
@@ -17,6 +19,7 @@ class FanFiction
     /** @var ErrorHandler $error */
     private $url, $ficSite, $handler, $error, $source;
 
+    // When adding a new site, dont forget to add it in class.Utils and class.base.handler getRealURL().
     public function __construct($url, $errorHandler)
     {
         $this->error = $errorHandler;
@@ -34,6 +37,11 @@ class FanFiction
             case FanFictionSite::HPFF:
                 $this->handler = new HPFF($this->getURL(), $this->error);
                 $this->source = "hpff";
+                break;
+
+            case FanFictionSite::FPCOM:
+                $this->handler = new FPCOM($this->getURL(), $this->error);
+                $this->source = "fpcom";
                 break;
 
             case FanFictionSite::ERROR:
@@ -60,6 +68,9 @@ class FanFiction
 
         if (strpos($this->url, "harrypotterfanfiction.com") !== false)
             return FanFictionSite::HPFF;
+
+        if (strpos($this->url, "fictionpress.com") !== false)
+            return FanFictionSite::FPCOM;
 
 
         return FanFictionSite::ERROR;

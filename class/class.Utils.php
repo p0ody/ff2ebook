@@ -60,7 +60,7 @@ class Utils
         {
             case "ffnet":
                 return "http://www.fanfiction.net/s/". $id;
-            case "fpnet":
+            case "fpcom":
                 return "http://www.fictionpress.com/s/". $id;
             case "hpff":
                 return "http://www.harrypotterfanfiction.com/viewstory.php?psid=". $id;
