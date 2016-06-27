@@ -64,18 +64,18 @@ abstract class BaseHandler
 
     // Setters
     public function setFicId($id)               { $this->ficId = $id; }
-    public function setTitle($title)            { $this->title = htmlentities($title); }
-    public function setAuthor($author)          { $this->author = htmlentities($author); }
-    public function setFicType($ficType)        { $this->ficType = htmlentities($ficType); }
-    public function setSummary($summary)        { $this->summary = htmlentities($summary); }
+    public function setTitle($title)            { $this->title = $title; }
+    public function setAuthor($author)          { $this->author = $author; }
+    public function setFicType($ficType)        { $this->ficType = $ficType; }
+    public function setSummary($summary)        { $this->summary = $summary; }
     public function setPublishedDate($pub)      { $this->published = $pub; }
     public function setUpdatedDate($updated)    { $this->updated = $updated; }
     public function setWordsCount($words)       { $this->wordsCount = $words; }
-    public function setPairing($pairing)        { $this->pairing = htmlentities($pairing); }
+    public function setPairing($pairing)        { $this->pairing = $pairing; }
     public function setChapCount($chapCount)    { $this->chapCount = $chapCount; }
     public function setOutputDir($dir)          { $this->outputDir = $dir; }
     public function setFileName($name)          { $this->filename = $name; }
-    public function setFandom($fandom)          { $this->fandom = htmlentities($fandom); }
+    public function setFandom($fandom)          { $this->fandom = $fandom; }
     public function setAuthorProfile($profile)  { $this->authorProfile = $profile; }
     public function setCompleted($complete)     { $this->completed = $complete; }
 

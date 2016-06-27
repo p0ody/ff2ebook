@@ -61,15 +61,15 @@ class FileManager
             $this->deleteFile($filename);
 
         $replacedBy = Array(
-            "<a href=\"". $fic->getRealURL() ."\">". $fic->getTitle() ."</a>",
-            "<a href=\"". $fic->getAuthorProfile() ."\">". $fic->getAuthor() ."</a>",
+            "<a href=\"". $fic->getRealURL() ."\">". htmlentities($fic->getTitle()) ."</a>",
+            "<a href=\"". $fic->getAuthorProfile() ."\">". htmlentities($fic->getAuthor()) ."</a>",
             !$fic->getFandom() ? "" : "<span class=\"bold\">Fandom:</span> ". $fic->getFandom() ."<br /><br />",
-            !$fic->getSummary() ? "" : "<span class=\"bold\">Summary:</span> ". $fic->getSummary() ."<br /><br />",
+            !$fic->getSummary() ? "" : "<span class=\"bold\">Summary:</span> ". htmlentities($fic->getSummary()) ."<br /><br />",
             !$fic->getFicType() ? "" : "<span class=\"bold\">Fic type:</span> ". $fic->getFicType() ."<br /><br />",
             !$fic->getPublishedDate() ? "" : "<span class=\"bold\">Published:</span> ". date("Y-m-d", $fic->getPublishedDate()) ."<br /><br />",
             !$fic->getUpdatedDate() ? "" : "<span class=\"bold\">Last updated:</span> ". date("Y-m-d", $fic->getUpdatedDate()) ."<br /><br />",
             !$fic->getWordsCount() ? "" : "<span class=\"bold\">Words count:</span> ". $fic->getWordsCount() ."<br /><br />",
-            !$fic->getPairing() ? "" : "<span class=\"bold\">Pairings/Main char.:</span> ". $fic->getPairing() ."<br /><br />",
+            !$fic->getPairing() ? "" : "<span class=\"bold\">Pairings/Main char.:</span> ". htmlentities($fic->getPairing()) ."<br /><br />",
             !$fic->getChapCount() ? "" : "<span class=\"bold\">Chapters count:</span> ". $fic->getChapCount() ."<br /><br />",
             date("Y-m-d", time()),
             !$fic->getCompleted() ? "" : "<span class=\"bold\">Status:</span> Completed<br /><br />"

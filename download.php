@@ -67,7 +67,7 @@ if (!file_exists("archive/". $fileInfos->getFilename()))
 
 header("Content-Type: ". $mimetype);
 header("Content-Length: " . filesize("archive/". $fileInfos->getFilename()));
-header('Content-Disposition: attachment; filename="'. $fileInfos->getTitle() .' - '. $fileInfos->getAuthor() .'.'. $filetype .'"');
+header('Content-Disposition: attachment; filename="'. normalizer_normalize($fileInfos->getTitle() .' - '. $fileInfos->getAuthor()) .'.'. $filetype .'"');
 header("Content-Transfer-Encoding: binary");
 readfile("archive/". $fileInfos->getFilename());
 

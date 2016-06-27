@@ -77,4 +77,9 @@ class Utils
         $text = html_entity_decode($text);
         return str_replace($replace, "", $text);
     }
+
+    public static function removeAndSymbol($text)
+    {
+        return str_replace("&", "and", $text);
+    }
 }
