@@ -17,7 +17,7 @@ try
 			unlink($file);
 			$count++;
 		}
-		echo date("o-m-d G:i:s") .": Done!  $count files deleted.";
+		echo date("o-m-d G:i:s") .": Done!  $count files deleted.\n";
 	}
 
 }
