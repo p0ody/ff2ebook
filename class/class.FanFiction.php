@@ -2,6 +2,7 @@
 require_once __DIR__."/class.ff.net.php";
 require_once __DIR__."/class.hpff.php";
 require_once __DIR__."/class.fpcom.php";
+require_once __DIR__."/class.hpffa.com.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
 
@@ -11,6 +12,7 @@ abstract class FanFictionSite
     const FFnet     = 0;
     const HPFF      = 1;
     const FPCOM     = 2;
+    const HPFFA     = 3;
 }
 
 
@@ -44,6 +46,11 @@ class FanFiction
                 $this->source = "fpcom";
                 break;
 
+            case FanFictionSite::HPFFA:
+                $this->handler = new HPFFA($this->getURL(), $this->error);
+                $this->source = "hpffa";
+                break;
+
             case FanFictionSite::ERROR:
                 $this->error->addNew(ErrorCode::ERROR_CRITICAL, "Invalid URL");
                 break;
@@ -71,6 +78,9 @@ class FanFiction
 
         if (strpos($this->url, "fictionpress.com") !== false)
             return FanFictionSite::FPCOM;
+
+        if (strpos($this->url, "hpfanficarchive.com") !== false)
+            return FanFictionSite::HPFFA;
 
 
         return FanFictionSite::ERROR;

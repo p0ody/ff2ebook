@@ -8,11 +8,13 @@ class Utils
         switch($site)
         {
             case "ffnet":
-                return "<a href=\"http://www.fanfiction.net\" target=\"_blank\">Fanfiction.net</a>";
+                return "<a href=\"http://www.fanfiction.net\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
             case "fpcom":
-                return "<a href=\"http://www.fictionpress.com\" target=\"_blank\">Fictionpress.com</a>";
+                return "<a href=\"http://www.fictionpress.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
             case "hpff":
-                return "<a href=\"http://www.harrypotterfanfiction.com\" target=\"_blank\">HarryPotterFanFiction.com</a>";
+                return "<a href=\"http://www.harrypotterfanfiction.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
+            case "hpffa":
+                return "<a href=\"http://www.hpfanficarchive.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
 
             default:
                 return $site;
@@ -30,6 +32,8 @@ class Utils
                 return "http://www.fictionpress.com";
             case "hpff":
                 return "http://www.harrypotterfanfiction.com";
+            case "hpffa":
+                return "http://www.hpfanficarchive.com";
 
             default:
                 return $site;
@@ -47,6 +51,9 @@ class Utils
                 return "Fictionpress.com";
             case "hpff":
                 return "HarryPotterFanFiction.com";
+            case "hpffa":
+                return "HPFanFicArchive.com";
+
 
             default:
                 return $site;
@@ -64,6 +71,8 @@ class Utils
                 return "http://www.fictionpress.com/s/". $id;
             case "hpff":
                 return "http://www.harrypotterfanfiction.com/viewstory.php?psid=". $id;
+            case "hpffa":
+                return "http://www.hpfanficarchive.com/stories/viewstory.php?sid=". $id;
 
             default:
                 return "#";
@@ -73,13 +82,25 @@ class Utils
 
     public static function cleanText($text)
     {
-        $replace = Array("&nbsp;","<div>", "</div>");
-        $text = html_entity_decode($text);
-        return str_replace($replace, "", $text);
+        $text = strip_tags($text, "<p><b><br><u><i>");
+        $text = Utils::removeClassAndIDs($text);
+        $replace = Array("&nbsp;", "<p>&nbsp;</p>");
+        $text = str_replace($replace, "", $text);
+        return html_entity_decode($text);;
     }
 
     public static function removeAndSymbol($text)
     {
         return str_replace("&", "and", $text);
+    }
+
+    public static function removeClassAndIDs($text)
+    {
+        $new = preg_replace("#(<.+?) (?:class|id)?=(?:'|\"+?).*?(?:'|\"+?)(.*?>)#si", "$1$2", $text);
+
+        if ($new === null)
+            return $text;
+
+        return $new;
     }
 }

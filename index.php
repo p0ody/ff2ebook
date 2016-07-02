@@ -35,6 +35,7 @@
                 <ul class="news">
                     <li>If you are experiencing issues, you can still use <a href="./old">old version</a></li>
                     <li><a href="http://www.previewmywebsitenow.com/app/browse.php?u=http%3A%2F%2Fff2ebook.com%2Farchive%2Fold%2Fff_to_ebook_archive_2016-06-03.zip&b=4">Old archive available for download.</a></li>
+                    <li>2016-07-02: Added support for hpfanficarchive.com</li>
                     <li>2016-06-26: Added support for FictionPress.com</li>
                 </ul>
             </div>
@@ -107,6 +108,7 @@
                             <li>FictionPress<span class="text-highlight">.</span>com</li>
                             <li><span class="text-highlight">TODO:</span> patronuscharm<span class="text-highlight">.</span>net (Maybe ?)</li>
                             <li>HarryPotterFanFiction<span class="text-highlight">.</span>com (Use URL finishing with <span class="text-highlight bold italic">/viewstory.php?psid=######</span></li>
+                            <li>HPFanFicArchive<span class="text-highlight">.</span>com</li>
                             <li><span class="text-highlight">TODO:</span>ficwad<span class="text-highlight">.</span>com</li>
                         </ul>
                     </div>
