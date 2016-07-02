@@ -239,7 +239,7 @@ class FFnet extends BaseHandler
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
         if (strpos($source, "- Status: Complete -") !== false)
-            return true;
+            return "Completed";
 
 
         return false;

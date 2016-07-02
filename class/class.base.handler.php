@@ -89,6 +89,9 @@ abstract class BaseHandler
 
         if (strpos($this->url, "fictionpress.com") !== false)
             return "https://www.fictionpress.com/s/". $this->getFicId();
+
+        if (strpos($this->url, "hpfanficarchive.com") !== false)
+            return "http://www.hpfanficarchive.com/stories/viewstory.php?sid=". $this->getFicId();
     }
 
 }

@@ -5,16 +5,13 @@ require_once __DIR__."/class.Chapter.php";
 require_once __DIR__."/class.Utils.php";
 
 
-class HPFF extends BaseHandler
+class HPFFA extends BaseHandler
 {
-    private $chaptersIDs;
-
     function populate()
     {
         $this->setFicId($this->popFicId());
 
         $infosSource = $this->getPageSource();
-        $this->getChaptersIDs($infosSource);
         $this->setTitle($this->popTitle($infosSource));
 
         $this->setAuthor($this->popAuthor($infosSource));
@@ -26,7 +23,7 @@ class HPFF extends BaseHandler
         $this->setPairing($this->popPairing($infosSource));
         $this->setChapCount($this->popChapterCount($infosSource));
         $this->setFandom($this->popFandom($infosSource));
-        $this->setCompleted(false);
+        $this->setCompleted($this->popStatus($infosSource));
     }
 
 
@@ -38,14 +35,14 @@ class HPFF extends BaseHandler
         $text = false;
         $title = false;
 
-        if (preg_match("#<option value=\"\?chapterid=[0-9]+?\" selected >[0-9]+?\. (.+?)</option>#si", $source, $matches) === 1)
+        if (preg_match("#<option value='[0-9]' selected>[0-9]+?\. (.+?)</option>#si", $source, $matches) === 1)
             $title = $matches[1];
         else
             $title = "Chapter $number";
 
 
 
-        if (preg_match("#<div id='fluidtext'>(.+?)</div><br><hr>#si", $source, $matches) === 1)
+        if (preg_match("#<!-- STORY START -->(.+?)<!-- STORY END -->#si", $source, $matches) === 1)
         {
             $text = Utils::cleanText($matches[1]);
 
@@ -69,9 +66,9 @@ class HPFF extends BaseHandler
     {
         $url = "";
         if ($chapter > 0)
-            $url = "http://www.harrypotterfanfiction.com/viewstory.php?chapterid=". $this->chaptersIDs[$chapter];
+            $url = "http://www.hpfanficarchive.com/stories/viewstory.php?sid=". $this->getFicId() ."&chapter=". $chapter;
         else
-            $url = "http://www.harrypotterfanfiction.com/viewstory.php?psid=". $this->getFicId();
+            $url = "http://www.hpfanficarchive.com/stories/viewstory.php?sid=". $this->getFicId();
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -89,7 +86,7 @@ class HPFF extends BaseHandler
 
     private function popFicId()
     {
-        if (preg_match("#harrypotterfanfiction.com/viewstory.php\?psid=([0-9]+)#si", $this->getURL(), $matches) === 1)
+        if (preg_match("#hpfanficarchive\.com/stories/viewstory.php\?sid=([0-9]+)#si", $this->getURL(), $matches) === 1)
             return $matches[1];
         else
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find Fic ID.");
@@ -101,7 +98,7 @@ class HPFF extends BaseHandler
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
 
-        if (preg_match("#(?:<a href=\"javascript:.+?psid=[0-9]+?'\">|<a href=\"\?psid=[0-9]+?\">)(.+?)</a> by.*?<a href=\"viewuser\.php\?showuid=[0-9]+?\">(.+?)</a>#si", $source, $matches) === 1)
+        if (preg_match("#<!-- TITLE START --><a href=\"viewstory\.php\?sid=[0-9]+\">(.+?)</a><!-- TITLE END -->#si", $source, $matches) === 1)
             return $matches[1];
         else {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find title.");
@@ -115,9 +112,9 @@ class HPFF extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<a href=\"viewuser\.php\?showuid=([0-9]+?)\">(.+?)</a>#si", $source, $matches) === 1)
+        if (preg_match("#<!-- AUTHOR START --><a href=\"viewuser\.php\?uid=([0-9]+?)\">(.+?)</a><!-- AUTHOR END -->#si", $source, $matches) === 1)
         {
-            $this->setAuthorProfile("http://www.harrypotterfanfiction.com/viewuser.php?showuid=". $matches[1]);
+            $this->setAuthorProfile("http://www.hpfanficarchive.com/stories/viewuser.php?uid=". $matches[1]);
             return $matches[2];
         }
         else
@@ -132,8 +129,8 @@ class HPFF extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<b>Genre\(s\):</b>(.+?)<br>#si", $source, $matches) === 1)
-            return $matches[1];
+        if (preg_match("#Genres: (.+?)<span class='label'>#si", $source, $matches) === 1)
+            return strip_tags($matches[1]);
         else
         {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find fic type.");
@@ -152,7 +149,7 @@ class HPFF extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#class='storysummary' width=700>(.+?)</table>#si", $source, $matches) === 1)
+        if (preg_match("#<!-- SUMMARY START -->(.+?)<!-- SUMMARY END -->#si", $source, $matches) === 1)
         {
             $return = Utils::cleanText($matches[1]);
             return strip_tags($return);
@@ -172,9 +169,9 @@ class HPFF extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<b>First Published:</b> (.+?)<br>#si", $source, $matches) === 1)
+        if (preg_match("#<!-- PUBLISHED START -->(.+?)<!-- PUBLISHED END -->#si", $source, $matches) === 1)
         {
-            $date = DateTime::createFromFormat("Y.m.d H:i:s", $matches[1] ." 00:00:00");
+            $date = DateTime::createFromFormat("F d, Y H:i:s", $matches[1] ." 00:00:00");
             return intval($date->format("U"));
         }
         else
@@ -190,9 +187,9 @@ class HPFF extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<b>Last Updated:</b> (.+?)<br />#si", $source, $matches) === 1)
+        if (preg_match("#<!-- UPDATED START -->(.+?)<!-- UPDATED END -->#si", $source, $matches) === 1)
         {
-            $date = DateTime::createFromFormat("Y.m.d H:i:s", $matches[1] ." 00:00:00");
+            $date = DateTime::createFromFormat("F d, Y H:i:s", $matches[1] ." 00:00:00");
             return intval($date->format("U"));
         }
         else
@@ -206,7 +203,7 @@ class HPFF extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<b>Words:</b> ([0-9]+?)<br>#si", $source, $matches) === 1)
+        if (preg_match("#<!-- WORDCOUNT START -->(.+?)<!-- WORDCOUNT END -->#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
@@ -217,7 +214,16 @@ class HPFF extends BaseHandler
 
     private function popChapterCount($source)
     {
-        return count($this->chaptersIDs);
+        if (strlen($source) === 0)
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
+
+        if (preg_match("#Chapters: </span> ([0-9]+?) <span class=\"label\">#si", $source, $matches) === 1)
+            return $matches[1];
+        else
+        {
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find chapter count.");
+            return false;
+        }
     }
 
     private function popPairing($source)
@@ -225,8 +231,8 @@ class HPFF extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<b>Characters:</b> (.+?) <br>#si", $source, $matches) === 1)
-            return $matches[1];
+        if (preg_match("#Pairings: (.+?)<span class='label'>#si", $source, $matches) === 1)
+            return strip_tags($matches[1]);
         else
         {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find pairing (No pairing?).");
@@ -234,22 +240,19 @@ class HPFF extends BaseHandler
         }
     }
 
-    private function getChaptersIDs($source)
+    private function popStatus($source)
     {
-        if (preg_match_all("#<option value=\"\?chapterid=([0-9]+?)\">.+?</option>#si", $source, $matches) !== false)
-        {
-            $this->chaptersIDs = Array();
-            foreach($matches[1] as $key => $value)
-            {
-                $this->chaptersIDs[$key + 1] = $value;
-            }
-        }
+        if (strlen($source) === 0)
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
+
+        if (preg_match("#Status: </span> (.+?)<span class='label'>#si", $source, $matches) === 1)
+            return strip_tags($matches[1]);
         else
         {
-            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find chapters IDs.");
+            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find story status.");
             return false;
-
         }
+
     }
 }
 

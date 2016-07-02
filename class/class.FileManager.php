@@ -72,7 +72,7 @@ class FileManager
             !$fic->getPairing() ? "" : "<span class=\"bold\">Pairings/Main char.:</span> ". htmlentities($fic->getPairing()) ."<br /><br />",
             !$fic->getChapCount() ? "" : "<span class=\"bold\">Chapters count:</span> ". $fic->getChapCount() ."<br /><br />",
             date("Y-m-d", time()),
-            !$fic->getCompleted() ? "" : "<span class=\"bold\">Status:</span> Completed<br /><br />"
+            !$fic->getCompleted() ? "" : "<span class=\"bold\">Status:</span> ". $fic->getCompleted() ."<br /><br />"
         );
 
         $blanks = file_get_contents("../blanks/title.xhtml");
