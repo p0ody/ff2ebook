@@ -5,6 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FF2EBOOK :: Download your favorites FanFictions as eBooks.</title>
+    <meta name="description" content="Convert fanfictions to ebooks.  Supports fanfiction.net, fictionpress.com, HarryPotterFanFiction.com, & HPFanFicArchive.com.  Convert to ePub and MOBI">
+    <META NAME="ROBOTS" CONTENT="INDEX, NOFOLLOW">
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -110,7 +112,7 @@
                             <li>FanFiction<span class="text-highlight">.</span>net</li>
                             <li>FictionPress<span class="text-highlight">.</span>com</li>
                             <li><span class="text-highlight">TODO:</span> patronuscharm<span class="text-highlight">.</span>net (Maybe ?)</li>
-                            <li>HarryPotterFanFiction<span class="text-highlight">.</span>com (Use URL finishing with <span class="text-highlight bold italic">/viewstory.php?psid=######</span></li>
+                            <li>HarryPotterFanFiction<span class="text-highlight">.</span>com (Use URL finishing with <span class="text-highlight bold italic">/viewstory.php?psid=######</span>)</li>
                             <li>HPFanFicArchive<span class="text-highlight">.</span>com</li>
                             <li><span class="text-highlight">TODO:</span>ficwad<span class="text-highlight">.</span>com</li>
                         </ul>
