@@ -66,16 +66,16 @@ abstract class BaseHandler
     public function setFicId($id)               { $this->ficId = $id; }
     public function setTitle($title)            { $this->title = trim($title); }
     public function setAuthor($author)          { $this->author = trim($author); }
-    public function setFicType($ficType)        { $this->ficType = $ficType; }
-    public function setSummary($summary)        { $this->summary = $summary; }
+    public function setFicType($ficType)        { $this->ficType = trim($ficType); }
+    public function setSummary($summary)        { $this->summary = trim($summary); }
     public function setPublishedDate($pub)      { $this->published = $pub; }
     public function setUpdatedDate($updated)    { $this->updated = $updated; }
     public function setWordsCount($words)       { $this->wordsCount = $words; }
-    public function setPairing($pairing)        { $this->pairing = $pairing; }
+    public function setPairing($pairing)        { $this->pairing = trim($pairing); }
     public function setChapCount($chapCount)    { $this->chapCount = $chapCount; }
     public function setOutputDir($dir)          { $this->outputDir = $dir; }
     public function setFileName($name)          { $this->filename = $name; }
-    public function setFandom($fandom)          { $this->fandom = $fandom; }
+    public function setFandom($fandom)          { $this->fandom = trim($fandom); }
     public function setAuthorProfile($profile)  { $this->authorProfile = $profile; }
     public function setCompleted($complete)     { $this->completed = $complete; }
 

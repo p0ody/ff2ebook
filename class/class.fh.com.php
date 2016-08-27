@@ -221,7 +221,7 @@ class FHCOM extends BaseHandler
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
         if (preg_match("#<div class=\"details\">(.+?) - Words#si", $source, $matches) === 1)
-            return $matches[1];
+            return str_replace("&amp;", "&", $matches[1]);
         else
         {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find pairing (No pairing?).");
