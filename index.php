@@ -110,6 +110,7 @@
                             <li><span class="text-highlight">TODO:</span> patronuscharm<span class="text-highlight">.</span>net (Maybe ?)</li>
                             <li>HarryPotterFanFiction<span class="text-highlight">.</span>com (Use URL finishing with <span class="text-highlight bold italic">/viewstory.php?psid=######</span>)</li>
                             <li>HPFanFicArchive<span class="text-highlight">.</span>com</li>
+                            <li>FictionHunt<span class="text-highlight">.</span>com</li>
                             <li><span class="text-highlight">TODO:</span>ficwad<span class="text-highlight">.</span>com</li>
                         </ul>
                     </div>

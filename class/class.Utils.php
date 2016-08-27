@@ -15,6 +15,8 @@ class Utils
                 return "<a href=\"http://www.harrypotterfanfiction.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
             case "hpffa":
                 return "<a href=\"http://www.hpfanficarchive.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
+            case "fhcom":
+                return "<a href=\"http://www.fictionhunt.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
 
             default:
                 return $site;
@@ -34,6 +36,8 @@ class Utils
                 return "http://www.harrypotterfanfiction.com";
             case "hpffa":
                 return "http://www.hpfanficarchive.com";
+            case "fhcom":
+                return "http://www.fictionhunt.com";
 
             default:
                 return $site;
@@ -53,6 +57,8 @@ class Utils
                 return "HarryPotterFanFiction.com";
             case "hpffa":
                 return "HPFanFicArchive.com";
+            case "fhcom":
+                return "FictionHunt.com";
 
 
             default:
@@ -73,6 +79,8 @@ class Utils
                 return "http://www.harrypotterfanfiction.com/viewstory.php?psid=". $id;
             case "hpffa":
                 return "http://www.hpfanficarchive.com/stories/viewstory.php?sid=". $id;
+            case "fhcom":
+                return "http://fictionhunt.com/read/". $id;
 
             default:
                 return "#";

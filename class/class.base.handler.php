@@ -64,8 +64,8 @@ abstract class BaseHandler
 
     // Setters
     public function setFicId($id)               { $this->ficId = $id; }
-    public function setTitle($title)            { $this->title = $title; }
-    public function setAuthor($author)          { $this->author = $author; }
+    public function setTitle($title)            { $this->title = trim($title); }
+    public function setAuthor($author)          { $this->author = trim($author); }
     public function setFicType($ficType)        { $this->ficType = $ficType; }
     public function setSummary($summary)        { $this->summary = $summary; }
     public function setPublishedDate($pub)      { $this->published = $pub; }
@@ -92,6 +92,9 @@ abstract class BaseHandler
 
         if (strpos($this->url, "hpfanficarchive.com") !== false)
             return "http://www.hpfanficarchive.com/stories/viewstory.php?sid=". $this->getFicId();
+
+        if (strpos($this->url, "fictionhunt.com") !== false)
+            return "http://fictionhunt.com/read/". $this->getFicId();
     }
 
 }
