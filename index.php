@@ -36,7 +36,6 @@
             <div class="col-xs-12 news col-md-offset-3 col-md-6">
                 <ul class="news">
                     <li>If you are experiencing issues, you can still use <a href="./old">old version</a></li>
-                    <li><a href="http://ff2ebook.com/archive/old/ff_to_ebook_archive_2016-06-03.zip">Old archive available for download.</a></li>
                     <li>2016-07-14: I am currently working on a new version using Node.js (Way faster), for those who likes to test stuff, head to <a href="http://node.ff2ebook.com">node.ff2ebook.com</a>.</li>
                 </ul>
             </div>

@@ -8,9 +8,9 @@ class Search
     private $results;
     private $totalCount;
 
-    function __construct($searchFor, $currentPage, $limit)
+    function __construct($searchFor, $currentPage, $limit, $sort)
     {
-        $this->search($searchFor, $currentPage, $limit);
+        $this->search($searchFor, $currentPage, $limit, $sort);
     }
 
     public function getResults()
@@ -87,7 +87,7 @@ class Search
         return $return;
     }
 
-    private function search($searchFor, $currentPage, $limit)
+    private function search($searchFor, $currentPage, $limit, $sort)
     {
         try
         {
@@ -96,9 +96,12 @@ class Search
 
             $sqlSearch = "%". str_replace(" ", "%", $searchFor) ."%";
 
+            if ($sort != "title" || $sort != "author" || $sort != "updated")
+                $sort = "title";
+
             $offset = ($currentPage == 1 ? "0" : ($currentPage*$limit) - $limit);
-            $query = $pdo->prepare("SELECT * FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search or `author` LIKE :search ORDER BY `title` LIMIT ". $offset .", ". $limit .";");
-            $query->execute(Array("search" => $sqlSearch));
+            $query = $pdo->prepare("SELECT * FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search or `author` LIKE :search ORDER BY :sort LIMIT ". $offset .", ". $limit .";");
+            $query->execute(Array("search" => $sqlSearch, "sort" => $sort));
             $this->results = $query->fetchAll();
 
             $query2 = $pdo->prepare("SELECT COUNT(`id`) as 'count' FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search or `author` LIKE :search;");

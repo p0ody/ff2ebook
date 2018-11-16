@@ -48,6 +48,11 @@ function hasSearch($search) { return $search !== false; }
                             <button class="btn btn-default btn-block" >Search</button>
                         </span>
                     </div>
+                    <select class="custom-select custom-select-lg" name="sort">
+                        <option selected>title</option>
+                        <option value="1">author</option>
+                        <option value="2">update</option>
+                    </select>
                 </form>
             </div>
         </div>

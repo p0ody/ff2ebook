@@ -26,8 +26,12 @@ $(document).ready(
 function ajax_sendSearch()
 {
     var page = getURLVars()["page"];
+    var sort = getURLVars()["sort"];
     if (page == undefined)
-    page = 1;
+        page = 1;
+
+    if (sort == undefined)
+        sort = "NAME";
 
     $.ajax
     ({
@@ -35,7 +39,8 @@ function ajax_sendSearch()
         method: "POST",
         data: {
             searchInput: $("#archive-search-input").val(),
-            page: page
+            page: page,
+            sort: sort
         },
         dataType: "json"
     }).done(function(data)
