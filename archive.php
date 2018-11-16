@@ -49,9 +49,10 @@ function hasSearch($search) { return $search !== false; }
                         </span>
                     </div>
                     <select class="custom-select custom-select-lg" name="sort">
-                        <option selected>title</option>
-                        <option value="1">author</option>
-                        <option value="2">update</option>
+                        <option selected value="title">Title</option>
+                        <option value="author">Author</option>
+                        <option value="updated">Update date</option>
+                        <option value="site">Source Website</option>
                     </select>
                 </form>
             </div>

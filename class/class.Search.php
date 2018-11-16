@@ -96,12 +96,12 @@ class Search
 
             $sqlSearch = "%". str_replace(" ", "%", $searchFor) ."%";
 
-            if ($sort != "title" || $sort != "author" || $sort != "updated")
+            if ($sort != "title" && $sort != "author" && $sort != "updated" && $sort != "site")
                 $sort = "title";
 
             $offset = ($currentPage == 1 ? "0" : ($currentPage*$limit) - $limit);
-            $query = $pdo->prepare("SELECT * FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search or `author` LIKE :search ORDER BY :sort LIMIT ". $offset .", ". $limit .";");
-            $query->execute(Array("search" => $sqlSearch, "sort" => $sort));
+            $query = $pdo->prepare("SELECT * FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search OR `author` LIKE :search ORDER BY `". $sort ."` ASC LIMIT ". $offset .", ". $limit .";");
+            $query->execute(Array("search" => $sqlSearch));
             $this->results = $query->fetchAll();
 
             $query2 = $pdo->prepare("SELECT COUNT(`id`) as 'count' FROM `fic_archive` WHERE `id` LIKE :search OR `title` LIKE :search or `author` LIKE :search;");

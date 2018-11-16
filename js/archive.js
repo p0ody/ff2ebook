@@ -31,7 +31,7 @@ function ajax_sendSearch()
         page = 1;
 
     if (sort == undefined)
-        sort = "NAME";
+        sort = "title";
 
     $.ajax
     ({

@@ -17,16 +17,16 @@ $page = 1;
 if (isset($_POST["page"]))
     $page = $_POST["page"];
 
-// Avaiable sorting column are title, author and updated
-$sort = "NAME";
+// Avaiable sorting column are title, author, site and updated
+$sort = "title";
 if (isset($_POST["sort"]))
     $sort = $_POST["sort"];
 
 $searchFor = $_POST["searchInput"];
 
-$search = new Search($searchFor, $page, MAX_RESULTS_PER_PAGE);
+$search = new Search($searchFor, $page, MAX_RESULTS_PER_PAGE, $sort);
 
-$pagination = new Pagination("archive.php?search=". $searchFor ."&page=", $page, $search->getTotalCount(), MAX_RESULTS_PER_PAGE);
+$pagination = new Pagination("archive.php?search=". $searchFor ."&sort=". $sort ."&page=", $page, $search->getTotalCount(), MAX_RESULTS_PER_PAGE);
 
 $return = Array(
     "pageResults" => $search->getFormaattedResults(),
