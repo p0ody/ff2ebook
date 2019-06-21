@@ -40,8 +40,8 @@ class FFnet extends BaseHandler
             $title = "Chapter $number";
 
 
-
-        if (preg_match("#<div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent' >(.+?)</div>#si", $source, $matches) === 1)
+        // Updated to match the recent change in page source (2019-06-20)
+        if (preg_match("#<div class='storytext xcontrast_txt nocopy' id='storytext'>(.+?)</div>#si", $source, $matches) === 1)
             $text = $matches[1];
         else
         {
@@ -61,6 +61,8 @@ class FFnet extends BaseHandler
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        // Page source seems gzip compressed, so we tell cURL to accept all encodings, otherwise the output is garbage (2019-06-20)
+        curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_URL, $url);
         $source = curl_exec($curl);
         curl_close($curl);
