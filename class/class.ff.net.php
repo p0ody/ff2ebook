@@ -41,7 +41,7 @@ class FFnet extends BaseHandler
 
 
         // Updated to match the recent change in page source (2019-06-20)
-        if (preg_match("#<div class='storytext xcontrast_txt nocopy' id='storytext'>(.+?)</div>#si", $source, $matches) === 1)
+        if (preg_match("#<div .+? id='storycontent' >(.+?)</div>#si", $source, $matches) === 1)
             $text = $matches[1];
         else
         {

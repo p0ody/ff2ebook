@@ -6,6 +6,16 @@
     <title>FF2EBOOK :: Download your favorites FanFictions as eBooks.</title>
     <meta name="description" content="Convert fanfictions to ebooks.  Supports fanfiction.net, fictionpress.com, HarryPotterFanFiction.com, & HPFanFicArchive.com.  Convert to ePub and MOBI">
     <META NAME="ROBOTS" CONTENT="INDEX, NOFOLLOW">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131272468-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-131272468-1');
+    </script>
+
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
