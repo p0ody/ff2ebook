@@ -47,6 +47,7 @@ class Session
 
                 return $result["data"];
             }
+            return '';
         }
         catch (PDOException $e)
         {
@@ -90,7 +91,7 @@ class Session
         try
         {
             $old = time() - $max;
-            $query = $this->pdo->prepare("DELETE FROM `sessions` SHERE `access` < ?;");
+            $query = $this->pdo->prepare("DELETE FROM `sessions` WHERE `access` < ?;");
             $query->execute(Array($old));
         }
         catch (PDOException $e)
