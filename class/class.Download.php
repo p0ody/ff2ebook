@@ -5,7 +5,7 @@ require_once("class.DownloadFile.php");
 
 class Download
 {
-    private $id, $source, $title, $author, $updated;
+    private $id, $source, $title, $author, $updated, $lastDL;
 
     function __construct($source, $id)
         /** @var BaseHandler $fic */
@@ -39,7 +39,8 @@ class Download
 
             if (!file_exists("archive/$filename.epub"))
                 return false;
-
+            
+            $this->updateLastDL();
             return new DownloadFile($filename .".epub", $this->title, $this->author);;
         }
         catch(PDOException $e)
@@ -88,7 +89,7 @@ class Download
             if (!@file_exists(__DIR__ ."/../archive/$filename.mobi"))
                 return false;
 
-
+            $this->updateLastDL();
             return new DownloadFile($filename .".mobi", $this->title, $this->author);
         }
         catch(PDOException $e)
@@ -102,6 +103,20 @@ class Download
     public function asPDF()
     {
 
+    }
+
+    public function updateLastDL() /** @var int */
+    {
+        try
+        {
+            $db = new dbHandler();
+            $pdo = $db->connect();
+            $query = $pdo->prepare(SQL_UPDATE_DL_DATE);
+            $query->execute(Array("id" => $this->id));
+        }
+        catch (PDOException $e)
+        {
+        }
     }
 
 }

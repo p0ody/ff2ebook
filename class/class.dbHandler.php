@@ -60,3 +60,4 @@ class dbHandler
 
 // Predefined statement
 define("SQL_SELECT_FIC", "SELECT * FROM `fic_archive` WHERE `id`=:id AND `site`=:site;");
+define("SQL_UPDATE_DL_DATE", "UPDATE `fic_archive` SET `lastDL`=". time() ." WHERE `id`=:id");

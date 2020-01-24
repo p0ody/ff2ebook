@@ -53,7 +53,7 @@ class Session
             return false;
 
         }
-        return true;
+        return "";
     }
 
     public function write($id, $data)
