@@ -1,13 +1,15 @@
 <?php
 require_once("class.base.handler.php");
 require_once("class.ErrorHandler.php");
-require_once("../class/class.Chapter.php");
+require_once("class.Chapter.php");
+require_once("class.ProxyManager.php");
 
 
 class FFnet extends BaseHandler
 {
     function populate()
     {
+        
         $this->setFicId($this->popFicId());
 
         $infosSource = $this->getPageSource(1, false);
@@ -54,9 +56,12 @@ class FFnet extends BaseHandler
     }
 
     protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
-    {
-        $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
+    {        
+        $proxyM = new ProxyManager();
 
+        $proxy = $proxyM->getBestProxy();
+
+        $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
@@ -64,11 +69,20 @@ class FFnet extends BaseHandler
         // Page source seems gzip compressed, so we tell cURL to accept all encodings, otherwise the output is garbage (2019-06-20)
         curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_PROXY, $proxy);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        
         $source = curl_exec($curl);
+        $info = curl_getinfo($curl);
+        $proxyM->updateLatency($proxy, $info['total_time'] * 1000);
+
         curl_close($curl);
 
         if ($source === false)
-            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
+        {
+            $proxyM->updateWorkingState($proxy, false); // Set selected proxy to not working so we dont reuse it again for next try
+            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't get source for chapter $chapter.");
+        }
 
         return $source;
     }

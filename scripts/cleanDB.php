@@ -9,7 +9,7 @@ try
     $db = new dbHandler();
     $pdo = $db->connect();
 
-    $sixMonths = 2/*Months*/ * 30 /*Days*/ * 24 /*Hours*/ * 60 /*Minutes*/ * 60 /*Seconds*/;
+    $sixMonths = 1/*Months*/ * 30 /*Days*/ * 24 /*Hours*/ * 60 /*Minutes*/ * 60 /*Seconds*/;
     $query = $pdo->prepare("DELETE FROM `fic_archive` WHERE `lastDL` < ". (time() - $sixMonths) .";");
     $query->execute();
 

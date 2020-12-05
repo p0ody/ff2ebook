@@ -61,3 +61,7 @@ class dbHandler
 // Predefined statement
 define("SQL_SELECT_FIC", "SELECT * FROM `fic_archive` WHERE `id`=:id AND `site`=:site;");
 define("SQL_UPDATE_DL_DATE", "UPDATE `fic_archive` SET `lastDL`=". time() ." WHERE `id`=:id");
+define("SQL_INSERT_PROXY", "REPLACE INTO `proxy_list` (`ip`, `working`, `latency`) VALUES (:ip, :working, :latency);");
+define("SQL_SELECT_PROXY_ALL", "SELECT * FROM `proxy_list` ORDER BY `working` DESC, `latency` ASC;");
+define("SQL_EMPTY_PROXY_LIST", "DELETE * FROM  `proxy_list`;");
+define("SQL_CLEAN_PROXY", "DELETE FROM  `proxy_list` WHERE `working`=0;");

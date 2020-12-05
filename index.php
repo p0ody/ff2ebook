@@ -42,13 +42,13 @@
             </div>
         </div>
 
-        <div class="row">
+        <!--<div class="row">
             <div class="col-xs-12 news col-md-offset-3 col-md-6">
                 <ul class="news">
-                    <li>If you are experiencing issues, you can still use <a href="./old">old version</a></li>
-                    <li>2016-07-14: I am currently working on a new version using Node.js (Way faster), for those who likes to test stuff, head to <a href="http://node.ff2ebook.com">node.ff2ebook.com</a>.</li>
+                    <li>2020-02-28: I recently hit the max storage on my web host (100GB), so, from now on, FF2eBook will keep files in archive only for 2 months after last time downloaded.</li>
+                    <li>2020-02-28: I've made a torrent to download the archive from before the clean up (Over 575 000 fics). <a href="torrent/ff2ebook_archive_2020-02-23.torrent">Click here</a></li>
                 </ul>
-            </div>
+            </div>-->
 
         </div>
 
