@@ -34,12 +34,16 @@ class ProxyManager
 
         if ($proxyList !== false)
         {
+            $count = 0;
             $list = explode(PHP_EOL, $proxyList);
             $list = array_filter($list, function ($value) { return (strlen($value) > 0) ? true : false; }); // Remove empty lines
+            array_push($list, ""); // Add an empty line to try without proxy
             $sql = "";
             $count = 0;
+            
             foreach($list as $line)
             {
+                $list[$count] = str_replace(Array("\r", "\n"), "", $line); // Remove newline character
                 $count++;
                     
                 $sql .= "(?)";
@@ -47,7 +51,7 @@ class ProxyManager
                     $sql .=", ";
 
             }
-            $query = $this->pdo->prepare("REPLACE INTO `proxy_list` (`ip`) VALUES $sql;");
+            $query = $this->pdo->prepare("INSERT IGNORE INTO `proxy_list` (`ip`) VALUES $sql;");
             $query->execute($list);
             
             return $list;

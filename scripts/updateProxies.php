@@ -12,7 +12,6 @@ if (!$list)
     die("Error getting proxy list");
 
 $domain = $_SERVER['HTTP_HOST'];
-$prefix = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 $path = substr($_SERVER["REQUEST_URI"], 0, strrpos($_SERVER["REQUEST_URI"], "/")); // Strip last section or URL (updateProxies.php)
 
 $curlList = [];
@@ -21,14 +20,17 @@ foreach($list as $proxy)
     
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_URL, $prefix.$domain.$path."/testProxy.php?ip=". $proxy["ip"]);
-
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_URL, "http://". $domain.$path ."/testProxy.php?ip=". $proxy["ip"]);
+    
     array_push($curlList, $curl);  
 }
  
 // Need to use curl multi to avoid getting php timeout on long sequential request, but its faster that way anyway lol,
 $mh = curl_multi_init();
-curl_multi_setopt($mh, CURLMOPT_MAX_TOTAL_CONNECTIONS, 50);
+curl_multi_setopt($mh, CURLMOPT_MAX_TOTAL_CONNECTIONS, 100);
+curl_multi_setopt($mh, CURLMOPT_MAX_HOST_CONNECTIONS, 10);
+
 
 foreach ($curlList as $handle)
 {
