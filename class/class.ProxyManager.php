@@ -84,19 +84,22 @@ class ProxyManager
         curl_setopt($curl, CURLOPT_URL, PROXY_TEST_URL);
         curl_setopt($curl, CURLOPT_PROXY, $ip);
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_CONNECT_ONLY, true);
         
         $result = curl_exec($curl);
-        $info = curl_getinfo($curl);
+        $totalTime = curl_getinfo($curl, CURLINFO_TOTAL_TIME);
+        $error = curl_errno($curl);
         curl_close($curl);
 
+        
         $query = $this->pdo->prepare(SQL_INSERT_PROXY);
-        if ($result === false)
+        if ($error)
         {
             $query->execute(Array("ip" => $ip, "working" => 0, "latency" => 10000));
             return false;
         }
 
-        $query->execute(Array("ip" => $ip, "working" => 1, "latency" => $info['total_time'] * 1000));
+        $query->execute(Array("ip" => $ip, "working" => 1, "latency" => $totalTime * 1000));
         return true;
     }
 

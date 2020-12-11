@@ -28,8 +28,7 @@ foreach($list as $proxy)
  
 // Need to use curl multi to avoid getting php timeout on long sequential request, but its faster that way anyway lol,
 $mh = curl_multi_init();
-curl_multi_setopt($mh, CURLMOPT_MAX_TOTAL_CONNECTIONS, 100);
-curl_multi_setopt($mh, CURLMOPT_MAX_HOST_CONNECTIONS, 10);
+curl_multi_setopt($mh, CURLMOPT_PIPELINING, 3);
 
 
 foreach ($curlList as $handle)
@@ -42,6 +41,7 @@ do {
     curl_multi_select($mh);
 } while ($running > 0);
 
+sleep(1); // Added 1sec sleep to let the script from testProxy.php finish.  For some reason, a bunch of test did not update database.
 curl_multi_close($mh);
 
-echo count($curlList) ." proxies tested.";
+echo "[". date("Y-m-d H:i:s") ."] ". count($curlList) ." proxies tested." .PHP_EOL;
