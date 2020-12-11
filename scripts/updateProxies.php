@@ -28,7 +28,6 @@ foreach($list as $proxy)
  
 // Need to use curl multi to avoid getting php timeout on long sequential request, but its faster that way anyway lol,
 $mh = curl_multi_init();
-curl_multi_setopt($mh, CURLMOPT_PIPELINING, 3);
 
 
 foreach ($curlList as $handle)
