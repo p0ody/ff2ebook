@@ -45,8 +45,7 @@ class FFnet extends BaseHandler
             $text = $matches[1];
         else
         {   
-            echo "source: ".$source;
-            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find chapter($number) text.");
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "source: $source Couldn't find chapter($number) text.");
             return false;
         }
 
