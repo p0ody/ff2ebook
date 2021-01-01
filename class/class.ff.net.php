@@ -56,7 +56,6 @@ class FFnet extends BaseHandler
     protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
     {
         $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
-        echo $url;
 
         /*$curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -76,7 +75,7 @@ class FFnet extends BaseHandler
         if ($source === false)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
 
-        return $source;
+        return $url$source;
     }
 
     private function popFicId()
