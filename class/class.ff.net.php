@@ -41,11 +41,11 @@ class FFnet extends BaseHandler
 
 
 
-        if (preg_match("#<div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent' >(.+?)</div>#si", $source, $matches) === 1)
+        if (preg_match("#<div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent'>(.+?)</div>#si", $source, $matches) === 1)
             $text = $matches[1];
         else
         {   
-            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "source: $source Couldn't find chapter($number) text.");
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find chapter($number) text.");
             return false;
         }
 
@@ -75,7 +75,7 @@ class FFnet extends BaseHandler
         if ($source === false)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
 
-        return $url$source;
+        return $source;
     }
 
     private function popFicId()
