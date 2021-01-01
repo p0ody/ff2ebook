@@ -44,9 +44,9 @@ class FFnet extends BaseHandler
         if (preg_match("#<div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent' >(.+?)</div>#si", $source, $matches) === 1)
             $text = $matches[1];
         else
-        {
+        {   
+            echo "source: ".$source;
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find chapter($number) text.");
-            echo $source;
             return false;
         }
 
