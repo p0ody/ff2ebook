@@ -14,7 +14,7 @@ function bypass_cf($url="null"){ //added function to pass requests to python.
     $source = shell_exec($command);
     echo shell_exec("pwd")."     ";
     echo $source."     ";
-    return $source
+    return $source;
 }
 
 
