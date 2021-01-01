@@ -210,7 +210,7 @@ class FFnet extends BaseHandler
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
 
-        if (preg_match_all("#<option  value=.+?>#si", $source, $matches) < 1)
+        if (preg_match_all("#<option value=.+?>#si", $source, $matches) < 1)
             return 1;
         else
             return count($matches[0]) / 2;
