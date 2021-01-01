@@ -1,14 +1,4 @@
 <?php
-
-    function bypass_cf($url="null"){ //added function to pass requests to python.
-        if ($url == "null"){
-            return;
-        }
-        $command = 'python3 py/cf_curl.py '+$url;
-        $command = escapeshellcmd($command);
-        return shell_exec($command);
-    }
-    
 require_once("../sqlSession.php");
 require_once("../class/class.ErrorHandler.php");
 require_once("../class/class.ZipManager.php");
