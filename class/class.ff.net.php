@@ -76,7 +76,7 @@ class FFnet extends BaseHandler
         curl_setopt($curl, CURLOPT_PROXY, $proxy);
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);*/
         
-        $source = bypass_cf($url)
+        $source = bypass_cf($url);
         //$info = curl_getinfo($curl);
         //$proxyM->updateLatency($proxy, $info['total_time'] * 1000);
 
