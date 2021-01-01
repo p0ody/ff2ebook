@@ -46,6 +46,7 @@ class FFnet extends BaseHandler
         else
         {
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find chapter($number) text.");
+            echo $source;
             return false;
         }
 
