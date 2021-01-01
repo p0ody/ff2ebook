@@ -7,6 +7,15 @@ require_once("class.ProxyManager.php");
 
 class FFnet extends BaseHandler
 {
+    function bypass_cf($url="null"){ //added function to pass requests to python.
+        if ($url == "null"){
+            return;
+        }
+        $command = 'python3 py/cf_curl.py '+$url;
+        $command = escapeshellcmd($command);
+        return shell_exec($command);
+    }
+
     function populate()
     {
         
@@ -62,7 +71,8 @@ class FFnet extends BaseHandler
         $proxy = $proxyM->getBestProxy();
 
         $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
-        $curl = curl_init();
+        
+        /*$curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -70,13 +80,13 @@ class FFnet extends BaseHandler
         curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_PROXY, $proxy);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10);*/
         
-        $source = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $proxyM->updateLatency($proxy, $info['total_time'] * 1000);
+        $source = bypass_cf($url)
+        //$info = curl_getinfo($curl);
+        //$proxyM->updateLatency($proxy, $info['total_time'] * 1000);
 
-        curl_close($curl);
+        //curl_close($curl);
 
         if ($source === false)
         {
