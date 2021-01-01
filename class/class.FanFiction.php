@@ -10,10 +10,11 @@ function bypass_cf($url="null"){ //added function to pass requests to python.
     if ($url == "null"){
         return;
     }
-    $command = 'python ../class/py/cf_curl.py '.$url;
-    $source = exec($command);
+    $command = 'echo hey;/bin/bash -c \'python3 ../class/py/cf_curl.py\''.$url;
+    $source = shell_exec($command);
     echo shell_exec("pwd")."     ";
     echo $source."     ";
+    echo $command;
     return $source;
 }
 
