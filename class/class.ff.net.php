@@ -6,15 +6,6 @@ require_once("../class/class.Chapter.php");
 
 class FFnet extends BaseHandler
 {   
-    function bypass_cf($url="null"){ //added function to pass requests to python.
-        if ($url == "null"){
-            return;
-        }
-        $command = 'python3 py/cf_curl.py '+$url;
-        $command = escapeshellcmd($command);
-        return shell_exec($command);
-    }
-
     function populate()
     {
         $this->setFicId($this->popFicId());
