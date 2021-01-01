@@ -137,7 +137,7 @@ for l in authedproxies['proxies']:
 
 
 def scrape(proxyDict):
-	scraper = cfscrape.create_scraper(delay=10)  # returns a CloudflareScraper instance
+	scraper = cfscrape.create_scraper(delay=12)  # returns a CloudflareScraper instance
 	return scraper.get(url,proxies=proxyDict).content
 
 
