@@ -11,7 +11,6 @@ function bypass_cf($url="null"){ //added function to pass requests to python.
         return;
     }
     $command = 'python3 py/cf_curl.py '+$url;
-    $command = escapeshellcmd($command);
     return shell_exec($command);
 }
 
