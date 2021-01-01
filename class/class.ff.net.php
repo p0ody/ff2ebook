@@ -72,7 +72,7 @@ class FFnet extends BaseHandler
         //$proxyM->updateLatency($proxy, $info['total_time'] * 1000);
 
         //curl_close($curl);
-        echo "<br><br><br><br>Source: <br>"+$source+"<br><br><br>";
+        echo "<br><br><br><br>Source: <br>".$source."<br><br><br>";
         if ($source === false)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
 
