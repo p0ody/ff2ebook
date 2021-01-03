@@ -4,8 +4,10 @@ import os
 
 
 proxies = ["154.167.5.3", "364.234.56.2", "192.168.0.1", "4.5.77.44"]
-cfcache = {}
 
+
+#init cache
+cfcache = {}
 def cfcheck(key): 
 	if key in cfcache.keys(): 
 		return True
@@ -14,15 +16,13 @@ def cfcheck(key):
 
 def cfadd(key, cache):
 	cfcache[key] = cache
-
-#init cache
 cfcachefile = "cf.cache"
 if (os.path.isfile(cfcachefile)):
 	with open(cfcachefile, 'rb') as f:
-		print("got from cache")
+		#print("got from cache")
 		cfcache = pickle.load(f)
 else:
-	print("first init")
+	#print("first init")
 	cfcache={}
 
 
