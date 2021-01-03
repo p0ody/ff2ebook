@@ -1,8 +1,8 @@
 import cloudscraper as cfscrape
 from random import seed
 from random import choice
-import urllib.request, json, signal, sys
-#pip install pysocks signal cloudscraper
+import urllib.request, json, signal, sys, pickle, os
+#pip install pysocks signal cloudscraper pickle
 
 def handler(signum, frame):
 	raise Exception("end of time")
@@ -18,7 +18,6 @@ except:
 	exit(0)
 
 wontwork = []
-
 
 authedproxies={               #All very fast
 	'proxies' : [
@@ -126,7 +125,6 @@ proxies = [
 	"socks4://213.173.75.243:4153",
 	"socks4://181.196.176.22:57361",
 	"socks4://92.247.11.242:1080",
-
 	]
 
 auth = choice(authedproxies['auths'])
@@ -134,11 +132,65 @@ for l in authedproxies['proxies']:
 	proxies.append("http://"+auth['user']+':'+auth['pass']+"@"+l)
 
 
+#init cache
+cfcache = {}
+def cfcheck(key): 
+	if key in cfcache.keys(): 
+		return True
+	else: 
+		return False 
+
+def cfuse(key):
+	if key in cfcacheuse.keys(): 
+		cfcacheuse[key] += 1
+
+def cfovercheck(key):
+	if key in cfcacheuse.keys(): 
+		if cfcacheuse[key] > 4:
+			return True
+		else:
+			return False
+
+def cfremove(key):
+	cfcache.pop(key, None)
+
+def cfadd(key, cache):
+	cfcache[key] = cache
+	cfcacheuse[key] = 1
+
+cfcachefile = "cf.cache"
+cfcacheusefile = "cfuse.cache"
+if (os.path.isfile(cfcachefile)):
+	with open(cfcachefile, 'rb') as f:
+		#print("got from cache")
+		cfcache = pickle.load(f)
+	with open(cfcacheusefile, 'rb') as f:
+		#print("got from cache")
+		cfcacheuse = pickle.load(f)
+else:
+	#print("first init")
+	cfcache={}
+	cfcacheuse={}
 
 
-def scrape(proxyDict):
-	scraper = cfscrape.create_scraper(delay=12)  # returns a CloudflareScraper instance
-	return scraper.get(url,proxies=proxyDict).content
+
+
+
+def scrape(proxyDict,usedproxy):
+	if cfcheck(usedproxy):
+		cfuse(usedproxy)
+	else:
+		scraper = cfscrape.create_scraper(delay=12)  # returns a CloudflareScraper instance
+		toreturn = scraper.get(url,proxies=proxyDict).content
+		cfadd(usedproxy, scraper)
+		#get cookie
+		return toreturn
+
+	if cfovercheck(usedproxy):
+		cfremove(usedproxy)
+
+	scraper = cfcache[usedproxy]
+	return scraper.get(url, proxies=proxyDict).content
 
 
 for i in range(1):
@@ -149,11 +201,20 @@ for i in range(1):
 			signal.alarm(5)
 			prox = choice(proxies)
 			proxyDict = {"https" : prox}
-			page = scrape(proxyDict)
+			page = scrape(proxyDict,prox)
 			print(str(page.decode("utf-8")))
 			working=True
-		except:
+		except Exception as e:
+			#print(e)
 			working=False
 		if not working:
 			wontwork.append(prox)
 		
+
+
+
+with open(cfcacheusefile, 'wb') as f:
+	pickle.dump(cfcacheuse, f)
+
+with open(cfcachefile, 'wb') as f:
+	pickle.dump(cfcache, f)
