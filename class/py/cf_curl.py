@@ -180,17 +180,19 @@ def scrape(proxyDict,usedproxy):
 	if cfcheck(usedproxy):
 		cfuse(usedproxy)
 	else:
-		scraper = cfscrape.create_scraper(delay=12)  # returns a CloudflareScraper instance
+		scraper = cfscrape.create_scraper(delay=10)  # returns a CloudflareScraper instance
 		toreturn = scraper.get(url,proxies=proxyDict).content
-		cfadd(usedproxy, scraper)
+		tokens, user_agent = scraper.get_tokens(url, proxies=proxyDict)
+		cfadd(usedproxy, tokens)
 		#get cookie
 		return toreturn
 
 	if cfovercheck(usedproxy):
 		cfremove(usedproxy)
 
-	scraper = cfcache[usedproxy]
-	return scraper.get(url, proxies=proxyDict).content
+	scraper = cfscrape.create_scraper(delay=10)
+	cookies = cfcache[usedproxy]
+	return scraper.get(url,cookies=cookies,proxies=proxyDict).content
 
 
 for i in range(1):
