@@ -231,7 +231,7 @@ class FFnet extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#target='rating'>.+?</a> - .*?-  (.+?) -#si", $source, $matches) === 1)
+        if (preg_match("#target='rating'>.+?</a> - .*? - .*? - (.+?) -#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
