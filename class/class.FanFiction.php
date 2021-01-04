@@ -7,6 +7,15 @@ require_once __DIR__."/class.fh.com.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
 
+function bypass_cf($url="null"){ //added function to pass requests to python.
+    if ($url == "null"){
+        return;
+    }
+    $command = '/bin/bash -c \'cd ../class/py/;python3 cf_curl.py '.$url." 2>&1;'";
+    $source = shell_exec($command);
+    return $source;
+}
+
 
 abstract class FanFictionSite
 {
