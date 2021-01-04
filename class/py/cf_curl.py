@@ -54,6 +54,23 @@ authedproxies={               #All very fast
 
 
 proxies = [
+	"https://159.8.114.34:8123",
+	"socks5://47.242.70.166:9999",
+	"https://159.8.114.34:25",
+	"https://169.57.1.84:80",
+	"https://174.138.28.230:8080",
+	"https://169.57.1.84:8123",
+	"https://47.242.70.166:9999",
+	"https://159.8.114.34:25",
+	"https://169.57.1.84:80",
+	"https://103.115.14.41:80",
+	"https://103.115.14.153:80",
+	"https://169.57.157.148:25",
+	"https://159.8.114.37:80",
+	"https://vpnjantit:xs9yk@sq-au1.vpnjantit.com:8080",
+	"https://vpnjantit:xs9yk@sq-au1.vpnjantit.com:3128",
+	"https://vpnjantit:mat6k@sq-uk1.vpnjantit.com:8080",
+	"https://vpnjantit:mat6k@sq-uk1.vpnjantit.com:3128",
 	#"socks5://localhost:8070",
 	#"https://169.57.1.84:8123", #seems unstable __/--(:/)--\__
 	"https://159.8.114.34:8123",
@@ -134,6 +151,17 @@ for l in authedproxies['proxies']:
 
 #init cache
 cfcache = {}
+def cf_choice(proxylist, lastworked):
+	if lastworked != "100":
+		if lastproxy != "":
+			if not cfovercheck(lastproxy):
+				return lastproxy
+			else:
+				return choice(proxylist)
+		else:
+			return choice(proxylist)
+	else:
+		return choice(proxylist)
 def cfcheck(key): 
 	if key in cfcache.keys(): 
 		return True
@@ -147,6 +175,7 @@ def cfuse(key):
 def cfovercheck(key):
 	if key in cfcacheuse.keys(): 
 		if cfcacheuse[key] > 4:
+			#print("OVERUSE")
 			return True
 		else:
 			return False
@@ -160,6 +189,7 @@ def cfadd(key, cache):
 
 cfcachefile = "cf.cache"
 cfcacheusefile = "cfuse.cache"
+cfcachelast = "cflast.cache"
 if (os.path.isfile(cfcachefile)):
 	with open(cfcachefile, 'rb') as f:
 		#print("got from cache")
@@ -167,12 +197,16 @@ if (os.path.isfile(cfcachefile)):
 	with open(cfcacheusefile, 'rb') as f:
 		#print("got from cache")
 		cfcacheuse = pickle.load(f)
+	with open(cfcachelast, 'rb') as f:
+		#print("got from cache")
+		lastproxy = pickle.load(f)
 else:
 	#print("first init")
 	cfcache={}
 	cfcacheuse={}
+	lastproxy = ""
 
-
+#print("1. LAST:",lastproxy)
 
 
 
@@ -182,14 +216,17 @@ def scrape(proxyDict,usedproxy):
 	else:
 		scraper = cfscrape.create_scraper(delay=10)  # returns a CloudflareScraper instance
 		toreturn = scraper.get(url,proxies=proxyDict).content
+		#print(proxyDict)
 		tokens, user_agent = scraper.get_tokens(url, proxies=proxyDict)
 		cfadd(usedproxy, tokens)
+		#print("LAST:",lastproxy)
 		#get cookie
 		return toreturn
 
 	if cfovercheck(usedproxy):
 		cfremove(usedproxy)
 
+	#print("cookie exist")
 	scraper = cfscrape.create_scraper(delay=10)
 	cookies = cfcache[usedproxy]
 	return scraper.get(url,cookies=cookies,proxies=proxyDict).content
@@ -197,18 +234,24 @@ def scrape(proxyDict,usedproxy):
 
 for i in range(1):
 	working = False
-	while not working:
+	status = "0"
+	while status != "200":
 		try:
 			signal.signal(signal.SIGALRM, handler)
 			signal.alarm(5)
-			prox = choice(proxies)
+			prox = cf_choice(proxies,status)
+			#print("\033[95m",prox,"\033[0m")
 			proxyDict = {"https" : prox}
 			page = scrape(proxyDict,prox)
+			lastproxy = prox;
 			print(str(page.decode("utf-8")))
-			working=True
+			status="200"
 		except Exception as e:
+			exc_type, exc_obj, exc_tb = sys.exc_info()
+			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+			#print(exc_type, e, exc_tb.tb_lineno)
 			#print(e)
-			working=False
+			status="100"
 		if not working:
 			wontwork.append(prox)
 		
@@ -220,3 +263,8 @@ with open(cfcacheusefile, 'wb') as f:
 
 with open(cfcachefile, 'wb') as f:
 	pickle.dump(cfcache, f)
+
+with open(cfcachelast, 'wb') as f:
+	pickle.dump(lastproxy, f)
+
+#print("3. LAST:",lastproxy)
