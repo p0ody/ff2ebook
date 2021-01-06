@@ -3,6 +3,7 @@ require_once __DIR__."/class.ff.net.php";
 require_once __DIR__."/class.hpff.php";
 require_once __DIR__."/class.fpcom.php";
 require_once __DIR__."/class.hpffa.com.php";
+require_once __DIR__."/class.wattpad.com.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
 
@@ -23,6 +24,7 @@ abstract class FanFictionSite
     const HPFF      = 1;
     const FPCOM     = 2;
     const HPFFA     = 3;
+    const WattPad   = 4;
 }
 
 
@@ -41,6 +43,11 @@ class FanFiction
 
         switch($this->ficSite)
         {
+            case FanFictionSite::WattPad:
+                $this->handler = new WattPad($this->getURL(), $this->error);
+                $this->source = "wattpad";
+                break;
+
             case FanFictionSite::FFnet:
                 $this->handler = new FFnet($this->getURL(), $this->error);
                 $this->source = "ffnet";
@@ -92,14 +99,22 @@ class FanFiction
         if (strpos($this->url, "hpfanficarchive.com") !== false)
             return FanFictionSite::HPFFA;
 
+        if (strpos($this->url, "wattpad.com") !== false)
+            return FanFictionSite::WattPad;
+
 
         return FanFictionSite::ERROR;
 
     }
 
-    public function getChapter($chapNum)
-    {
-        return $this->ficHandler()->getChapter($chapNum);
+    public function getChapter($chapNum,$info=null)
+    {   
+        if ($this->ficHandler()->getSite() == "wattpad"){
+            return $this->ficHandler()->getChapter($chapNum);
+        }else{
+            
+            return $this->ficHandler()->getChapter($chapNum);
+        }
     }
 
     public function getSource() { return $this->source; }

@@ -25,7 +25,9 @@ class FFnet extends BaseHandler
         $this->setCompleted($this->popCompleted($infosSource));
     }
 
-
+    public function getSite(){
+        return "ff.net";
+    }
     public function getChapter($number)
     {
 
