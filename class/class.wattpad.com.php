@@ -138,9 +138,8 @@ class WattPad extends BaseHandler
 			$url = "https://".$url;
 		}
 
-		if (strpos($url, "story") !== false){
+		if (strpos($url, "/story/") !== false){
 			$storyurl = True;
-
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
@@ -155,7 +154,8 @@ class WattPad extends BaseHandler
 
 
 			$id="";
-		    $regexp='/^.*data-part-id="([0-9]{8})".*?$/m';
+		    //$regexp='/^.*data-part-id="([0-9]{8})".*?$/m';
+		    $regexp='/^.*data-part-id="(.*?)".*?$/m';
 		    if (strlen($source) === 0)
 					$this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 		    if (preg_match_all($regexp, $source, $matches)){
