@@ -5,7 +5,9 @@ require_once __DIR__."/class.fpcom.php";
 require_once __DIR__."/class.hpffa.com.php";
 require_once __DIR__."/class.fh.com.php";
 require_once __DIR__."/class.wattpad.com.php";
+require_once __DIR__."/class.ficwad.com.php";
 require_once __DIR__."/class.ErrorHandler.php";
+
 
 
 function bypass_cf($url="null"){ //added function to pass requests to python.
@@ -27,6 +29,7 @@ abstract class FanFictionSite
     const HPFFA     = 3; // hpfanficarchive.com
     const FHCOM     = 4; // fictionhunt.com
     const WattPad   = 4;
+    const FicWad    = 5;
 }
 
 
@@ -45,6 +48,12 @@ class FanFiction
 
         switch($this->ficSite)
         { 
+
+
+            case FanFictionSite::FicWad:
+                $this->handler = new FicWad($this->getURL(), $this->error);
+                $this->source = "ficwad";
+                break;
 
             case FanFictionSite::WattPad:
                 $this->handler = new WattPad($this->getURL(), $this->error);
@@ -113,6 +122,9 @@ class FanFiction
 
         if (strpos($this->url, "fictionhunt.com") !== false)
             return FanFictionSite::FHCOM;
+        
+         if (strpos($this->url, "ficwad.com") !== false)
+            return FanFictionSite::FicWad;
 
 
         return FanFictionSite::ERROR;
