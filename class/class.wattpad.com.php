@@ -20,8 +20,7 @@ class WattPad extends BaseHandler
 
 
         $this->getChaptersIDs($infosSource);
-        $this->setTitle($this->popTitle($infosSource));
-
+        $this->setTitle(str_replace("&#x27;","'",htmlspecialchars_decode(html_entity_decode($this->popTitle($infosSource), ENT_COMPAT, "UTF-8"))));
         $this->setAuthor($this->popAuthor($info));
         $this->setFicType($this->popFicType($info));
         $this->setSummary($this->popSummary($info));
@@ -34,7 +33,8 @@ class WattPad extends BaseHandler
         $this->setFandom($this->popFandom($info));
         $this->setCompleted(false);
         $_SESSION["wattpad_info"] = $info;
-
+        $decoded = json_decode($info,true);
+        $_SESSION["cover"] = $decoded["cover"];
     }
 
     public function getSite(){
