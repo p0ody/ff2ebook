@@ -114,6 +114,7 @@
                     <div class="collapse-content">
                         Convert from your favorite sites<span class="text-highlight">:</span>
                         <ul>
+                            <li><i><span class="text-highlight">NEW:</span></i> WattPad<span class="text-highlight">.</span>com (<span class="text-highlight">Any Url</span>)</li>
                             <li>FanFiction<span class="text-highlight">.</span>net</li>
                             <li>FictionPress<span class="text-highlight">.</span>com</li>
                             <li><span class="text-highlight">TODO:</span> patronuscharm<span class="text-highlight">.</span>net (Maybe ?)</li>
