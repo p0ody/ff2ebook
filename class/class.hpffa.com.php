@@ -27,6 +27,9 @@ class HPFFA extends BaseHandler
         $this->setCompleted($this->popStatus($infosSource));
     }
 
+    public function getSite(){
+        return "hpffa";
+    }
 
     public function getChapter($number)
     {

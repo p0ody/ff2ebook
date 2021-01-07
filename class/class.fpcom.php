@@ -25,7 +25,10 @@ class FPCOM extends BaseHandler
         $this->setFandom($this->popFandom($infosSource));
         $this->setCompleted($this->popCompleted($infosSource));
     }
-
+    
+    public function getSite(){
+        return "fpcom";
+    }
 
     public function getChapter($number)
     {

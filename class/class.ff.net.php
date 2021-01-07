@@ -26,7 +26,10 @@ class FFnet extends BaseHandler
         $this->setFandom($this->popFandom($infosSource));
         $this->setCompleted($this->popCompleted($infosSource));
     }
-
+    
+    public function getSite(){
+        return "ff.net";
+    }
 
     public function getChapter($number)
     {
