@@ -105,7 +105,7 @@ class WattPad extends BaseHandler
         curl_close($curl);
 
         if ($source === false)
-            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get story page source.");
 
         return $source;
     }
