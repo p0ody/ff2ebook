@@ -4,8 +4,20 @@ require_once __DIR__."/class.hpff.php";
 require_once __DIR__."/class.fpcom.php";
 require_once __DIR__."/class.hpffa.com.php";
 require_once __DIR__."/class.fh.com.php";
+require_once __DIR__."/class.wattpad.com.php";
+require_once __DIR__."/class.ficwad.com.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
+
+
+function bypass_cf($url="null"){ //added function to pass requests to python.
+    if ($url == "null"){
+        return;
+    }
+    $command = '/bin/bash -c \'cd ../class/py/;python3 cf_curl.py '.$url." 2>&1;'";
+    $source = shell_exec($command);
+    return $source;
+}
 
 
 abstract class FanFictionSite
@@ -16,6 +28,8 @@ abstract class FanFictionSite
     const FPCOM     = 2; // fictionpress.com
     const HPFFA     = 3; // hpfanficarchive.com
     const FHCOM     = 4; // fictionhunt.com
+    const WattPad   = 4;
+    const FicWad    = 5;
 }
 
 
@@ -33,7 +47,19 @@ class FanFiction
         $this->source = false;
 
         switch($this->ficSite)
-        {
+        { 
+
+
+            case FanFictionSite::FicWad:
+                $this->handler = new FicWad($this->getURL(), $this->error);
+                $this->source = "ficwad";
+                break;
+
+            case FanFictionSite::WattPad:
+                $this->handler = new WattPad($this->getURL(), $this->error);
+                $this->source = "wattpad";
+                break;
+
             case FanFictionSite::FFnet:
                 $this->handler = new FFnet($this->getURL(), $this->error);
                 $this->source = "ffnet";
@@ -75,6 +101,10 @@ class FanFiction
 
     private function parseURL()
     {
+
+        if (strpos($this->url, "wattpad.com") !== false)
+            return FanFictionSite::WattPad;
+
         if (strlen($this->getURL()) === 0)
             return FanFictionSite::ERROR;
 
@@ -92,15 +122,23 @@ class FanFiction
 
         if (strpos($this->url, "fictionhunt.com") !== false)
             return FanFictionSite::FHCOM;
+        
+         if (strpos($this->url, "ficwad.com") !== false)
+            return FanFictionSite::FicWad;
 
 
         return FanFictionSite::ERROR;
 
     }
 
-    public function getChapter($chapNum)
-    {
-        return $this->ficHandler()->getChapter($chapNum);
+    public function getChapter($chapNum,$info=null)
+    {   
+        if ($this->ficHandler()->getSite() == "wattpad"){
+            return $this->ficHandler()->getChapter($chapNum);
+        }else{
+
+            return $this->ficHandler()->getChapter($chapNum);
+        }
     }
 
     public function getSource() { return $this->source; }

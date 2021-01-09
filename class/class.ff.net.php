@@ -7,6 +7,15 @@ require_once("class.ProxyManager.php");
 
 class FFnet extends BaseHandler
 {
+    function bypass_cf($url="null"){ //added function to pass requests to python.
+        if ($url == "null"){
+            return;
+        }
+        $command = 'python3 py/cf_curl.py '+$url;
+        $command = escapeshellcmd($command);
+        return shell_exec($command);
+    }
+
     function populate()
     {
         
@@ -26,7 +35,10 @@ class FFnet extends BaseHandler
         $this->setFandom($this->popFandom($infosSource));
         $this->setCompleted($this->popCompleted($infosSource));
     }
-
+    
+    public function getSite(){
+        return "ff.net";
+    }
 
     public function getChapter($number)
     {
@@ -43,7 +55,7 @@ class FFnet extends BaseHandler
 
 
         // Updated to match the recent change in page source (2019-06-20)
-        if (preg_match("#<div .+? id='storycontent' >(.+?)</div>#si", $source, $matches) === 1)
+        if (preg_match("#<div .+? id='storycontent'>(.+?)</div>#si", $source, $matches) === 1)
             $text = $matches[1];
         else
         {
@@ -55,14 +67,11 @@ class FFnet extends BaseHandler
 
     }
 
-    protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
-    {        
-        $proxyM = new ProxyManager();
-
-        $proxy = $proxyM->getBestProxy();
-
+   protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
+    {
         $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
-        $curl = curl_init();
+
+        /*$curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -70,19 +79,15 @@ class FFnet extends BaseHandler
         curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_PROXY, $proxy);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10);*/
         
-        $source = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $proxyM->updateLatency($proxy, $info['total_time'] * 1000);
+        $source = bypass_cf($url);
+        //$info = curl_getinfo($curl);
+        //$proxyM->updateLatency($proxy, $info['total_time'] * 1000);
 
-        curl_close($curl);
-
+        //curl_close($curl);
         if ($source === false)
-        {
-            $proxyM->updateWorkingState($proxy, false); // Set selected proxy to not working so we dont reuse it again for next try
-            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't get source for chapter $chapter.");
-        }
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
 
         return $source;
     }
@@ -219,7 +224,7 @@ class FFnet extends BaseHandler
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
 
-        if (preg_match_all("#<option  value=.+?>#si", $source, $matches) < 1)
+        if (preg_match_all("#<option value=.+?>#si", $source, $matches) < 1)
             return 1;
         else
             return count($matches[0]) / 2;
@@ -240,7 +245,7 @@ class FFnet extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#target='rating'>.+?</a> - .*?-  (.+?) -#si", $source, $matches) === 1)
+        if (preg_match("#target='rating'>.+?</a> - .*? - .*? - (.+?) -#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
