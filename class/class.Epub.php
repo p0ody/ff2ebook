@@ -92,9 +92,13 @@ class Epub
         else
             return false;
 
-
-        $manifest = "";
+        if (isset($_SESSION["cover"])){
+            $manifest = "<item id=\"cover_jpg\" properties=\"cover-image\" href=\"../images/cover.jpg\" media-type=\"image/jpeg\" />" . PHP_EOL;
+        }else{
+            $manifest = "";
+        }
         $spine = "";
+
         foreach($this->filesList as $num => $line)
         {
             if ($num === 0)
@@ -104,9 +108,25 @@ class Epub
             $spine .= "        <itemref idref=\"chap" . $num . "\" />" . PHP_EOL;
         }
 
+
+        if (isset($_SESSION["cover"])){
+            $references = "<reference type=\"cover\" href=\"titlepage.xhtml\" title=\"Cover\"/>";
+            $meta = "<meta name=\"cover\" content=\"cover\"/>";
+        }else{
+            $references = "";
+            $meta = "";
+        }
+
+        $title = htmlspecialchars_decode(html_entity_decode($title, ENT_COMPAT, "UTF-8"));
+        $author = htmlspecialchars_decode(html_entity_decode($author, ENT_COMPAT, "UTF-8"));
+        $summary = htmlspecialchars_decode(html_entity_decode($summary, ENT_COMPAT, "UTF-8"));
+        $title = str_replace("&#x27;","'",$title);
+
+        $title = str_replace("&#x27;","'",$title);
+
         $content = str_replace(
-            Array("%title%", "%author%", "%uuid%", "%chapManifest%", "%summary%", "%chapSpine%"),
-            Array($title, $author, $this->uuid, $manifest, $summary, $spine),
+            Array("%title%", "%author%", "%uuid%", "%chapManifest%", "%summary%", "%chapSpine%", "%references%", "%meta%"),
+            Array($title, $author, $this->uuid, $manifest, $summary, $spine, $references, $meta),
             $blanks);
 
 
@@ -200,6 +220,25 @@ class Epub
             $z->addAllFileInDir($this->sourceDir ."/OEBPS", "OEBPS");
             $z->addAllFileInDir($this->sourceDir ."/OEBPS/Content", "OEBPS/Content");
             $z->addFile("../blanks/style.css", "OEBPS/Styles");
+
+            if (isset($_SESSION["cover"])){
+                $filepath = $this->sourceDir ."/OEBPS/Content/cover.jpg";
+
+                $url= $_SESSION["cover"];
+                $fp = fopen($filepath, 'wb');
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_FILE, $fp);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch,CURLOPT_ENCODING, '');
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_exec($ch);
+                curl_close($ch);
+                fclose($fp);
+                $z->addFile($this->sourceDir ."/OEBPS/Content/cover.jpg", "images");
+            }
+
             $z->close();
 
         }
@@ -218,6 +257,7 @@ class Epub
 
 /*
     Structure:
+    cover.jpg
     mimetype
     META-INF/
         container.xml

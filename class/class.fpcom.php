@@ -25,6 +25,9 @@ class FPCOM extends BaseHandler
         $this->setCompleted($this->popCompleted($infosSource));
     }
 
+    public function getSite(){
+        return "fpcom";
+    }
 
     public function getChapter($number)
     {

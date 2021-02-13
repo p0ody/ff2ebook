@@ -29,6 +29,9 @@ class HPFF extends BaseHandler
         $this->setCompleted(false);
     }
 
+    public function getSite(){
+        return "hpff";
+    }
 
     public function getChapter($number)
     {
