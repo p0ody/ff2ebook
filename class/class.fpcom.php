@@ -3,9 +3,27 @@ require_once("class.base.handler.php");
 require_once("class.ErrorHandler.php");
 require_once("../class/class.Chapter.php");
 
-
 class FPCOM extends BaseHandler
 {
+    function bypass_cf($url="null"){ //added function to pass requests to python.
+        if ($url == "null"){
+            return;
+        }
+	$url = base64_encode($url);
+        $condainit="source /home/bastyoung/.bashrc";
+        $command = "bash -c 'source /home/bastyoung/.bashrc; pwd; python3 ../class/py/cf_curl.py \"".$url."\" 2>&1;'2>&1";
+        #echo "Code: ".$command;
+
+$file = '../commands.log';
+$current = file_get_contents($file);
+$current .= $command."\n";
+file_put_contents($file, $current);
+
+        $val = shell_exec($command);
+        #echo $val;
+        return $val;
+    }
+    
     function populate()
     {
         $this->setFicId($this->popFicId());
@@ -25,6 +43,9 @@ class FPCOM extends BaseHandler
         $this->setCompleted($this->popCompleted($infosSource));
     }
 
+    public function getSite(){
+        return "fpcom";
+    }
 
     public function getChapter($number)
     {
@@ -41,7 +62,7 @@ class FPCOM extends BaseHandler
 
 
 
-        if (preg_match("#<div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent' >(.+?)</div>#si", $source, $matches) === 1)
+        if (preg_match("#<div role='main' aria-label='story content' style='font-size:1.1em;'><div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent'>(.+?)</div>#si", $source, $matches) === 1)
             $text = $matches[1];
         else
         {
@@ -57,13 +78,7 @@ class FPCOM extends BaseHandler
     {
         $url = "https://". ($mobile ? "m" : "www") .".fictionpress.com/s/". $this->getFicId() ."/". $chapter;
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $source = curl_exec($curl);
-        curl_close($curl);
+        $source = bypass_cf($url);
 
         if ($source === false)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");

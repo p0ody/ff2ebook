@@ -5,12 +5,34 @@ require_once("../class/class.Chapter.php");
 
 
 class FFnet extends BaseHandler
-{
+{   
+
+function bypass_cf($url="null"){ //added function to pass requests to python.
+        if ($url == "null"){
+            return;
+        }
+	$url = base64_encode($url);
+        $condainit="source /home/bastyoung/.bashrc";
+        $command = "bash -c 'source /home/bastyoung/.bashrc; pwd; python3 ../class/py/cf_curl.py \"".$url."\" 2>&1;'2>&1";
+        #echo "Code: ".$command;
+
+$file = '../commands.log';
+$current = file_get_contents($file);
+$current .= $command."\n";
+file_put_contents($file, $current);
+
+        $val = shell_exec($command);
+        #echo $val;
+        return $val;
+    }
+
+
+
     function populate()
     {
         $this->setFicId($this->popFicId());
 
-        $infosSource = $this->getPageSource(1, false);
+	$infosSource = $this->getPageSource(1, false);
         $this->setTitle($this->popTitle($infosSource));
 
         $this->setAuthor($this->popAuthor($infosSource));
@@ -25,7 +47,9 @@ class FFnet extends BaseHandler
         $this->setCompleted($this->popCompleted($infosSource));
     }
 
-
+    public function getSite(){
+        return "ff.net";
+    }
     public function getChapter($number)
     {
 
@@ -41,10 +65,10 @@ class FFnet extends BaseHandler
 
 
 
-        if (preg_match("#<div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent' >(.+?)</div>#si", $source, $matches) === 1)
+        if (preg_match("#<div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent'>(.+?)</div>#si", $source, $matches) === 1)
             $text = $matches[1];
         else
-        {
+        {   
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find chapter($number) text.");
             return false;
         }
@@ -53,24 +77,30 @@ class FFnet extends BaseHandler
 
     }
 
-    protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
+   protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
     {
         $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
 
-        $curl = curl_init();
+        /*$curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        // Page source seems gzip compressed, so we tell cURL to accept all encodings, otherwise the output is garbage (2019-06-20)
+        curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_URL, $url);
-        $source = curl_exec($curl);
-        curl_close($curl);
+        curl_setopt($curl, CURLOPT_PROXY, $proxy);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10);*/
+        
+        $source = bypass_cf($url);
+        //$info = curl_getinfo($curl);
+        //$proxyM->updateLatency($proxy, $info['total_time'] * 1000);
 
+        //curl_close($curl);
         if ($source === false)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
 
         return $source;
     }
-
     private function popFicId()
     {
         if (preg_match("#fanfiction.net/s/([0-9]+)#", $this->getURL(), $matches) === 1)
@@ -105,6 +135,7 @@ class FFnet extends BaseHandler
         }
         else
         {
+        	echo $source;
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find author.");
             return "No Author.";
         }
@@ -149,6 +180,7 @@ class FFnet extends BaseHandler
             return $matches[1];
         else
         {
+        	//echo $source;
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find summary.");
             return false;
         }
@@ -203,7 +235,7 @@ class FFnet extends BaseHandler
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
 
-        if (preg_match_all("#<option  value=.+?>#si", $source, $matches) < 1)
+        if (preg_match_all("#<option value=.+?>#si", $source, $matches) < 1)
             return 1;
         else
             return count($matches[0]) / 2;
@@ -224,7 +256,7 @@ class FFnet extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#target='rating'>.+?</a> - .*?-  (.+?) -#si", $source, $matches) === 1)
+        if (preg_match("#target='rating'>.+?</a> - .*? - .*? - (.+?) -#si", $source, $matches) === 1)
             return $matches[1];
         else
         {

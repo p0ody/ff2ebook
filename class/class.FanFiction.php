@@ -3,8 +3,30 @@ require_once __DIR__."/class.ff.net.php";
 require_once __DIR__."/class.hpff.php";
 require_once __DIR__."/class.fpcom.php";
 require_once __DIR__."/class.hpffa.com.php";
+require_once __DIR__."/class.wattpad.com.php";
+require_once __DIR__."/class.ficwad.com.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
+
+
+function bypass_cf($url="null"){ //added function to pass requests to python.
+        if ($url == "null"){
+            return;
+        }
+    $url = base64_encode($url);
+        $condainit="source /home/bastyoung/.bashrc";
+        $command = "bash -c 'source /home/bastyoung/.bashrc; pwd; python3 ../class/py/cf_curl.py \"".$url."\" 2>&1;'2>&1";
+        #echo "Code: ".$command;
+
+$file = '../commands.log';
+$current = file_get_contents($file);
+$current .= $command."\n";
+file_put_contents($file, $current);
+
+        $val = shell_exec($command);
+        #echo $val;
+        return $val;
+    }
 
 abstract class FanFictionSite
 {
@@ -13,6 +35,8 @@ abstract class FanFictionSite
     const HPFF      = 1;
     const FPCOM     = 2;
     const HPFFA     = 3;
+    const WattPad   = 4;
+    const FicWad    = 5;
 }
 
 
@@ -31,6 +55,16 @@ class FanFiction
 
         switch($this->ficSite)
         {
+            case FanFictionSite::WattPad:
+                $this->handler = new WattPad($this->getURL(), $this->error);
+                $this->source = "wattpad";
+                break;
+
+            case FanFictionSite::FicWad:
+                $this->handler = new FicWad($this->getURL(), $this->error);
+                $this->source = "ficwad";
+                break;
+
             case FanFictionSite::FFnet:
                 $this->handler = new FFnet($this->getURL(), $this->error);
                 $this->source = "ffnet";
@@ -62,7 +96,7 @@ class FanFiction
     public function ficHandler() { return $this->handler; }
 
     public function getURL() { return $this->url; }
-    private function setURL($url) { $this->url = $url; }
+    public function setURL($url) { $this->url = $url; }
 
 
     private function parseURL()
@@ -82,14 +116,25 @@ class FanFiction
         if (strpos($this->url, "hpfanficarchive.com") !== false)
             return FanFictionSite::HPFFA;
 
+        if (strpos($this->url, "wattpad.com") !== false)
+            return FanFictionSite::WattPad;
+
+        if (strpos($this->url, "ficwad.com") !== false)
+            return FanFictionSite::FicWad;
+
 
         return FanFictionSite::ERROR;
 
     }
 
-    public function getChapter($chapNum)
-    {
-        return $this->ficHandler()->getChapter($chapNum);
+    public function getChapter($chapNum,$info=null)
+    {   
+        if ($this->ficHandler()->getSite() == "wattpad"){
+            return $this->ficHandler()->getChapter($chapNum);
+        }else{
+            
+            return $this->ficHandler()->getChapter($chapNum);
+        }
     }
 
     public function getSource() { return $this->source; }

@@ -12,20 +12,20 @@ header('Content-type: application/json');
 
 $error = new ErrorHandler();
 
-if (!isset($_POST["url"]))
+if (!isset($_REQUEST["url"]))
     $error->addNew(ErrorCode::ERROR_CRITICAL, "No URL entered.");
 
 
 //$fic = new FanFiction("https://www.fanfiction.net/s/5069455/1/Follow-the-Phoenix", $error);
 //$fic = new FanFiction("https://www.fanfiction.net/s/6706530", $error); // One shot
-$fic = new FanFiction($_POST["url"], $error);
+$fic = new FanFiction($_REQUEST["url"], $error);
 
 $return = Array();
 $exist = false;
 
 if (! PORTABLE_MODE)
 {
-    if (!isset($_POST["force"]) || $_POST["force"] === "false") {
+    if (!isset($_REQUEST["force"]) || $_REQUEST["force"] === "false") {
         try {
             $dbH = new dbHandler();
             $pdo = $dbH->connect();
