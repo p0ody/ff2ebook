@@ -6,11 +6,33 @@ require_once("../class/class.Chapter.php");
 
 class FFnet extends BaseHandler
 {   
+
+function bypass_cf($url="null"){ //added function to pass requests to python.
+        if ($url == "null"){
+            return;
+        }
+	$url = base64_encode($url);
+        $condainit="source /home/bastyoung/.bashrc";
+        $command = "bash -c 'source /home/bastyoung/.bashrc; pwd; python3 ../class/py/cf_curl.py \"".$url."\" 2>&1;'2>&1";
+        #echo "Code: ".$command;
+
+$file = '../commands.log';
+$current = file_get_contents($file);
+$current .= $command."\n";
+file_put_contents($file, $current);
+
+        $val = shell_exec($command);
+        #echo $val;
+        return $val;
+    }
+
+
+
     function populate()
     {
         $this->setFicId($this->popFicId());
 
-        $infosSource = $this->getPageSource(1, false);
+	$infosSource = $this->getPageSource(1, false);
         $this->setTitle($this->popTitle($infosSource));
 
         $this->setAuthor($this->popAuthor($infosSource));
@@ -55,7 +77,7 @@ class FFnet extends BaseHandler
 
     }
 
-    protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
+   protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
     {
         $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
 
@@ -79,7 +101,6 @@ class FFnet extends BaseHandler
 
         return $source;
     }
-
     private function popFicId()
     {
         if (preg_match("#fanfiction.net/s/([0-9]+)#", $this->getURL(), $matches) === 1)
@@ -114,6 +135,7 @@ class FFnet extends BaseHandler
         }
         else
         {
+        	echo $source;
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find author.");
             return "No Author.";
         }
@@ -158,6 +180,7 @@ class FFnet extends BaseHandler
             return $matches[1];
         else
         {
+        	//echo $source;
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find summary.");
             return false;
         }

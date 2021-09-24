@@ -5,7 +5,9 @@ require_once("../class/class.ErrorHandler.php");
 require_once("../class/class.FileManager.php");
 require_once("../class/class.Chapter.php");
 
-session_start();
+session_start([
+    'read_and_close' => true,
+]);
 header('Content-type: application/json');
 
 

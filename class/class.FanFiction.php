@@ -8,15 +8,25 @@ require_once __DIR__."/class.ficwad.com.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
 
-function bypass_cf($url="null"){ //added function to pass requests to python.
-    if ($url == "null"){
-        return;
-    }
-    $command = '/bin/bash -c \'cd ../class/py/;python3 cf_curl.py '.$url." 2>&1;'";
-    $source = shell_exec($command);
-    return $source;
-}
 
+function bypass_cf($url="null"){ //added function to pass requests to python.
+        if ($url == "null"){
+            return;
+        }
+    $url = base64_encode($url);
+        $condainit="source /home/bastyoung/.bashrc";
+        $command = "bash -c 'source /home/bastyoung/.bashrc; pwd; python3 ../class/py/cf_curl.py \"".$url."\" 2>&1;'2>&1";
+        #echo "Code: ".$command;
+
+$file = '../commands.log';
+$current = file_get_contents($file);
+$current .= $command."\n";
+file_put_contents($file, $current);
+
+        $val = shell_exec($command);
+        #echo $val;
+        return $val;
+    }
 
 abstract class FanFictionSite
 {
@@ -86,7 +96,7 @@ class FanFiction
     public function ficHandler() { return $this->handler; }
 
     public function getURL() { return $this->url; }
-    private function setURL($url) { $this->url = $url; }
+    public function setURL($url) { $this->url = $url; }
 
 
     private function parseURL()
