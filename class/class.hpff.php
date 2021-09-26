@@ -30,11 +30,6 @@ class HPFF extends BaseHandler
     }
 
 
-    public function getSite(){
-        return "hpff";
-    }
-
-
     public function getChapter($number)
     {
 

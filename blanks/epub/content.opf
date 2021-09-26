@@ -7,7 +7,6 @@
         <dc:language>en</dc:language>
         <dc:identifier id="BookId" opf:scheme="UUID">%uuid%</dc:identifier>
         <dc:creator opf:file-as="%author%" opf:role="aut">%author%</dc:creator>
-%meta%
     </metadata>
     <manifest>
 		<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
@@ -20,7 +19,6 @@
 %chapSpine%
     </spine>
     <guide>
-%references%
         <reference href="Content/title.xhtml" title="Title Page" type="title-page"/>
     </guide>
 </package>
