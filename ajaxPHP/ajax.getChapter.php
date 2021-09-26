@@ -19,6 +19,7 @@ if (!isset($_SESSION["encoded_fic"]))
     $error->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find serialized fic infos.");
 
 /** @var FanFiction $fic */
+var_dump($_SESSION["encoded_fic"]);
 $fic = unserialize($_SESSION["encoded_fic"]);
 
 if ($fic === false)
