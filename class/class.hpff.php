@@ -3,6 +3,7 @@ require_once __DIR__."/class.base.handler.php";
 require_once __DIR__."/class.ErrorHandler.php";
 require_once __DIR__."/class.Chapter.php";
 require_once __DIR__."/class.Utils.php";
+require_once __DIR__."/class.SourceHandler.php";
 
 
 class HPFF extends BaseHandler
@@ -73,14 +74,7 @@ class HPFF extends BaseHandler
         else
             $url = "http://www.harrypotterfanfiction.com/viewstory.php?psid=". $this->getFicId();
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_ENCODING, '');
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $source = curl_exec($curl);
-        curl_close($curl);
+        $source = SourceHandler::useCurl($url);
 
         if ($source === false)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");

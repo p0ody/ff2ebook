@@ -111,4 +111,12 @@ class Utils
 
         return $new;
     }
+
+    // Added this because when using Selenium, for some reason, some single quote are replace by double quote
+    public static function regexOnSource($regex, $source, &$matches)
+    {
+        $regex = preg_replace("/('|\")/", "(?:'|\")", $regex);
+
+        return preg_match($regex, $source, $matches);
+    }
 }

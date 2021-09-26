@@ -77,31 +77,40 @@ function ajax_getFicInfos()
     }).done(function(data)
     {
         var errors = checkForError(data);
-
+        var failed = false;
         $.each(errors, function(index, error)
         {
-            newError(error.code, error.message)
+            if (error.code == ERROR_CRITICAL) {
+                ajax_getFicInfos();
+                failed = true;
+            }
+            else {
+                newError(error.code, error.message);
+            }
         });
 
-        _ficData = data;
-
-        if (data["exist"] == true)
+        if (!failed)
         {
-            if (data["site"] === "undefined" && data["id"] === "undefined")
-                return;
+            _ficData = data;
 
-            statusOutput("<span class='text-ok'>File already on server...</span>");
+            if (data["exist"] == true)
+            {
+                if (data["site"] === "undefined" && data["id"] === "undefined")
+                    return;
 
-            changeState(STATE_CONVERSION);
-        }
-        else
-        {
-            addPct(PCT_FIC_INFOS);
-            nextState();
+                statusOutput("<span class='text-ok'>File already on server...</span>");
+
+                changeState(STATE_CONVERSION);
+            }
+            else
+            {
+                addPct(PCT_FIC_INFOS);
+                nextState();
+            }
         }
     }).fail(function()
     {
-        ajax_getFicInfos()
+        ajax_getFicInfos();
     });
 }
 
@@ -128,23 +137,31 @@ function ajax_getChapter(num)
             dataType: "json"
         }).done(function (data) {
             var errors = checkForError(data);
-
+            var failed = false;
             $.each(errors, function (index, error) {
-                newError(error.code, error.message)
+                if (error.code == ERROR_CRITICAL) {
+                    ajax_getChapter(num);
+                    failed = true;
+                }
+                else {
+                    newError(error.code, error.message);
+                }
             });
+            if (!failed) {
+                statusOutput("<span class='text-ok'>Received chapter #" + data.chapNum + " data.</span>");
 
-            statusOutput("<span class='text-ok'>Received chapter #" + data.chapNum + " data.</span>");
+                if (typeof _ficData.chapReady === "undefined")
+                    _ficData.chapReady = [];
 
-            if (typeof _ficData.chapReady === "undefined")
-                _ficData.chapReady = [];
+                _ficData.chapReady.push(data.chapNum);
 
-            _ficData.chapReady.push(data.chapNum);
+                setStatusText("Chapters: " + _ficData.chapReady.length + "/" + _ficData.chapCount);
+                addPct(PCT_CHAPTERS / parseFloat(_ficData.chapCount));
 
-            setStatusText("Chapters: " + _ficData.chapReady.length + "/" + _ficData.chapCount);
-            addPct(PCT_CHAPTERS / parseFloat(_ficData.chapCount));
-
-            if (_ficData.chapReady.length === parseInt(_ficData.chapCount))
-                nextState();
+                if (_ficData.chapReady.length === parseInt(_ficData.chapCount))
+                    nextState();
+            }
+            
 
         }).fail(function ()
         {

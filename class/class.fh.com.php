@@ -1,7 +1,9 @@
 <?php
 require_once("class.base.handler.php");
 require_once("class.ErrorHandler.php");
-require_once("../class/class.Chapter.php");
+require_once("class.Chapter.php");
+require_once("class.SourceHandler.php");
+
 
 
 class FHCOM extends BaseHandler
@@ -50,15 +52,7 @@ class FHCOM extends BaseHandler
     protected function getPageSource($chapter = 1)
     {
         $url = "http://www.fictionhunt.com/read/". $this->getFicId() ."/". $chapter;
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_ENCODING, '');
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $source = curl_exec($curl);
-        curl_close($curl);
+        $source = SourceHandler::useCurl($url);
 
         if ($source === false)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__."/../conf/sql.login.php";
+require_once __DIR__."/../conf/config.php";
 
 class dbHandler
 {
@@ -13,10 +13,10 @@ class dbHandler
 
     function __construct()
     {
-        $this->host = SQL_HOST;
-        $this->user = SQL_USER;
-        $this->passwd = SQL_PASSWD;
-        $this->db = SQL_DB;
+        $this->host = Config::SQL_HOST;
+        $this->user = Config::SQL_USER;
+        $this->passwd = Config::SQL_PASSWD;
+        $this->db = Config::SQL_DB;
         $this->error = Array();
     }
 
@@ -61,7 +61,13 @@ class dbHandler
 // Predefined statement
 define("SQL_SELECT_FIC", "SELECT * FROM `fic_archive` WHERE `id`=:id AND `site`=:site;");
 define("SQL_UPDATE_DL_DATE", "UPDATE `fic_archive` SET `lastDL`=". time() ." WHERE `id`=:id");
-define("SQL_INSERT_PROXY", "REPLACE INTO `proxy_list` (`ip`, `working`, `latency`) VALUES (:ip, :working, :latency);");
-define("SQL_SELECT_PROXY_ALL", "SELECT * FROM `proxy_list` ORDER BY `working` DESC, `latency` ASC;");
+define("SQL_INSERT_PROXY", "INSERT INTO `proxy_list` (`ip`, `working`, `latency`, `auth`) VALUES (:ip, :working, :latency, :auth) ON DUPLICATE KEY UPDATE `working`=:working, `latency`=:latency, `auth`=:auth;");
+define("SQL_SELECT_PROXY_ALL", "SELECT * FROM `proxy_list` ORDER BY `working` DESC, `auth` DESC, `latency` ASC, (`times_down`/`total_hits`) DESC;");
+define("SQL_SELECT_PROXY_ALL_AUTH", "SELECT * FROM `proxy_list` WHERE `auth` IS NOT NULL ORDER BY `working` DESC, `latency` ASC, (`times_down`/`total_hits`) DESC;");
+define("SQL_SELECT_PROXY_LIMIT", "SELECT * FROM `proxy_list` ORDER BY `working` DESC, `auth` DESC, `latency` ASC, (`times_down`/`total_hits`) DESC LIMIT :limitCount;");
 define("SQL_EMPTY_PROXY_LIST", "DELETE * FROM  `proxy_list`;");
-define("SQL_CLEAN_PROXY", "DELETE FROM  `proxy_list` WHERE `working`=0;");
+define("SQL_CLEAN_PROXY", "DELETE FROM  `proxy_list` WHERE `working`=0 AND `times_down`> 1 AND (`times_down`/`total_hits`)>0.4;"); // Delete proxies that are not working, and have been down at least once and uptime is lower than 40%
+define("SQL_PROXY_ADD_BLACKLIST", "DELETE FROM `proxy_list` WHERE `ip`=:ip; REPLACE INTO `proxy_blacklist` (`ip`) VALUES (:ip);");
+define("SQL_PROXY_GET_BLACKLIST", "SELECT * FROM `proxy_blacklist`;");
+define("SQL_PROXY_IS_BLACKLISTED", "SELECT * FROM `proxy_blacklist` WHERE `ip`=:ip;");
+define("SQL_PROXY_UPDATE_UPTIME", "UPDATE `proxy_list` SET `total_hits`=`total_hits`+1, `times_down`=`times_down`+:isWorking WHERE `ip`=:ip;");

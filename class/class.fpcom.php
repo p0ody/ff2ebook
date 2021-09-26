@@ -1,7 +1,8 @@
 <?php
 require_once("class.base.handler.php");
 require_once("class.ErrorHandler.php");
-require_once("../class/class.Chapter.php");
+require_once("class.Chapter.php");
+require_once("class.SourceHandler.php");
 
 
 class FPCOM extends BaseHandler
@@ -57,14 +58,7 @@ class FPCOM extends BaseHandler
     {
         $url = "https://". ($mobile ? "m" : "www") .".fictionpress.com/s/". $this->getFicId() ."/". $chapter;
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_ENCODING, '');
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $source = curl_exec($curl);
-        curl_close($curl);
+        $source = SourceHandler::useCurl($url);
 
         if ($source === false)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
