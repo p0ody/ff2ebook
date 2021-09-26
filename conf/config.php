@@ -3,13 +3,13 @@
 abstract class Config {
     const SELENIUM_MAX_TRY          = 3;
     const CURL_MAX_ASYNC            = 50;
-    const PYTHON_EXECUTABLE         = "C:/Users/Maxime/AppData/Local/Programs/Python/Python39/python";
-    const DOMAIN_PATH_SCRIPT        = "localhost/ff2ebook/scripts"; 
+    const PYTHON_EXECUTABLE         = "";
+    const DOMAIN_PATH_SCRIPT        = ""; 
     // MySQL
-    const SQL_HOST                  = "localhost";
-    const SQL_USER                  = "root";
-    const SQL_PASSWD                = "password";
-    const SQL_DB                    = "php";
+    const SQL_HOST                  = "";
+    const SQL_USER                  = "";
+    const SQL_PASSWD                = "";
+    const SQL_DB                    = "";
     // Proxy
     const PROXY_SOURCE              = ["https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=2000&country=all&ssl=yes&anonymity=all&simplified=true",
                                       "https://spys.one/en/free-proxy-list/",

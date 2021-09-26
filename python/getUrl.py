@@ -4,7 +4,7 @@ from selenium import webdriver
 import argparse
 
 #config
-REMOTE_DRIVER = "http://192.168.1.250:4444/wd/hub"
+REMOTE_DRIVER = ""
 
 parser = argparse.ArgumentParser(description='Selenium client to fetch html from a URL')
 parser.add_argument('-u','--url', help='Input URL',required=True)
