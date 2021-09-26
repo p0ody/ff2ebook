@@ -72,6 +72,7 @@ class Utils
         switch($site)
         {
             case "ffnet":
+            case "ff":
                 return "http://www.fanfiction.net/s/". $id;
             case "fpcom":
                 return "http://www.fictionpress.com/s/". $id;

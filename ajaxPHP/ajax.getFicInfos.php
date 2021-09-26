@@ -20,7 +20,8 @@ $fic = new FanFiction($_POST["url"], $error);
 $return = Array();
 $exist = false;
 
-if (!isset($_POST["force"]) || $_POST["force"] === "false")
+// if force update is not checked, check in DB to see if fic already exist.
+if (!isset($_POST["force"]) || $_POST["force"] === "false" || !$_POST["force"])
 {
     try
     {

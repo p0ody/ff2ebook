@@ -16,7 +16,7 @@ $count = 0;
 $arrayKey = 0;
 foreach($list as $proxy)
 {
-    $url = "http://". Config::DOMAIN_PATH_SCRIPT ."/testProxy.php";
+    $url = "http://". Config::DOMAIN_PATH ."/scripts/testProxy.php";
     $url .= "?ip=". $proxy->getIP();
     if ($proxy->isAuthed()) {
         $url .= "&auth=". $proxy->getAuth();
