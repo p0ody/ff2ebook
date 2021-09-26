@@ -1,7 +1,6 @@
 <?php
 ob_start();
 require_once __DIR__."/class/UrlParser.php";
-require_once __DIR__."/class/FileMgr.php";
 require_once __DIR__."/../class/CurlHandler.php";
 require_once __DIR__."/../conf/config.php";
 require_once __DIR__."/../class/class.dbHandler.php";
