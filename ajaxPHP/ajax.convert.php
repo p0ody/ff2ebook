@@ -1,8 +1,4 @@
 <?php
-
-error_reporting(E_ERROR | E_PARSE);
-session_start();
-
 require_once("../sqlSession.php");
 require_once("../class/class.ErrorHandler.php");
 require_once("../class/class.ZipManager.php");
@@ -10,6 +6,7 @@ require_once("../class/class.FanFiction.php");
 require_once("../class/class.FileManager.php");
 require_once("../class/class.Download.php");
 
+session_start();
 //header('Content-type: application/json');
 
 
