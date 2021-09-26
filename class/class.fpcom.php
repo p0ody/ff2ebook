@@ -35,14 +35,14 @@ class FPCOM extends BaseHandler
         $text = false;
         $title = false;
 
-        if (preg_match("#Chapter [0-9]+?: (.+?)<br></div><div role='main' aria-label='story content' style='font-size:1.1em;'>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#Chapter [0-9]+?: (.+?)<br></div><div role='main' aria-label='story content' style='font-size:1.1em;'>#si", $source, $matches) === 1)
             $title = $matches[1];
         else
             $title = "Chapter $number";
 
 
 
-        if (preg_match("#<div style='padding:5px 10px 5px 10px;' class='storycontent nocopy' id='storycontent' >(.+?)</div>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#<div.+?id='storycontent'>(.+?)</div>#si", $source, $matches) === 1)
             $text = $matches[1];
         else
         {
@@ -57,18 +57,26 @@ class FPCOM extends BaseHandler
     protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
     {
         $url = "https://". ($mobile ? "m" : "www") .".fictionpress.com/s/". $this->getFicId() ."/". $chapter;
+        $try = 0;
+        $source = false;
+        // Retry 3 times before giving up
+        while (!$source && $try < Config::SELENIUM_MAX_TRY) {
+            $source = SourceHandler::useSelenium($url, true);
+            $try++;
+        }
 
-        $source = SourceHandler::useCurl($url);
+        if (!$source) {
+            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't get source for chapter $chapter.");
+        }
 
-        if ($source === false)
-            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
+        $source = preg_replace("/(<script>.+?<\/script>)/si", "", $source); // Remove javascript from source
 
         return $source;
     }
 
     private function popFicId()
     {
-        if (preg_match("#fictionpress.com/s/([0-9]+)#", $this->getURL(), $matches) === 1)
+        if (Utils::regexOnSource("#fictionpress.com/s/([0-9]+)#", $this->getURL(), $matches) === 1)
             return $matches[1];
         else
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find Fic ID.");
@@ -79,7 +87,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#Follow/Fav</button><b class='xcontrast_txt'>(.+?)</b>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#Follow/Fav</button><b class='xcontrast_txt'>(.+?)</b>#si", $source, $matches) === 1)
             return $matches[1];
         else {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find title.");
@@ -93,7 +101,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#By:</span> <a class='xcontrast_txt' href='/u/([0-9]+?)/.*?'>(.+?)</a>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#By:</span> <a class='xcontrast_txt' href='/u/([0-9]+?)/.*?'>(.+?)</a>#si", $source, $matches) === 1)
         {
             $this->setAuthorProfile("https://www.fictionpress.com/u/". $matches[1]);
             return $matches[2];
@@ -110,7 +118,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<a class=xcontrast_txt href='.*?'>(.+?)</a><span class='xcontrast_txt icon-chevron-right xicon-section-arrow'></span><a class=xcontrast_txt href=.*?>(.+?)</a>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#<a class=xcontrast_txt href='.*?'>(.+?)</a><span class='xcontrast_txt icon-chevron-right xicon-section-arrow'></span><a class=xcontrast_txt href=.*?>(.+?)</a>#si", $source, $matches) === 1)
             return $matches[1] ."/". $matches[2];
         else
         {
@@ -125,7 +133,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<title>.+?, a (.+?) fanfic | FanFiction</title>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#<title>.+?, a (.+?) fanfic | FanFiction</title>#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
@@ -140,7 +148,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#<div style='margin-top:2px' class='xcontrast_txt'>(.+?)</div>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#<div style='margin-top:2px' class='xcontrast_txt'>(.+?)</div>#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
@@ -155,7 +163,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#Published: <span data-xutime='([0-9]+?)'>.*?</span>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#Published: <span data-xutime='([0-9]+?)'>.*?</span>#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
@@ -170,7 +178,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#Updated: <span data-xutime='([0-9]+?)'>.*?</span>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#Updated: <span data-xutime='([0-9]+?)'>.*?</span>#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
@@ -183,7 +191,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#- Words: (.+?) -#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#- Words: (.+?) -#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
@@ -198,7 +206,7 @@ class FPCOM extends BaseHandler
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
 
-        if (preg_match_all("#<option  value=.+?>#si", $source, $matches) < 1)
+        if (preg_match_all("#<option value=.+?>#si", $source, $matches) < 1)
             return 1;
         else
             return count($matches[0]) / 2;
@@ -219,7 +227,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (preg_match("#target='rating'>.+?</a> - .*?-  (.+?) -#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#target='rating'>.+?</a> - .*?-  (.+?) -#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
