@@ -15,6 +15,10 @@ class CurlHandler {
         curl_setopt($curl, CURLOPT_URL, $toUrl);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        //curl_setopt($curl, CURLOPT_COOKIESESSION, true);
+        $cookie = "./cookie.txt";
+        curl_setopt ($curl, CURLOPT_COOKIEJAR, $cookie); 
+        curl_setopt ($curl, CURLOPT_COOKIEFILE, $cookie); 
         $result = curl_exec($curl);
         curl_close($curl);
         return($result);

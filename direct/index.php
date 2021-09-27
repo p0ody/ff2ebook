@@ -38,8 +38,7 @@ try {
             $chapters[$i] = CurlHandler::sendPost(Config::DOMAIN_PATH ."/ajaxPHP/ajax.getChapter.php", ["chapNum" => $i]);
             echo $chapters[$i];
         }
-        var_dump($chapters);
-        return;
+
         for ($i = 1 ; $i <= $ficInfos["chapCount"] ; $i++) {
             if (!$chapters[$i]) {
                 throw new Exception("Error while getting chapters data. Try again.");
@@ -74,3 +73,4 @@ function getDownload($id, $source, $filetype) {
 
 }
 ob_end_flush();
+session_write_close();

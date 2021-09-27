@@ -19,7 +19,6 @@ if (!isset($_SESSION["encoded_fic"]))
     $error->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find serialized fic infos.");
 
 /** @var FanFiction $fic */
-var_dump($_SESSION["encoded_fic"]);
 $fic = unserialize($_SESSION["encoded_fic"]);
 
 if ($fic === false)
@@ -36,3 +35,4 @@ $file = $fm->createChapterFile($fic->ficHandler()->getOutputDir() ."/OEBPS/Conte
 
 $return["error"] = $error->getAllAsJSONReady();
 echo json_encode($return);
+session_write_close();

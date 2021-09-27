@@ -7,6 +7,7 @@ CREATE TABLE fic_archive
   updated INT UNSIGNED,
   filename varchar(35),
   lastDL INT UNSIGNED DEFAULT 0,
+  lastChecked INT UNSIGNED DEFAULT 0,
   PRIMARY KEY (id, site)
 );
 
@@ -20,4 +21,7 @@ CREATE TABLE fic_archive
 -- ALTER TABLE fic_archive MODIFY COLUMN lastDL INT UNSIGNED;
 -- ALTER TABLE fic_archive MODIFY COLUMN updated INT UNSIGNED;
 -- ALTER TABLE fic_archive MODIFY COLUMN filename varchar(35);
+
+-- 2021-09-27 Added column lastChecked
+-- ALTER TABLE fic_archive ADD lastChecked INT UNSIGNED DEFAULT 0;
 
