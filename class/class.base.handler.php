@@ -28,14 +28,14 @@ abstract class BaseHandler
     /** @return Chapter */
     abstract public function getChapter($number);
     abstract protected function getPageSource($chapter);
-    abstract protected function populate();
+    abstract protected function populate($waitToPopulate = false);
 
-    public function __construct($url, $errorHandler)
+    public function __construct($url, $errorHandler, $waitToPopulate = false)
     {
         $this->url = $url;
         $this->error = $errorHandler;
 
-        $this->populate();
+        $this->populate($waitToPopulate);
 
         $this->chapSource = Array();
 

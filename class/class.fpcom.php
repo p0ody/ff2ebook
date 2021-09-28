@@ -7,9 +7,13 @@ require_once("class.SourceHandler.php");
 
 class FPCOM extends BaseHandler
 {
-    function populate()
+    function populate($waitToPopulate = false)
     {
         $this->setFicId($this->popFicId());
+
+        if ($waitToPopulate) {
+            return;
+        }
 
         $infosSource = $this->getPageSource(1, false);
         $this->setTitle($this->popTitle($infosSource));

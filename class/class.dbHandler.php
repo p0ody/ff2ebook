@@ -59,7 +59,7 @@ class dbHandler
 
 
 // Predefined statement
-define("SQL_SELECT_FIC", "SELECT * FROM `fic_archive` WHERE `id`=:id AND `site`=:site;");
+define("SQL_SELECT_FIC", "SELECT * FROM `fic_archive` WHERE `id`=:id AND `site`=:site; UPDATE `fic_archive` SET `lastChecked`=". time() ." WHERE `id`=:id AND `site`=:site;");
 define("SQL_UPDATE_DL_DATE", "UPDATE `fic_archive` SET `lastDL`=". time() ." WHERE `id`=:id");
 define("SQL_INSERT_PROXY", "INSERT INTO `proxy_list` (`ip`, `working`, `latency`, `auth`) VALUES (:ip, :working, :latency, :auth) ON DUPLICATE KEY UPDATE `working`=:working, `latency`=:latency, `auth`=:auth;");
 define("SQL_SELECT_PROXY_ALL", "SELECT * FROM `proxy_list` ORDER BY `working` DESC, `auth` DESC, `latency` ASC, (`times_down`/`total_hits`) DESC;");

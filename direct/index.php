@@ -19,7 +19,7 @@ try {
     if (!$ficInfos) {
         throw new Exception("Error while fetching fic infos. Try again.");
     } 
-
+    var_dump($ficInfos);
     $ficInfos = json_decode($ficInfos, true);
 
     if (!$ficInfos) {

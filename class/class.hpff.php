@@ -10,7 +10,7 @@ class HPFF extends BaseHandler
 {
     private $chaptersIDs;
 
-    function populate()
+    function populate($waitToPopulate = false)
     {
         $this->setFicId($this->popFicId());
 

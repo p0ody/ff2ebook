@@ -25,7 +25,7 @@ class FanFiction
     private $url, $ficSite, $handler, $error, $source;
 
     // When adding a new site, dont forget to add it in class.Utils and class.base.handler getRealURL().
-    public function __construct($url, $errorHandler)
+    public function __construct($url, $errorHandler, $waitToPopulate)
     {
         $this->error = $errorHandler;
         $this->setURL($url);
@@ -35,7 +35,7 @@ class FanFiction
         switch($this->ficSite)
         {
             case FanFictionSite::FFnet:
-                $this->handler = new FFnet($this->getURL(), $this->error);
+                $this->handler = new FFnet($this->getURL(), $this->error, $waitToPopulate);
                 $this->source = "ffnet";
                 break;
 
@@ -45,7 +45,7 @@ class FanFiction
                 break;
 
             case FanFictionSite::FPCOM:
-                $this->handler = new FPCOM($this->getURL(), $this->error);
+                $this->handler = new FPCOM($this->getURL(), $this->error, $waitToPopulate);
                 $this->source = "fpcom";
                 break;
 

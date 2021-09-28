@@ -8,7 +8,7 @@ require_once __DIR__."/class.SourceHandler.php";
 
 class HPFFA extends BaseHandler
 {
-    function populate()
+    function populate($waitToPopulate = false)
     {
         $this->setFicId($this->popFicId());
 

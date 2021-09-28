@@ -8,7 +8,7 @@ require_once("class.SourceHandler.php");
 
 class FHCOM extends BaseHandler
 {
-    function populate()
+    function populate($waitToPopulate = false)
     {
         $this->setFicId($this->popFicId());
 

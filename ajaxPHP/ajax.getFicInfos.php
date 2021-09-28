@@ -15,8 +15,7 @@ if (!isset($_POST["url"]))
     $error->addNew(ErrorCode::ERROR_CRITICAL, "No URL entered.");
 
 
-$fic = new FanFiction($_POST["url"], $error);
-
+$fic = new FanFiction($_POST["url"], $error, true);
 $return = Array();
 $exist = false;
 
@@ -36,9 +35,23 @@ if (!isset($_POST["force"]) || $_POST["force"] === "false" || !$_POST["force"])
 
         if ($query->rowCount() === 1) // If this fic is already in archive and up to date
         {
-            $result = $query->fetch();
+            $result = $query->fetch(PDO::FETCH_ASSOC);
 
-            if ($fic->ficHandler()->getUpdatedDate() <= $result["updated"] && is_file("../archive/" . $result["filename"])) {
+            // If more than 24 hours since last time checked if fic is up to date, check if our version is still up to date.
+            if (time() - $result["lastChecked"] > Config::TIME_MAX_LAST_CHECKED) {
+                $fic->ficHandler()->populate();
+                if ($fic->ficHandler()->getUpdatedDate() <= $result["updated"] && is_file("../archive/" . $result["filename"])) {
+                    $exist = true;
+                    $return["exist"] = true;
+                }
+
+                $return["title"] = $fic->ficHandler()->getTitle();
+                $return["author"] = $fic->ficHandler()->getAuthor();
+                $return["chapCount"] = $fic->ficHandler()->getChapCount();
+                $return["updated"] = $fic->ficHandler()->getUpdatedDate();
+                $return["error"] = $error->getAllAsJSONReady();
+            }
+            else { // Otherwise  just return the existing file.\
                 $exist = true;
                 $return["exist"] = true;
             }
@@ -50,14 +63,8 @@ if (!isset($_POST["force"]) || $_POST["force"] === "false" || !$_POST["force"])
     }
 }
 
-
 $return["id"] = $fic->ficHandler()->getFicId();
 $return["site"] = $fic->getSource();
-$return["title"] = $fic->ficHandler()->getTitle();
-$return["author"] = $fic->ficHandler()->getAuthor();
-$return["chapCount"] = $fic->ficHandler()->getChapCount();
-$return["updated"] = $fic->ficHandler()->getUpdatedDate();
-$return["error"] = $error->getAllAsJSONReady();
 
 
 if (!$exist)
