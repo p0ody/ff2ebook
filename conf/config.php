@@ -2,23 +2,31 @@
 
 abstract class Config {
     const SELENIUM_MAX_TRY          = 3;
+    const DIRECT_MAX_TRY            = 3;
     const CURL_MAX_ASYNC            = 50;
-    const PYTHON_EXECUTABLE         = "";
-    const DOMAIN_PATH_SCRIPT        = ""; 
+    const PYTHON_EXECUTABLE         = "/bin/python3";
+    const DOMAIN_PATH               = ""; 
+    const TIME_MAX_LAST_CHECKED     = 24*60*60; // 24 hours * 60 minutes * 60 seconds
+    const REMOTE_CLOUDSCRAPER_URL   = "";
+    const PUPFLARE_URL              = "";
     // MySQL
     const SQL_HOST                  = "";
     const SQL_USER                  = "";
     const SQL_PASSWD                = "";
     const SQL_DB                    = "";
     // Proxy
-    const PROXY_SOURCE              = ["https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=2000&country=all&ssl=yes&anonymity=all&simplified=true",
-                                      "https://spys.one/en/free-proxy-list/",
-                                      "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
-                                      "file://".__DIR__."/../proxy/proxy_list"];
+    const PROXY_SOURCE              = [];
 
-    const PROXY_AUTH_SOURCE         = ["https://proxy.webshare.io/proxy/list/download/kglgxwzmfjcdolxpywkctnlbxaiprsgilcslnqps/-/http/username/direct/"];
+    const PROXY_AUTH_SOURCE         = [];
                                       
     const PROXY_TEST_URL            = "https://www.fanfiction.net";
     const PROXY_TEST_MAX_TIME_SEC   = 10;
     const PROXY_TEST_MAX_TIME_MS    = Config::PROXY_TEST_MAX_TIME_SEC * 1000;
+    const PROXY_MAX_COUNT_TEST      = 50;
+    // Email 
+    const EMAIL_SMTP_SERVER         = "";
+    const EMAIL_SMTP_PORT           = 465;
+    const EMAIL_SMTP_EMAIL          = "";
+    const EMAIL_SMTP_PASSWORD       = "";
+
 }
