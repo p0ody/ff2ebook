@@ -33,6 +33,9 @@ $return["chapNum"] = $_POST["chapNum"];
 $fm = new FileManager();
 $file = $fm->createChapterFile($fic->ficHandler()->getOutputDir() ."/OEBPS/Content", $chapter);
 
-$return["error"] = $error->getAllAsJSONReady();
+if ($error->hasErrors()) {
+    $return["error"] = $error->getAllAsJSONReady();
+}
 echo json_encode($return);
+
 session_write_close();

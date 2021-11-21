@@ -59,7 +59,8 @@ class dbHandler
 
 
 // Predefined statement
-define("SQL_SELECT_FIC", "SELECT * FROM `fic_archive` WHERE `id`=:id AND `site`=:site; UPDATE `fic_archive` SET `lastChecked`=". time() ." WHERE `id`=:id AND `site`=:site;");
+define("SQL_SELECT_FIC", "SELECT * FROM `fic_archive` WHERE `id`=:id AND `site`=:site ORDER BY `updated` DESC;");
+define("SQL_INSERT_FIC", "INSERT INTO `fic_archive` (`site`, `id`, `title`, `author`, `updated`, `filename`, `lastChecked`) VALUES (:site, :id, :title, :author, :updated, :filename, :lastChecked) ON DUPLICATE KEY UPDATE `updated`=:updated, `lastChecked`=:lastChecked;");
 define("SQL_UPDATE_DL_DATE", "UPDATE `fic_archive` SET `lastDL`=". time() ." WHERE `id`=:id");
 define("SQL_INSERT_PROXY", "INSERT INTO `proxy_list` (`ip`, `working`, `latency`, `auth`) VALUES (:ip, :working, :latency, :auth) ON DUPLICATE KEY UPDATE `working`=:working, `latency`=:latency, `auth`=:auth;");
 define("SQL_SELECT_PROXY_ALL", "SELECT * FROM `proxy_list` ORDER BY `working` DESC, `auth` DESC, `latency` ASC, (`times_down`/`total_hits`) DESC;");
@@ -71,3 +72,4 @@ define("SQL_PROXY_ADD_BLACKLIST", "DELETE FROM `proxy_list` WHERE `ip`=:ip; REPL
 define("SQL_PROXY_GET_BLACKLIST", "SELECT * FROM `proxy_blacklist`;");
 define("SQL_PROXY_IS_BLACKLISTED", "SELECT * FROM `proxy_blacklist` WHERE `ip`=:ip;");
 define("SQL_PROXY_UPDATE_UPTIME", "UPDATE `proxy_list` SET `total_hits`=`total_hits`+1, `times_down`=`times_down`+:isWorking WHERE `ip`=:ip;");
+define("SQL_UPDATE_LASTCHECKED", "UPDATE `fic_archive` SET `lastChecked`=". time() ." WHERE `id`=:id AND `site`=:site;");

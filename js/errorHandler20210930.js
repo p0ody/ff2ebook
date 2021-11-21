@@ -20,7 +20,7 @@ function getErrorType(code)
 
 function getErrorColorClass(code)
 {
-    switch(code)
+    switch(parseInt(code))
     {
         case ERROR_CRITICAL:
             return "text-critical";
@@ -36,24 +36,19 @@ function getErrorColorClass(code)
 function newError(code, message)
 {
     printError(code, message);
-    if (code === ERROR_CRITICAL)
+    if (code == ERROR_CRITICAL)
         changeState(STATE_ERROR);
 }
 
 function checkForError(data)
 {
     var errors = [];
-    if (data.error !== "undefined")
+    if (data.error != undefined)
     {
         $.each(data.error, function(key, value) {
-            var header, number;
-
-            //header = key.substr(0, key.indexOf("_")).trim();
-            number = parseInt(key.substr(key.indexOf("_") + 1))
-
-            if (key.substr(0, key.indexOf("_")) === "code")
+            if (key.substr(0, key.indexOf("_")) == "code")
             {
-                var temp = { code: value, message: data.error["message_"+number] };
+                temp = { code: value, message: data.error["message_"+number] };
                 errors[number] = temp;
             }
         });
@@ -66,9 +61,9 @@ function printError(code, message)
 {
     $("#output").append("<div class=\""+ getErrorColorClass(code) +"\">"+  getErrorType(code) +": "+ message +"</div>");
 
-    if (code === ERROR_WARNING)
+    if (code == ERROR_WARNING)
         $("#warning-icon").show();
 
-    if (code === ERROR_CRITICAL)
+    if (code == ERROR_CRITICAL)
         $("#critical-icon").show();
 }

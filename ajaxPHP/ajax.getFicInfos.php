@@ -45,11 +45,9 @@ if (!isset($_POST["force"]) || $_POST["force"] === "false" || !$_POST["force"])
                     $return["exist"] = true;
                 }
 
-                $return["title"] = $fic->ficHandler()->getTitle();
-                $return["author"] = $fic->ficHandler()->getAuthor();
-                $return["chapCount"] = $fic->ficHandler()->getChapCount();
-                $return["updated"] = $fic->ficHandler()->getUpdatedDate();
-                $return["error"] = $error->getAllAsJSONReady();
+                $query = $pdo->prepare(SQL_UPDATE_LASTCHECKED);
+                $query->execute([   "id" => $fic->ficHandler()->getFicId(),
+                                    "site" => $fic->getSource()]);
             }
             else { // Otherwise  just return the existing file.\
                 $exist = true;
@@ -66,9 +64,16 @@ if (!isset($_POST["force"]) || $_POST["force"] === "false" || !$_POST["force"])
 $return["id"] = $fic->ficHandler()->getFicId();
 $return["site"] = $fic->getSource();
 
-
 if (!$exist)
 {
+    $fic->ficHandler()->populate();
+    $return["title"] = $fic->ficHandler()->getTitle();
+    $return["author"] = $fic->ficHandler()->getAuthor();
+    $return["chapCount"] = $fic->ficHandler()->getChapCount();
+    $return["updated"] = $fic->ficHandler()->getUpdatedDate();
+    if ($error->hasErrors()) {
+        $return["error"] = $error->getAllAsJSONReady();
+    }
     $fm = new FileManager();
     $ficH = $fic->ficHandler();
     $ficH->setOutputDir($fm->createOutputDir());

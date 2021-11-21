@@ -41,7 +41,7 @@ class ProxyManager
             curl_close($curl);
         }
 
-        if ($proxyList !== false)
+        if ($proxyList !== false && strlen($proxyList) > 0)
         {
             preg_match_all("/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]{1,5})/si", $proxyList, $matches, PREG_PATTERN_ORDER);
             $proxies = [];
@@ -98,7 +98,7 @@ class ProxyManager
             curl_close($curl);
         }
 
-        if ($proxyList !== false)
+        if ($proxyList !== false && strlen($proxyList) > 0)
         {
             $proxies = [];
             preg_match_all("/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]{1,5}):(.+?:.+)/i", $proxyList, $matches, PREG_SET_ORDER);

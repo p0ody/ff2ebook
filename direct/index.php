@@ -1,7 +1,7 @@
 <?php
 ob_start();
 require_once __DIR__."/class/UrlParser.php";
-require_once __DIR__."/../class/CurlHandler.php";
+require_once __DIR__."/../class/class.CurlHandler.php";
 require_once __DIR__."/../conf/config.php";
 require_once __DIR__."/../class/class.dbHandler.php";
 require_once __DIR__."/../class/class.Utils.php";
@@ -15,7 +15,13 @@ try {
 	$getData = new UrlParser($_GET);
     $url = Utils::getWebURL($getData->getId(), $getData->getSource());
     
-    $ficInfos = CurlHandler::sendPost(Config::DOMAIN_PATH ."/ajaxPHP/ajax.getFicInfos.php", ["url" => $url, "force" => false]);
+    $try = 0;
+    $ficInfos = false;
+    while (!$ficInfos && $try < Config::DIRECT_MAX_TRY) {
+        $ficInfos = CurlHandler::sendPost(Config::DOMAIN_PATH ."/ajaxPHP/ajax.getFicInfos.php", ["url" => $url, "force" => false]);
+        $try++;
+    }
+    
     if (!$ficInfos) {
         throw new Exception("Error while fetching fic infos. Try again.");
     } 
@@ -26,7 +32,6 @@ try {
         throw new Exception("Error while decoding infos. Try again.");
     }
 
-
     if (isset($ficInfos["exist"]) && $ficInfos["exist"]) { // If file already exist
         return getDownload($getData->getId(), $getData->getSource(), $getData->getFileType());
     }
@@ -35,8 +40,12 @@ try {
         // If fic is not in DB, we need to fetch chapter and create file
         $chapters = [];
         for ($i = 1 ; $i <= $ficInfos["chapCount"] ; $i++) {
-            $chapters[$i] = CurlHandler::sendPost(Config::DOMAIN_PATH ."/ajaxPHP/ajax.getChapter.php", ["chapNum" => $i]);
-            echo $chapters[$i];
+            $try = 0;
+            $chapters[$i] = false;
+            while (!$chapters[$i] && $try < Config::DIRECT_MAX_TRY) {
+                $chapters[$i] = CurlHandler::sendPost(Config::DOMAIN_PATH ."/ajaxPHP/ajax.getChapter.php", ["chapNum" => $i]);
+                $try++;
+            }
         }
 
         for ($i = 1 ; $i <= $ficInfos["chapCount"] ; $i++) {

@@ -32,7 +32,12 @@ class Proxy {
 	}
 
 	public function __toString() {
-		return $this->ip;
+		$return = "";
+		if ($this->auth) {
+			$return = $this->auth ."@";
+		}
+		$return .= $this->ip;
+		return $return;
 	}
 
 

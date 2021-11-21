@@ -42,28 +42,29 @@ try
     $dbH = new dbHandler();
     $pdo = $dbH->connect();
 
-    $query1 = $pdo->prepare(SQL_SELECT_FIC);
-    $query1->execute(Array(
+    $query = $pdo->prepare(SQL_SELECT_FIC);
+    $query->execute(Array(
         "id"    => $ficH->getFicId(),
         "site"  => $fic->getSource()
     ));
 
-    if ($query1->rowCount() === 1)
+    if ($query->rowCount() === 1)
     {
-        $result = $query1->fetch();
+        $result = $query->fetch();
 
         if ($ficH->getUpdatedDate() < $result["updated"])
             $fm->deleteFile("../archive/". $result["filename"]);
     }
 
-    $query2 = $pdo->prepare("REPLACE INTO `fic_archive` (`site`, `id`, `title`, `author`, `updated`, `filename`) VALUES (:site, :id, :title, :author, :updated, :filename);");
-    $query2->execute(Array(
+    $query = $pdo->prepare(SQL_INSERT_FIC);
+    $query->execute(Array(
         "site"      => $fic->getSource(),
         "id"        => $ficH->getFicId(),
         "title"     => $ficH->getTitle(),
         "author"    => $ficH->getAuthor(),
         "updated"   => $ficH->getUpdatedDate(),
-        "filename"  => $fic->getSource() ."_". $ficH->getFicId() ."_". $ficH->getUpdatedDate() .".epub"
+        "filename"  => $fic->getSource() ."_". $ficH->getFicId() ."_". $ficH->getUpdatedDate() .".epub",
+        "lastChecked" => time()
     ));
 }
 catch (PDOException $e)

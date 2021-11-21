@@ -43,8 +43,7 @@ class ErrorHandler
         $json = Array();
         foreach ($this->errorQueue as $key => $entry)
         {
-            $json["code_". $key] = $entry->getCode();
-            $json["message_". $key] = $entry->getMessage();
+            array_push($json, ["code" => $entry->getCode(), "message" => $entry->getMessage()]);
         }
 
         return $json;
@@ -62,13 +61,9 @@ class ErrorHandler
         $errorEntry = $this->errorQueue[$queuePos];
         if (!isset($errorEntry))
             $errorEntry = new ErrorEntry(ErrorCode::ERROR_CRITICAL);
-
-        $error = Array
-        (
-            "code_". $queuePos     => $errorEntry->getCode(),
-            "message_". $queuePos    => $errorEntry->getMessage()
-        );
-        die(json_encode(Array("error" => $error)));
+        $json = [];
+        array_push($json, ["code" => $errorEntry->getCode(), "message" => $errorEntry->getMessage()]);
+        die(json_encode(["error" => $json]));
     }
 
     public function hasErrors()

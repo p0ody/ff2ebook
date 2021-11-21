@@ -6,10 +6,21 @@ $proxy = new ProxyManager();
 $proxy->cleanNotWorking();
 $proxy->updateList();
 
-$list = $proxy->getProxyList();
+$list = [];
+$totalList = $proxy->getProxyList();
 
-if (!$list)
+if (!$totalList)
     die("Error getting proxy list");
+
+$randMax = Config::PROXY_MAX_COUNT_TEST;
+if ($randMax > count($totalList)) {
+    $randMax = count($totalList);
+}
+
+$listKey = array_rand($totalList, $randMax); // Test 50 random proxies
+foreach ($listKey as $key) {
+    array_push($list, $totalList[$key]);
+}
 
 $curlList = [];
 $count = 0;
@@ -23,6 +34,7 @@ foreach($list as $proxy)
     }
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($curl, CURLOPT_URL, $url);
     

@@ -61,16 +61,11 @@ class FFnet extends BaseHandler
     {        
         
         $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
-        $try = 0;
-        $source = false;
-        // Retry 3 times before giving up
-        while (!$source && $try < Config::SELENIUM_MAX_TRY) {
-            $source = SourceHandler::useSelenium($url, true);
-            $try++;
-        }
+        $source = SourceHandler::usePupflare($url, false);
 
         if (!$source) {
-            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't get source for chapter $chapter.");
+            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
+            return false;
         }
 
         $source = preg_replace("/(<script>.+?<\/script>)/si", "", $source); // Remove javascript from source

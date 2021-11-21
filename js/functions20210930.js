@@ -35,7 +35,7 @@ function changeState(newState)
                 ajax_getChapter(i);
             }
             ajaxQueueHandler();
-
+              
             break;
 
         case STATE_ERROR:

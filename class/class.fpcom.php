@@ -61,13 +61,7 @@ class FPCOM extends BaseHandler
     protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
     {
         $url = "https://". ($mobile ? "m" : "www") .".fictionpress.com/s/". $this->getFicId() ."/". $chapter;
-        $try = 0;
-        $source = false;
-        // Retry 3 times before giving up
-        while (!$source && $try < Config::SELENIUM_MAX_TRY) {
-            $source = SourceHandler::useSelenium($url, true);
-            $try++;
-        }
+        $source = SourceHandler::useCloudscraper($url, true, true);
 
         if (!$source) {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't get source for chapter $chapter.");
