@@ -262,14 +262,19 @@ function ajax_convert()
 
 function ajaxQueueHandler()
 {
-    if (_ajaxQueue.length > 0)
+    if (_ajaxQueue.length > 0) 
         setTimeout(ajaxQueueHandler, AJAX_CALLS_DELAY_MS);
+    else
+        return;
 
-    if (_ajaxQueue.length > 0 && _ajaxCurrentCalls < AJAX_MAX_CALLS)
+    if (_ajaxCurrentCalls < AJAX_MAX_CALLS)
     {
-        console.log("queue:" + _ajaxQueue.length +" , currentCalls:"+_ajaxCurrentCalls);
-        var newCalls = _ajaxQueue.splice(0, AJAX_MAX_CALLS - _ajaxCurrentCalls);
-        console.log(newCalls);
+        var spliceLen = AJAX_MAX_CALLS - _ajaxCurrentCalls;
+        if (spliceLen < 1) {
+            spliceLen = 1;
+        }
+
+        var newCalls = _ajaxQueue.splice(0, spliceLen);
 
         $.each(newCalls, function(index, value)
         {
@@ -284,12 +289,12 @@ function substractCurrentCalls()
     if (_ajaxCurrentCalls > 0)
         _ajaxCurrentCalls--;
 
-    ajaxQueueHandler();
+    //ajaxQueueHandler();
 
 }
 
 function addCurentCalls()
 {
     _ajaxCurrentCalls++;
-    ajaxQueueHandler();
+    //ajaxQueueHandler();
 }
