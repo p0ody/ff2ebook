@@ -262,7 +262,7 @@ function ajax_convert()
 
 function ajaxQueueHandler()
 {
-    if (_ajaxQueue.length > 0) 
+    if (_ajaxQueue.length > 0 || _ficData.chapReady.length < parseInt(_ficData.chapCount)) 
         setTimeout(ajaxQueueHandler, AJAX_CALLS_DELAY_MS);
     else
         return;

@@ -8,6 +8,8 @@ function changeState(newState)
             //resetOutput();
             _ajaxFicInfosTry = 0;
             _ajaxChapterTry = [];
+            _ajaxCurrentCalls = 0;
+            _ajaxQueue = [];
             setStatusText("Ready!");
             break;
 
@@ -40,7 +42,6 @@ function changeState(newState)
 
         case STATE_ERROR:
             _state = newState;
-            //newError(ERROR_CRITICAL, "An error has occured, please try again.")
             changeState(STATE_READY);
             throw new Error("An error has occured and the script has been stopped.");
             break;

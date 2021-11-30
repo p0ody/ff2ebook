@@ -14,7 +14,6 @@ class SourceHandler {
         $res = CurlHandler::get($url, $proxy);
         $source = $res["response"];
         
-        return $source;
         if (preg_match("#<title>Attention Required! | Cloudflare</title>#si", $source) === 1) {
             if ($useProxy) {
                 $proxyM->addToBlacklist($proxy);
