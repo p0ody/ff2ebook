@@ -1,14 +1,13 @@
 <?php
 
 abstract class Config {
-    const SELENIUM_MAX_TRY          = 3;
     const DIRECT_MAX_TRY            = 3;
     const CURL_MAX_ASYNC            = 50;
-    const PYTHON_EXECUTABLE         = "/bin/python3";
+    const PYTHON_EXECUTABLE         = "";
     const DOMAIN_PATH               = ""; 
     const TIME_MAX_LAST_CHECKED     = 24*60*60; // 24 hours * 60 minutes * 60 seconds
     const REMOTE_CLOUDSCRAPER_URL   = "";
-    const PUPFLARE_URL              = "";
+    const FF2EBOOKSCRAPER_URL       = "";
     // MySQL
     const SQL_HOST                  = "";
     const SQL_USER                  = "";

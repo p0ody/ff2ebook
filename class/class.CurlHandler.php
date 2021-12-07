@@ -7,7 +7,7 @@ class CurlHandler {
      * @param array $data Send and array with field to send as follow "fieldName" => value
      * @return string|bool
      */
-    public static function sendPost($toUrl, $data, $timeoutMS = 30000) {
+    public static function sendPost($toUrl, $data, $timeoutMS = 20000) {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
@@ -25,7 +25,7 @@ class CurlHandler {
         return $result;
     }
 
-    public static function get(string $url, Proxy $proxy = NULL, $timeoutSec = 30) {
+    public static function get(string $url, Proxy $proxy = NULL, $timeoutSec = 21) {
         $curl = curl_init();
         if ($proxy) {
             curl_setopt($curl, CURLOPT_PROXY, $proxy->getIP());

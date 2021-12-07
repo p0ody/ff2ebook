@@ -61,7 +61,7 @@ class FFnet extends BaseHandler
     {        
         
         $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
-        $source = SourceHandler::usePupflare($url, false);
+        $source = SourceHandler::useFf2ebookScraper($url, false);
 
         if (!$source) {
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source for chapter $chapter.");
@@ -250,6 +250,3 @@ class FFnet extends BaseHandler
         return false;
     }
 }
-
-
-

@@ -61,7 +61,7 @@ class FPCOM extends BaseHandler
     protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
     {
         $url = "https://". ($mobile ? "m" : "www") .".fictionpress.com/s/". $this->getFicId() ."/". $chapter;
-        $source = SourceHandler::useCloudscraper($url, true, true);
+        $source = SourceHandler::useFf2ebookScraper($url, false);
 
         if (!$source) {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't get source for chapter $chapter.");
@@ -203,7 +203,7 @@ class FPCOM extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-
+        $matches = false;
         if (preg_match_all("#<option value=.+?>#si", $source, $matches) < 1)
             return 1;
         else
@@ -246,6 +246,3 @@ class FPCOM extends BaseHandler
         return false;
     }
 }
-
-
-
