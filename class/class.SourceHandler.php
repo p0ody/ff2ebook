@@ -2,6 +2,7 @@
 require_once __DIR__."/../conf/config.php";
 require_once __DIR__."/class.ProxyManager.php";
 require_once __DIR__."/class.CurlHandler.php";
+require_once __DIR__."/class.dbHandler.php";
 
 class SourceHandler {
     public static function useCurl(string $url, bool $useProxy = false) {
@@ -109,19 +110,47 @@ class SourceHandler {
         return CurlHandler::sendPost(Config::REMOTE_CLOUDSCRAPER_URL, ["url" => $url], 2000);
     }
 
-    public static function useFf2ebookScraper(string $url, bool $useProxy = false) {
+    public static function useFf2ebookScraper(string $url, bool $useProxy = false, string $scraper = null) {
         $proxyM = false;
         $proxy = "";
-        $pupflareUrl = Config::FF2EBOOKSCRAPER_URL ."/?url=". $url;
+        if (!$scraper) {
+            $scraper = SourceHandler::getBestScraper();
+
+            if (!$scraper) {
+                $scraper = Config::FF2EBOOKSCRAPER_URL[0];
+            }
+        }
+        $scraperUrl = $scraper ."/?url=". $url;
         
         if ($useProxy) {
             $proxyM = new ProxyManager();
             $proxy = $proxyM->getRandomProxy();
             if ($proxy->getIP() !== "") { // If proxy is set to "", it is local ip, so skip setting up a proxy
-                $pupflareUrl .= "&proxy=http://". $proxy;
+                $scraperUrl .= "&proxy=http://". $proxy;
             }  
         }
 
-        return SourceHandler::useCurl($pupflareUrl, false);
+        return SourceHandler::useCurl($scraperUrl, false);
+    }
+
+    public static function getBestScraper() {
+        try {
+            $db = new dbHandler();
+            $db->connect();
+
+            $query = $db->handler()->prepare("SELECT * FROM `scraper` WHERE `isWorking`=1 ORDER BY `priority` ASC LIMIT 1;");
+            $query->execute();
+
+            if ($query->rowCount() < 1) {
+                return null;
+            }
+
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+
+            return $result["url"];
+        }
+        catch (Exception $e) {
+            return null;
+        }
     }
 }

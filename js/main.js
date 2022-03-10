@@ -59,10 +59,22 @@ $(document).ready(
             changeState(STATE_INFOS);
         });
 
+        loadContent();
     }
 );
 
 function toggleCollapse(event)
 {
     $(this).next(".collapse-content").toggle("slow");
+}
+
+function loadContent() {
+    $.ajax
+    ({
+        url: "ajaxPHP/ajax.scraperStatus.php",
+        method: "GET",
+    }).done(function (result)
+    {
+        $("#scraper-status").html(result);
+    });
 }
