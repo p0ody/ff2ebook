@@ -2,9 +2,10 @@
 
 class ErrorCode
 {
-    const ERROR_NONE    = -1;
-    const ERROR_CRITICAL   = 0;
-    const ERROR_WARNING   = 1;
+    const ERROR_NONE        = -1;
+    const ERROR_CRITICAL    = 0;
+    const ERROR_WARNING     = 1;
+    const ERROR_BLACKLISTED = 2;
 }
 
 class ErrorEntry
@@ -31,7 +32,7 @@ class ErrorHandler
     {
         $count = array_push($this->errorQueue, new ErrorEntry($code, $message));
 
-        if ($code == ErrorCode::ERROR_CRITICAL)
+        if ($code == ErrorCode::ERROR_CRITICAL || $code == ErrorCode::ERROR_BLACKLISTED)
             $this->sendDie($count - 1);
 
     }

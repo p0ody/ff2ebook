@@ -24,10 +24,10 @@ class FPCOM extends BaseHandler
         $this->setPublishedDate($this->popPublished($infosSource));
         $this->setUpdatedDate($this->popUpdated($infosSource));
         $this->setWordsCount($this->popWordsCount($infosSource));
-        $this->setPairing($this->popPairing($infosSource));
         $this->setChapCount($this->popChapterCount($infosSource));
         $this->setFandom($this->popFandom($infosSource));
         $this->setCompleted($this->popCompleted($infosSource));
+        $this->setAddInfos($this->popAddInfos($infosSource));
     }
 
 
@@ -220,18 +220,20 @@ class FPCOM extends BaseHandler
         }*/
     }
 
-    private function popPairing($source)
+    private function popAddInfos($source)
     {
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (Utils::regexOnSource("#target='rating'>.+?</a> - .*?-  (.+?) -#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#target='rating'>.+?<\/a> -.+?-(.+?)- (?:Chapters|Words)#si", $source, $matches) === 1)
             return $matches[1];
         else
         {
-            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find pairing (No pairing?).");
+            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find additional infos.");
             return false;
         }
+
+        return false;
     }
 
     private function popCompleted($source)

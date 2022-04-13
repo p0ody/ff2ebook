@@ -77,10 +77,23 @@ function ajax_getFicInfos()
     }).done(function(data)
     {
         var failed = false;
-        if (data.error != undefined || data.error != "undefined") {
+        if (data.error) {
             var errors = data.error
             
             $.each(errors, function (key, error) {
+                switch(error.code) {
+                    case ERROR_CRITICAL:
+                        failed = true;
+                        break;
+                    
+                    case ERROR_BLACKLISTED:
+                        newError(error.code, "Fic is blacklisted as per author request.");
+                        _ajaxFicInfosTry = AJAX_MAX_TRY+1;
+                        break;
+
+                    default:
+                        newError(error.code, error.message);
+                }
                 if (error.code == ERROR_CRITICAL) {
                     failed = true;
                 }
@@ -141,7 +154,7 @@ function ajax_getChapter(num)
             dataType: "json"
         }).done(function (data) {
             var failed = false;
-            if (data.error != undefined || data.error != "undefined") {
+            if (data.error) {
                 var errors = data.error
                 
                 $.each(errors, function (key, error) {
@@ -160,7 +173,7 @@ function ajax_getChapter(num)
             else {
                 statusOutput("<span class='text-ok'>Received chapter #" + this.chapNum + " data.</span>");
 
-                if (typeof _ficData.chapReady === "undefined")
+                if (_ficData.chapReady == undefined)
                     _ficData.chapReady = [];
 
                 _ficData.chapReady.push(this.chapNum);
@@ -179,6 +192,7 @@ function ajax_getChapter(num)
             substractCurrentCalls();
         });
     });
+    ajaxQueueHandler();
 }
 
 function ajax_createFile()
@@ -191,12 +205,15 @@ function ajax_createFile()
         dataType: "json"
     }).done(function(data)
     {
-        var errors = checkForError(data);
-
-        $.each(errors, function(index, error)
+        if (data.error)
         {
-            newError(error.code, error.message)
-        });
+            errors = data.error;
+
+            $.each(errors, function(index, error)
+            {
+                newError(error.code, error.message)
+            });
+        }
 
         if (_ficData["site"] === "undefined" || _ficData["id"] === "undefined")
             changeState(STATE_ERROR);
@@ -250,10 +267,11 @@ function ajax_convert()
         dataType: "json"
     }).done(function (data)
     {
-        var errors = checkForError(data);
-        $.each(errors, function (index, error) {
-            newError(error.code, error.message)
-        });
+        if (data.error) {
+            $.each(errors, function (index, error) {
+                newError(error.code, error.message)
+            });
+        }
         setPct(100);
         changeState(STATE_READY);
         downloadReady(_ficData["site"], _ficData["id"]);
@@ -262,7 +280,7 @@ function ajax_convert()
 
 function ajaxQueueHandler()
 {
-    if (_ajaxQueue.length > 0 || _ficData.chapReady.length < parseInt(_ficData.chapCount)) 
+    if (_ajaxQueue.length > 0 || _ficData.chapReady?.length < parseInt(_ficData.chapCount)) 
         setTimeout(ajaxQueueHandler, AJAX_CALLS_DELAY_MS);
     else
         return;

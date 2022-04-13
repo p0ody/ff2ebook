@@ -1,6 +1,7 @@
 // Same as PHP
-var ERROR_CRITICAL   = 0;
-var ERROR_WARNING   = 1;
+const ERROR_CRITICAL    = 0;
+const ERROR_WARNING     = 1;
+const ERROR_BLACKLISTED = 2;
 
 
 function getErrorType(code)
@@ -13,6 +14,9 @@ function getErrorType(code)
         case ERROR_WARNING:
             return "Warning";
 
+        case ERROR_BLACKLISTED:
+            return "Cancelled";
+
         default:
             return "";
     }
@@ -23,6 +27,7 @@ function getErrorColorClass(code)
     switch(parseInt(code))
     {
         case ERROR_CRITICAL:
+        case ERROR_BLACKLISTED:
             return "text-critical";
 
         case ERROR_WARNING:
@@ -36,8 +41,9 @@ function getErrorColorClass(code)
 function newError(code, message)
 {
     printError(code, message);
-    if (code == ERROR_CRITICAL)
+    if (code == ERROR_CRITICAL || code == ERROR_BLACKLISTED) {
         changeState(STATE_ERROR);
+    }
 }
 
 function checkForError(data)
@@ -64,6 +70,6 @@ function printError(code, message)
     if (code == ERROR_WARNING)
         $("#warning-icon").show();
 
-    if (code == ERROR_CRITICAL)
+    if (code == ERROR_CRITICAL || code == ERROR_BLACKLISTED)
         $("#critical-icon").show();
 }

@@ -19,6 +19,14 @@ $fic = new FanFiction($_POST["url"], $error, true);
 $return = Array();
 $exist = false;
 
+$dbH = new dbHandler();
+
+// Check blacklisted author and ficId
+if (isFicBlacklisted($dbH, $fic->getSource(), $fic->ficHandler()->getFicId())) { 
+    $error->addNew(ErrorCode::ERROR_BLACKLISTED, "Fic is blacklisted as per author request.");
+    die(json_encode(Array("error"=> $error->getAllAsJSONReady())));
+}
+
 // if force update is not checked, check in DB to see if fic already exist.
 if (!isset($_POST["force"]) || $_POST["force"] === "false" || !$_POST["force"])
 {
@@ -36,6 +44,7 @@ if (!isset($_POST["force"]) || $_POST["force"] === "false" || !$_POST["force"])
         if ($query->rowCount() === 1) // If this fic is already in archive and up to date
         {
             $result = $query->fetch(PDO::FETCH_ASSOC);
+            $return["author"] = $result["author"];
 
             // If more than 24 hours since last time checked if fic is up to date, check if our version is still up to date.
             if (time() - $result["lastChecked"] > Config::TIME_MAX_LAST_CHECKED) {
@@ -71,9 +80,16 @@ if (!$exist)
     $return["author"] = $fic->ficHandler()->getAuthor();
     $return["chapCount"] = $fic->ficHandler()->getChapCount();
     $return["updated"] = $fic->ficHandler()->getUpdatedDate();
+
+    // Check blacklisted author and ficId
+    if (isFicBlacklisted($dbH, $fic->getSource(), $fic->ficHandler()->getFicId(), $fic->ficHandler()->getAuthor())) { 
+        $error->addNew(ErrorCode::ERROR_BLACKLISTED, "Fic is blacklisted as per author request.");
+    }
+
     if ($error->hasErrors()) {
         $return["error"] = $error->getAllAsJSONReady();
     }
+
     $fm = new FileManager();
     $ficH = $fic->ficHandler();
     $ficH->setOutputDir($fm->createOutputDir());
@@ -83,9 +99,34 @@ if (!$exist)
 }
 
 $_SESSION["encoded_fic"] = serialize($fic);
-
 echo json_encode($return);
+
+
+
+function isFicBlacklisted(DBHandler $dbHandler, $site, $id = null, $author = null) {
+    try {
+        $pdo = $dbHandler->connect();
+        if ($id) {
+            $query = $pdo->prepare("SELECT * FROM `author_blacklist` WHERE `site`=:site AND `ficId`=:id;");
+            $query->execute(Array("site" => $site, "id" => $id));
+            if ($query->rowCount() > 0) {
+                return true;
+            }
+        }
+
+        if ($author) {
+            $query = $pdo->prepare("SELECT * FROM `author_blacklist` WHERE `site`=:site AND `author`=:author;");
+            $query->execute(Array("site" => $site, "author" => $author));
+            if ($query->rowCount() > 0) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    catch (Exception $e) {
+        throw $e;
+    }
+}
+
 session_write_close();
-
-
-

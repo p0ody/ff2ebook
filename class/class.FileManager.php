@@ -69,7 +69,7 @@ class FileManager
             !$fic->getPublishedDate() ? "" : "<span class=\"bold\">Published:</span> ". date("Y-m-d", $fic->getPublishedDate()) ."<br /><br />",
             !$fic->getUpdatedDate() ? "" : "<span class=\"bold\">Last updated:</span> ". date("Y-m-d", $fic->getUpdatedDate()) ."<br /><br />",
             !$fic->getWordsCount() ? "" : "<span class=\"bold\">Words count:</span> ". $fic->getWordsCount() ."<br /><br />",
-            !$fic->getPairing() ? "" : "<span class=\"bold\">Pairings/Main char.:</span> ". htmlentities($fic->getPairing()) ."<br /><br />",
+            !$fic->getaddInfos() ? "" : "<span class=\"bold\">Additional infos:</span> ". htmlentities($fic->getAddInfos()) ."<br /><br />",
             !$fic->getChapCount() ? "" : "<span class=\"bold\">Chapters count:</span> ". $fic->getChapCount() ."<br /><br />",
             date("Y-m-d", time()),
             !$fic->getCompleted() ? "" : "<span class=\"bold\">Status:</span> ". $fic->getCompleted() ."<br /><br />"
@@ -86,7 +86,7 @@ class FileManager
                 "%published%",
                 "%updated%",
                 "%wordsCount%",
-                "%pairing%",
+                "%addInfos%",
                 "%chapCount%",
                 "%convertDate%",
                 "%completed%"),

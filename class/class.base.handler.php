@@ -15,7 +15,6 @@ abstract class BaseHandler
     private $published;
     private $updated;
     private $wordsCount;
-    private $pairing;
     private $chapCount;
     private $chapSource;
     private $outputDir;
@@ -23,6 +22,7 @@ abstract class BaseHandler
     private $fandom;
     private $authorProfile;
     private $completed;
+    private $addInfos;
 
 
     /** @return Chapter */
@@ -54,13 +54,13 @@ abstract class BaseHandler
     public function getPublishedDate()          { return $this->published; }
     public function getUpdatedDate()            { return $this->updated; }
     public function getWordsCount()             { return $this->wordsCount; }
-    public function getPairing()                { return $this->pairing; }
     public function getChapCount()              { return $this->chapCount; }
     public function getOutputDir()              { return $this->outputDir; }
     public function getFilename()               { return $this->filename; }
     public function getFandom()                 { return $this->fandom; }
     public function getAuthorProfile()          { return $this->authorProfile; }
     public function getCompleted()              { return $this->completed; }
+    public function getAddInfos()               { return $this->addInfos; }
 
     // Setters
     public function setFicId($id)               { $this->ficId = $id; }
@@ -71,13 +71,13 @@ abstract class BaseHandler
     public function setPublishedDate($pub)      { $this->published = $pub; }
     public function setUpdatedDate($updated)    { $this->updated = $updated; }
     public function setWordsCount($words)       { $this->wordsCount = $words; }
-    public function setPairing($pairing)        { $this->pairing = trim($pairing); }
     public function setChapCount($chapCount)    { $this->chapCount = $chapCount; }
     public function setOutputDir($dir)          { $this->outputDir = $dir; }
     public function setFileName($name)          { $this->filename = $name; }
     public function setFandom($fandom)          { $this->fandom = trim($fandom); }
     public function setAuthorProfile($profile)  { $this->authorProfile = $profile; }
     public function setCompleted($complete)     { $this->completed = $complete; }
+    public function setAddInfos($infos)         { $this->addInfos = trim($infos); }
 
     public function getRealURL()
     {

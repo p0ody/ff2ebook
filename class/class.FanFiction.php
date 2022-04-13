@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__."/class.ff.net.php";
-require_once __DIR__."/class.hpff.php";
-require_once __DIR__."/class.fpcom.php";
-require_once __DIR__."/class.hpffa.com.php";
-require_once __DIR__."/class.fh.com.php";
+require_once __DIR__."/sites.ff.net.php";
+require_once __DIR__."/sites.hpff.php";
+require_once __DIR__."/sites.fpcom.php";
+require_once __DIR__."/sites.hpffa.com.php";
+require_once __DIR__."/sites.fh.com.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
 
