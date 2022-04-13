@@ -28,5 +28,5 @@ abstract class Config {
     const EMAIL_SMTP_PORT           = 465;
     const EMAIL_SMTP_EMAIL          = "";
     const EMAIL_SMTP_PASSWORD       = "";
-
+    const EMAIL_CONTACT             = "";
 }
