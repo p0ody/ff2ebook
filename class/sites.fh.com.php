@@ -4,7 +4,8 @@ require_once("class.ErrorHandler.php");
 require_once("class.Chapter.php");
 require_once("class.SourceHandler.php");
 
-
+// fictionhunt.com
+// Need a rework
 
 class FHCOM extends BaseHandler
 {
@@ -21,7 +22,7 @@ class FHCOM extends BaseHandler
         $this->setPublishedDate($this->popPublished($infosSource));
         $this->setUpdatedDate($this->popUpdated($infosSource));
         $this->setWordsCount($this->popWordsCount($infosSource));
-        $this->setPairing($this->popPairing($infosSource));
+        $this->setAddInfos($this->popPairing($infosSource));
         $this->setChapCount($this->popChapterCount($infosSource));
         $this->setFandom($this->popFandom($infosSource));
         $this->setCompleted($this->popCompleted($infosSource));
@@ -236,6 +237,3 @@ class FHCOM extends BaseHandler
         return false;
     }
 }
-
-
-

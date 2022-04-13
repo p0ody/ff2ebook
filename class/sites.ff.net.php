@@ -4,6 +4,8 @@ require_once("class.ErrorHandler.php");
 require_once("class.Chapter.php");
 require_once("class.SourceHandler.php");
 
+// fanfiction.net
+// Dont forget to also edit fictionpress.com
 
 class FFnet extends BaseHandler
 {

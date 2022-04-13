@@ -5,6 +5,8 @@ require_once __DIR__."/class.Chapter.php";
 require_once __DIR__."/class.Utils.php";
 require_once __DIR__."/class.SourceHandler.php";
 
+// hpfanficarchive.com
+// Seems dead
 
 class HPFFA extends BaseHandler
 {
@@ -250,6 +252,3 @@ class HPFFA extends BaseHandler
 
     }
 }
-
-
-

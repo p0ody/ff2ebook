@@ -5,6 +5,8 @@ require_once __DIR__."/class.Chapter.php";
 require_once __DIR__."/class.Utils.php";
 require_once __DIR__."/class.SourceHandler.php";
 
+// harrypotterfanfiction.com
+// Dead website
 
 class HPFF extends BaseHandler
 {
@@ -247,6 +249,3 @@ class HPFF extends BaseHandler
         }
     }
 }
-
-
-

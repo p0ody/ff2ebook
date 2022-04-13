@@ -54,10 +54,11 @@ class FanFiction
                 $this->source = "hpffa";
                 break;
 
-            case FanFictionSite::FHCOM:
-                $this->handler = new FHCOM($this->getURL(), $this->error);
+            case FanFictionSite::FHCOM: // Fictionhunt is now unsupported, need to change everything since a remake of the website (No idea since when)
+                return $this->error->addNew(ErrorCode::ERROR_CRITICAL, "Unsupported site.");
+                /* $this->handler = new FHCOM($this->getURL(), $this->error);
                 $this->source = "fhcom";
-                break;
+                break; */
 
             case FanFictionSite::ERROR:
                 $this->error->addNew(ErrorCode::ERROR_CRITICAL, "Invalid URL");
