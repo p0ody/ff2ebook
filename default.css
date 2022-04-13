@@ -10,6 +10,7 @@
 body
 {
     background-color: #282828;
+    color: white;
 }
 
 
@@ -167,15 +168,9 @@ body
     padding-right: 20px;
 }
 
-.float-right
-{
-    float: right;
-}
-
 .infos
 {
     color: white;
-
 }
 
 .convert-options select
@@ -360,3 +355,27 @@ tr:focus
      color: #FFA600;
      text-decoration: underline;
  }
+
+ .default-text {
+     color: white;
+ }
+
+ .form-label {
+     float: left;
+ }
+
+ .float-right {
+     float: right;
+ }
+
+ .float-left {
+    float: left;
+}
+
+#contact a:hover{
+    color: #FFA600;
+}
+
+.menu-bar {
+    margin-bottom: 20px;
+}
