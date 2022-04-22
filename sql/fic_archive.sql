@@ -27,4 +27,4 @@ CREATE TABLE fic_archive
 
 -- 2022-04-13 Lengthened site for wattpad
 -- ALTER TABLE fic_archive MODIFY COLUMN site varchar(10) NOT NULL;
--- ALTER TABLE fic_archive MODIFY COLUMN INT UNSIGNED NOT NULL;
+-- ALTER TABLE fic_archive MODIFY COLUMN id INT UNSIGNED NOT NULL;
