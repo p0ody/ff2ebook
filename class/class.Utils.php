@@ -89,7 +89,7 @@ class Utils
             case "fhcom":
                 return "http://fictionhunt.com/read/". $id;
             case "wattpad":
-                return "https://wattpad.com/". $id;
+                return "https://wattpad.com/story/". $id;
 
             default:
                 return "#";
