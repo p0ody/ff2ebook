@@ -26,6 +26,9 @@ if ($fic->getSource() === false)
 
 /** @var BaseHandler $ficH */
 $ficH = $fic->ficHandler();
+$fm = new FileManager();
+$ficH->setOutputDir($fm->createOutputDir());
+$fm->createTitlePage($fic->ficHandler()->getOutputDir() . "/OEBPS/Content", $fic->ficHandler());
 
 $path = "../archive/". $ficH->getFilename() .".epub";
 
@@ -33,9 +36,8 @@ $epub = new Epub("../output/". $ficH->getOutputDir(), $path);
 if (!$epub->create())
     $error->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't create epub file.");
 
-
-$fm = new FileManager();
 $fm->deleteFolderWithFile("../output/". $ficH->getOutputDir());
+
 
 try
 {
@@ -75,4 +77,3 @@ catch (PDOException $e)
 
 $return["error"] = $error->getAllAsJSONReady();
 echo json_encode($return);
-

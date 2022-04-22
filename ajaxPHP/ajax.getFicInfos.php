@@ -95,7 +95,7 @@ if (!$exist)
     $ficH->setOutputDir($fm->createOutputDir());
     $ficH->setFileName($fic->getSource() . "_" . $ficH->getFicId() . "_" . $ficH->getUpdatedDate());
 
-    $fm->createTitlePage($fic->ficHandler()->getOutputDir() . "/OEBPS/Content", $fic->ficHandler());
+    //$fm->createTitlePage($fic->ficHandler()->getOutputDir() . "/OEBPS/Content", $fic->ficHandler());
 }
 
 $_SESSION["encoded_fic"] = serialize($fic);

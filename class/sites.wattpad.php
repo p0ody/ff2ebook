@@ -11,7 +11,6 @@ require_once __DIR__."/class.FanFiction.php";
 class WATTPAD extends BaseHandler
 {
 	private ?array $chapterUrls = null; // Get All chapter url list ASAP because wattpad use weird url for their chapters
-	private int $wordsCount = 0; // Need tp manually count words
 	function populate(bool $waitToPopulate = false): void
 	{
 		$this->setFicId($this->popFicId());
@@ -36,7 +35,7 @@ class WATTPAD extends BaseHandler
 	}
 
 
-	public function getChapter(int $number): Chapter
+	public function getChapter(int $number): ?Chapter
 	{
 
 		$source = $this->getPageSource($number);
@@ -49,13 +48,14 @@ class WATTPAD extends BaseHandler
 		else
 			$title = "Chapter $number";
 
-		// Updated to match the recent change in page source (2019-06-20)
-		if (Utils::regexOnSource("#<pre>(.+?)</pre>#si", $source, $matches) === 1)
+		if (Utils::regexOnSource("#<pre>(.+?)</pre>#si", $source, $matches) === 1) {
 			$text = $matches[1];
+			$this->setWordsCount($this->getWordsCount() + str_word_count($text)); // Add chapter words count to total words count
+		}
 		else 
 		{
 			$this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't find chapter($number) text.");
-			return false;
+			return null;
 		}
 
 		return new Chapter($number, $title, $text);

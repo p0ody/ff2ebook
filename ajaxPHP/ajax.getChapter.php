@@ -38,4 +38,6 @@ if ($error->hasErrors()) {
 }
 echo json_encode($return);
 
+$_SESSION["encoded_fic"] = serialize($fic); // Added to update wordcount for wattpad
+
 session_write_close();
