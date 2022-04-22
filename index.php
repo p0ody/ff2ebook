@@ -24,13 +24,13 @@
 			</div>
 		</div>
 
-		<!-- <div class="row">
+		<div class="row">
             <div class="col-xs-12 news col-md-offset-3 col-md-6">
                 <ul class="news">
-                    <li></li>
+                    <li>Added support for Wattpad.com</li>
                 </ul>
             </div>
-        </div> -->
+        </div>
 
 		<div id="status-area" class="row">
 			<div class="col-xs-12">

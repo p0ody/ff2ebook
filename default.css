@@ -203,7 +203,7 @@ body
     color: #505050;
     font-size: 25px;
     text-align: center;
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -376,6 +376,6 @@ tr:focus
     color: #FFA600;
 }
 
-.menu-bar {
-    margin-bottom: 20px;
+.news {
+	margin-top: 10px;
 }
