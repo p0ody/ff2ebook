@@ -28,6 +28,7 @@ function hasSearch($search) { return $search !== false; }
     <title>FF2EBOOK :: Archive</title>
     
     <?php include("html/header.html") ?>
+    <script src="js/archive.js"></script>
 </head>
 <body>
     <div class="container-fluid">

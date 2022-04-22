@@ -4,20 +4,19 @@ require_once __DIR__."/sites.hpff.php";
 require_once __DIR__."/sites.fpcom.php";
 require_once __DIR__."/sites.hpffa.com.php";
 require_once __DIR__."/sites.fh.com.php";
+require_once __DIR__."/sites.wattpad.php";
 require_once __DIR__."/class.ErrorHandler.php";
 
+enum FanFictionSite {
+    case ERROR;
+    case FFNET; // fanfiction.net
+    case HPFF; // harrypotterfanfiction.com/
+    case FPCOM; // fictionpress.com
+    case HPFFA; // hpfanficarchive.com
+    case FHCOM; // fictionhunt.com
+    case WATTPAD; // wattpad.com
 
-
-abstract class FanFictionSite
-{
-    const ERROR     = -1;
-    const FFnet     = 0; // fanfiction.net
-    const HPFF      = 1; // harrypotterfanfiction.com/
-    const FPCOM     = 2; // fictionpress.com
-    const HPFFA     = 3; // hpfanficarchive.com
-    const FHCOM     = 4; // fictionhunt.com
 }
-
 
 class FanFiction
 {
@@ -34,8 +33,8 @@ class FanFiction
 
         switch($this->ficSite)
         {
-            case FanFictionSite::FFnet:
-                $this->handler = new FFnet($this->getURL(), $this->error, $waitToPopulate);
+            case FanFictionSite::FFNET:
+                $this->handler = new FFNET($this->getURL(), $this->error, $waitToPopulate);
                 $this->source = "ffnet";
                 break;
 
@@ -60,6 +59,11 @@ class FanFiction
                 $this->source = "fhcom";
                 break; */
 
+            case FanFictionSite::WATTPAD:
+                $this->handler = new WATTPAD($this->getURL(), $this->error);
+                $this->source = "wattpad";
+                break;
+
             case FanFictionSite::ERROR:
                 $this->error->addNew(ErrorCode::ERROR_CRITICAL, "Invalid URL");
                 break;
@@ -74,13 +78,13 @@ class FanFiction
     private function setURL($url) { $this->url = $url; }
 
 
-    private function parseURL()
+    private function parseURL(): FanFictionSite
     {
         if (strlen($this->getURL()) === 0)
             return FanFictionSite::ERROR;
 
         if (strpos($this->url, "fanfiction.net") !== false)
-            return FanFictionSite::FFnet;
+            return FanFictionSite::FFNET;
 
         if (strpos($this->url, "harrypotterfanfiction.com") !== false)
             return FanFictionSite::HPFF;
@@ -94,16 +98,19 @@ class FanFiction
         if (strpos($this->url, "fictionhunt.com") !== false)
             return FanFictionSite::FHCOM;
 
+        if (strpos($this->url, "wattpad.com") !== false)
+            return FanFictionSite::WATTPAD;
+
 
         return FanFictionSite::ERROR;
 
     }
 
-    public function getChapter($chapNum)
+    public function getChapter($chapNum): Chapter
     {
         return $this->ficHandler()->getChapter($chapNum);
     }
 
-    public function getSource() { return $this->source; }
+    public function getSource(): string { return $this->source; }
 
 }

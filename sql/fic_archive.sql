@@ -1,7 +1,7 @@
 CREATE TABLE fic_archive
 (
-  site varchar(6) NOT NULL,
-  id MEDIUMINT UNSIGNED NOT NULL,
+  site varchar(10) NOT NULL,
+  id INT UNSIGNED NOT NULL,
   title varchar(100),
   author varchar(100),
   updated INT UNSIGNED,
@@ -25,3 +25,6 @@ CREATE TABLE fic_archive
 -- 2021-09-27 Added column lastChecked
 -- ALTER TABLE fic_archive ADD lastChecked INT UNSIGNED DEFAULT 0;
 
+-- 2022-04-13 Lengthened site for wattpad
+-- ALTER TABLE fic_archive MODIFY COLUMN site varchar(10) NOT NULL;
+-- ALTER TABLE fic_archive MODIFY COLUMN INT UNSIGNED NOT NULL;

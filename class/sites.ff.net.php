@@ -7,9 +7,9 @@ require_once("class.SourceHandler.php");
 // fanfiction.net
 // Dont forget to also edit fictionpress.com
 
-class FFnet extends BaseHandler
+class FFNET extends BaseHandler
 {
-    function populate($waitToPopulate = false)
+    function populate(bool $waitToPopulate = false): void
     {
         $this->setFicId($this->popFicId());
 
@@ -33,7 +33,7 @@ class FFnet extends BaseHandler
     }
 
 
-    public function getChapter($number)
+    public function getChapter(int $number): Chapter
     {
 
         $source = $this->getPageSource($number);
@@ -59,7 +59,7 @@ class FFnet extends BaseHandler
 
     }
 
-    protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
+    protected function getPageSource(int $chapter = 1, bool $mobile = true): ?string // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
     {        
         
         $url = "https://". ($mobile ? "m" : "www") .".fanfiction.net/s/". $this->getFicId() ."/". $chapter;
@@ -190,21 +190,21 @@ class FFnet extends BaseHandler
         }
     }
 
-    private function popWordsCount($source)
+    private function popWordsCount(?string $source): ?int
     {
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
         if (Utils::regexOnSource("#- Words: (.+?) -#si", $source, $matches) === 1)
-            return $matches[1];
+            return intval($matches[1]);
         else
         {
             $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find words count.");
-            return false;
+            return null;
         }
     }
 
-    private function popChapterCount($source)
+    private function popChapterCount(?string $source): int
     {
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");

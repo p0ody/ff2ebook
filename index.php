@@ -114,7 +114,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="collapse-bg text-left" data-collapse-hidden="true">
-                    <div class="collapse-header">Webscraper server status (Used for Fanfiction.net): <span class="float-right">(Click to toggle)</span></div>
+                    <div class="collapse-header">Webscraper server status: <span class="float-right">(Click to toggle)</span></div>
                     <div class="collapse-content" id="scraper-status"></div>
                 </div>
             </div>

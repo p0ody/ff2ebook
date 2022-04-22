@@ -10,7 +10,7 @@ require_once __DIR__."/class.SourceHandler.php";
 
 class HPFFA extends BaseHandler
 {
-    function populate($waitToPopulate = false)
+    function populate(bool $waitToPopulate = false): void
     {
         $this->setFicId($this->popFicId());
 
@@ -30,7 +30,7 @@ class HPFFA extends BaseHandler
     }
 
 
-    public function getChapter($number)
+    public function getChapter(int $number): Chapter
     {
 
         $source = $this->getPageSource($number);
@@ -65,7 +65,7 @@ class HPFFA extends BaseHandler
 
     }
 
-    protected function getPageSource($chapter = 0)
+    protected function getPageSource(int $chapter = 0): ?string
     {
         $url = "";
         if ($chapter > 0)

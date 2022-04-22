@@ -9,7 +9,7 @@ require_once("class.SourceHandler.php");
 
 class FHCOM extends BaseHandler
 {
-    function populate($waitToPopulate = false)
+    function populate(bool $waitToPopulate = false): void
     {
         $this->setFicId($this->popFicId());
 
@@ -29,7 +29,7 @@ class FHCOM extends BaseHandler
     }
 
 
-    public function getChapter($number)
+    public function getChapter(int $number): Chapter
     {
 
         $source = $this->getPageSource($number);
@@ -50,7 +50,7 @@ class FHCOM extends BaseHandler
 
     }
 
-    protected function getPageSource($chapter = 1)
+    protected function getPageSource(int $chapter = 1): ?string
     {
         $url = "http://www.fictionhunt.com/read/". $this->getFicId() ."/". $chapter;
         $source = SourceHandler::useCurl($url);

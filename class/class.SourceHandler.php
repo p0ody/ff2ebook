@@ -5,7 +5,7 @@ require_once __DIR__."/class.CurlHandler.php";
 require_once __DIR__."/class.dbHandler.php";
 
 class SourceHandler {
-    public static function useCurl(string $url, bool $useProxy = false) {
+    public static function useCurl(string $url, bool $useProxy = false): string|false {
         $proxyM = false;
         $proxy = NULL;
         if ($useProxy) {

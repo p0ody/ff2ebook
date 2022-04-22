@@ -9,7 +9,7 @@ require_once("class.SourceHandler.php");
 
 class FPCOM extends BaseHandler
 {
-    function populate($waitToPopulate = false)
+    function populate(bool $waitToPopulate = false): void
     {
         $this->setFicId($this->popFicId());
 
@@ -33,7 +33,7 @@ class FPCOM extends BaseHandler
     }
 
 
-    public function getChapter($number)
+    public function getChapter(int $number): Chapter
     {
 
         $source = $this->getPageSource($number);
@@ -60,7 +60,7 @@ class FPCOM extends BaseHandler
 
     }
 
-    protected function getPageSource($chapter = 1, $mobile = true) // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
+    protected function getPageSource(int $chapter = 1, bool $mobile = true): ?string // $mobile is weither or not we use mobile version of site. (Mobile version is faster to load)
     {
         $url = "https://". ($mobile ? "m" : "www") .".fictionpress.com/s/". $this->getFicId() ."/". $chapter;
         $source = SourceHandler::useFf2ebookScraper($url, false);

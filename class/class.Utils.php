@@ -17,6 +17,8 @@ class Utils
                 return "<a href=\"http://www.hpfanficarchive.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
             case "fhcom":
                 return "<a href=\"http://www.fictionhunt.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
+            case "wattpad":
+                return "<a href=\"https://www.wattpad.com\" target=\"_blank\">". Utils::webSourceReadable($site) ."</a>";
 
             default:
                 return $site;
@@ -38,6 +40,8 @@ class Utils
                 return "http://www.hpfanficarchive.com";
             case "fhcom":
                 return "http://www.fictionhunt.com";
+            case "wattpad":
+                return "https://www.wattpad.com";
 
             default:
                 return $site;
@@ -59,6 +63,8 @@ class Utils
                 return "HPFanFicArchive.com";
             case "fhcom":
                 return "FictionHunt.com";
+            case "wattpad":
+                return "Wattpad.com";
 
 
             default:
@@ -82,6 +88,8 @@ class Utils
                 return "http://www.hpfanficarchive.com/stories/viewstory.php?sid=". $id;
             case "fhcom":
                 return "http://fictionhunt.com/read/". $id;
+            case "wattpad":
+                return "https://wattpad.com/". $id;
 
             default:
                 return "#";
@@ -119,5 +127,12 @@ class Utils
         $regex = preg_replace("/('|\")/", "(?:'|\")", $regex);
 
         return preg_match($regex, $source, $matches);
+    }
+
+    public static function regexAllOnSource($regex, $source, &$matches)
+    {
+        $regex = preg_replace("/('|\")/", "(?:'|\")", $regex);
+
+        return preg_match_all($regex, $source, $matches);
     }
 }
