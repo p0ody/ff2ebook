@@ -27,7 +27,6 @@ if ($fic->getSource() === false)
 /** @var BaseHandler $ficH */
 $ficH = $fic->ficHandler();
 $fm = new FileManager();
-$ficH->setOutputDir($fm->createOutputDir());
 $fm->createTitlePage($fic->ficHandler()->getOutputDir() . "/OEBPS/Content", $fic->ficHandler());
 
 $path = "../archive/". $ficH->getFilename() .".epub";
