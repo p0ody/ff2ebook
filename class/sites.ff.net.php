@@ -195,13 +195,14 @@ class FFNET extends BaseHandler
         if (strlen($source) === 0)
             $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (Utils::regexOnSource("#- Words: (.+?) -#si", $source, $matches) === 1)
-            return intval($matches[1]);
-        else
-        {
-            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find words count.");
-            return null;
-        }
+        if (Utils::regexOnSource("#- Words: (.+?) -#si", $source, $matches) === 1) {
+			$words = str_replace(",", "", $matches[1]);
+            return intval($words);
+		}
+
+
+		$this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find words count.");
+		return null;
     }
 
     private function popChapterCount(?string $source): int

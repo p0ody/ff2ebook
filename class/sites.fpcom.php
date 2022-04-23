@@ -186,19 +186,20 @@ class FPCOM extends BaseHandler
         }
     }
 
-    private function popWordsCount($source)
-    {
-        if (strlen($source) === 0)
-            $this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
+	private function popWordsCount(?string $source): ?int
+	{
+		if (strlen($source) === 0)
+			$this->errorHandler()->addNew(ErrorCode::ERROR_CRITICAL, "Couldn't get source.");
 
-        if (Utils::regexOnSource("#- Words: (.+?) -#si", $source, $matches) === 1)
-            return $matches[1];
-        else
-        {
-            $this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find words count.");
-            return false;
-        }
-    }
+		if (Utils::regexOnSource("#- Words: (.+?) -#si", $source, $matches) === 1) {
+			$words = str_replace(",", "", $matches[1]);
+			return intval($words);
+		}
+
+
+		$this->errorHandler()->addNew(ErrorCode::ERROR_WARNING, "Couldn't find words count.");
+		return null;
+	}
 
     private function popChapterCount($source)
     {
