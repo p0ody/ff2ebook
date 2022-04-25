@@ -68,7 +68,7 @@ class FileManager
             !$fic->getFicType() ? "" : "<span class=\"bold\">Fic type:</span> ". $fic->getFicType() ."<br /><br />",
             !$fic->getPublishedDate() ? "" : "<span class=\"bold\">Published:</span> ". date("Y-m-d", $fic->getPublishedDate()) ."<br /><br />",
             !$fic->getUpdatedDate() ? "" : "<span class=\"bold\">Last updated:</span> ". date("Y-m-d", $fic->getUpdatedDate()) ."<br /><br />",
-            !$fic->getWordsCount() ? "" : "<span class=\"bold\">Words count:</span> ". $fic->getWordsCount() ."<br /><br />",
+            !$fic->getWordsCount() ? "" : "<span class=\"bold\">Words count:</span> ". number_format($fic->getWordsCount()) ."<br /><br />",
             !$fic->getaddInfos() ? "" : "<span class=\"bold\">Additional infos:</span> ". htmlentities($fic->getAddInfos()) ."<br /><br />",
             !$fic->getChapCount() ? "" : "<span class=\"bold\">Chapters count:</span> ". $fic->getChapCount() ."<br /><br />",
             date("Y-m-d", time()),
