@@ -28,7 +28,7 @@ class FanFiction
     {
         $this->error = $errorHandler;
         $this->setURL($url);
-        $this->ficSite = $this->parseURL();
+        $this->ficSite = $this->parseURL($url);
         $this->source = false;
 
         switch($this->ficSite)
@@ -75,35 +75,44 @@ class FanFiction
     public function ficHandler() { return $this->handler; }
 
     public function getURL() { return $this->url; }
-    private function setURL($url) { $this->url = $url; }
+    private function setURL($url) { 
+
+		$this->url = $this->trimURL($url); 
+	}
 
 
-    private function parseURL(): FanFictionSite
+    private function parseURL(string $url): FanFictionSite
     {
-        if (strlen($this->getURL()) === 0)
-            return FanFictionSite::ERROR;
+		$domain = parse_url($url, PHP_URL_HOST);
 
-        if (strpos($this->url, "fanfiction.net") !== false)
-            return FanFictionSite::FFNET;
+		switch ($domain) {
+			case "fanfiction.net":
+			case "www.fanfiction.net":
+			case "m.fanfiction.net":
+				return FanFictionSite::FFNET;
 
-        if (strpos($this->url, "harrypotterfanfiction.com") !== false)
-            return FanFictionSite::HPFF;
+			case "fictionpress.com":
+			case "www.fictionpress.com":
+			case "m.fictionpress.com":
+				return FanFictionSite::FPCOM;
 
-        if (strpos($this->url, "fictionpress.com") !== false)
-            return FanFictionSite::FPCOM;
+			case "harrypotterfanfiction.com":
+				return FanFictionSite::HPFF;
 
-        if (strpos($this->url, "hpfanficarchive.com") !== false)
-            return FanFictionSite::HPFFA;
+			case "hpfanficarchive.com":
+				return FanFictionSite::HPFFA;
 
-        if (strpos($this->url, "fictionhunt.com") !== false)
-            return FanFictionSite::FHCOM;
+			case "fictionhunt.com":
+				return FanFictionSite::FHCOM;
 
-        if (strpos($this->url, "wattpad.com") !== false)
-            return FanFictionSite::WATTPAD;
-
-
-        return FanFictionSite::ERROR;
-
+			case "wattpad.com":
+			case "www.wattpad.com":
+			case "m.wattpad.com":
+				return FanFictionSite::WATTPAD;
+			
+			default:
+				return FanFictionSite::ERROR;
+		}
     }
 
     public function getChapter($chapNum): Chapter
@@ -112,5 +121,25 @@ class FanFiction
     }
 
     public function getSource(): string { return $this->source; }
+
+	private function trimURL(string $url): string {
+		$site = $this->parseURL($url);
+		switch ($site) {
+			case FanFictionSite::WATTPAD:
+				if (preg_match("#(.*?wattpad.com/[0-9]+)#si", $url, $match) === 1) {
+					return $match[1];
+				}
+
+				if (preg_match("#(.*?wattpad.com/story/[0-9]+)#si", $url, $match) === 1) {
+					return $match[1];
+				}
+
+				return $url;
+
+			default:
+				return $url;
+		}
+
+	}
 
 }
