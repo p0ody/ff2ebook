@@ -41,8 +41,9 @@ class FFNET extends BaseHandler
         $text = false;
         $title = false;
 
-        if (Utils::regexOnSource("#Chapter [0-9]+?: (.+?)<br></div><div role='main' aria-label='story content' style='font-size:1.1em;'>#si", $source, $matches) === 1)
+        if (Utils::regexOnSource("#Chapter [0-9]+?: (.+?)<br></div>#si", $source, $matches) === 1) {
             $title = $matches[1];
+        }
         else
             $title = "Chapter $number";
 

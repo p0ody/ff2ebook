@@ -5,15 +5,15 @@ abstract class Config {
     const DIRECT_MAX_TRY            = 3;
     const CURL_MAX_ASYNC            = 50;
     const PYTHON_EXECUTABLE         = "";
-    const DOMAIN_PATH               = ""; 
+    const DOMAIN_PATH               = "http://localhost/ff2ebook"; 
     const TIME_MAX_LAST_CHECKED     = 24*60*60; // 24 hours * 60 minutes * 60 seconds
     const REMOTE_CLOUDSCRAPER_URL   = "";
-    const FF2EBOOKSCRAPER_URL       = [""]; // Add urls between in array, in priority order. Keep [] even if only one is used
+    const FF2EBOOKSCRAPER_URL       = ["http://localhost:3000"]; // Add urls between in array, in priority order. Keep [] even if only one is used
     // MySQL
-    const SQL_HOST                  = "";
-    const SQL_USER                  = "";
+    const SQL_HOST                  = "localhost";
+    const SQL_USER                  = "root";
     const SQL_PASSWD                = "";
-    const SQL_DB                    = "";
+    const SQL_DB                    = "ff2ebook";
     // Proxy
     const PROXY_SOURCE              = [];
 
