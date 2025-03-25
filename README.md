@@ -1,3 +1,5 @@
+<h1>This project, along with the official website ff2ebook.com are dead.</h1>
+
 <h1>Installation</h1>
 
 - Simply clone the repo, move to WAMP or similar (Or web host...) (PHP 7.0 compatible).
